@@ -12,6 +12,7 @@ import { createShiprocketOrder } from "@/lib/shiprocket/createOrder";
 import { assignAWB } from "@/lib/shiprocket/assignAWB";
 import { requestShiprocketPickup } from "@/lib/shiprocket/requestPickup";
 import { generateLabelAndManifest } from "@/lib/shiprocket/generateLabelAndManifest";
+import items from "razorpay/dist/types/items";
 
 export const dynamic = "force-dynamic";
 
@@ -154,6 +155,7 @@ export async function POST(req: Request) {
     const invoiceData = {
       customer: { name: newOrder.name },
       orderName: `Order #${newOrder._id}`,
+      items: newOrder.items,
       trackingNumber: newOrder.awb_code || "NA",
     };
 

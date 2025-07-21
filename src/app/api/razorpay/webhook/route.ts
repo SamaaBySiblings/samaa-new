@@ -143,6 +143,7 @@ export async function POST(req: Request) {
     const invoiceData = {
           customer: { name: newOrder.name },
           orderName: `Order #${newOrder._id}`,
+          items: newOrder.items,
           trackingNumber: newOrder.awb_code || "NA",
         };
     

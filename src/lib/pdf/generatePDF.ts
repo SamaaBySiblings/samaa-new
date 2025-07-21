@@ -2,6 +2,7 @@
 export async function generateInvoicePDF(data: {
   customer: { name: string };
   orderName: string;
+  items:string;
   trackingNumber: string;
 }): Promise<Buffer> {
   try {
