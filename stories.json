@@ -1,0 +1,61 @@
+{
+  "_id": {
+    "$oid": "687c30ea87de75b70a712b0c"
+  },
+  "slug": "luxury-is-an-inheritance",
+  "title": "Luxury is an Inheritance",
+  "image": "https://res.cloudinary.com/db5c7s6lw/image/upload/v1752922290/luxury-inheritance-4_aupvjs.jpg",
+  "excerpt": "A reflection on memory, rituals, and heirlooms...",
+  "date": "2025-07-15",
+  "content": [
+    {
+      "type": "paragraph",
+      "text": "Luxury is an Inheritance, Not a Purchase. I didn’t grow up with luxury. Not the kind you see in magazines, anyway. We didn’t have marble countertops or long-haul vacations or anything that glittered unnecessarily. But we had rituals. My grandmother’s silver comb laid out each morning beside a brass bowl of coconut oil. My mother’s voice humming while she rubbed sandalwood paste on her wrists before temple. A silence during chai time that felt more sacred than any sermon."
+    },
+    {
+      "type": "image",
+      "src": "https://res.cloudinary.com/db5c7s6lw/image/upload/v1752967364/4_qqgaav.jpg",
+      "alt": "Grandmother’s silver comb beside a brass bowl of coconut oil"
+    },
+    {
+      "type": "paragraph",
+      "text": "It’s only now, building this brand, that I realize—that was luxury. Not the price tag. Not the packaging. But the care. The intention. The repetition of small gestures done with reverence, passed from one hand to another like heirlooms. These weren’t products; they were inheritances."
+    },
+    {
+      "type": "image",
+      "src": "https://res.cloudinary.com/db5c7s6lw/image/upload/v1752967362/3_jaamtm.jpg",
+      "alt": "Handmade candles in process"
+    },
+    {
+      "type": "paragraph",
+      "text": "When we started curating candles, it wasn’t just about scent. It was about memory. About preserving that hush of the morning when the house smelled like wet earth and rose milk. About creating something that didn’t scream for attention, but whispered of where it came from."
+    },
+    {
+      "type": "image",
+      "src": "https://res.cloudinary.com/db5c7s6lw/image/upload/v1752967361/1000152257_h6vodu.jpg",
+      "alt": "Candle making in traditional workshop"
+    },
+    {
+      "type": "paragraph",
+      "text": "In a world that tells us to buy more, collect faster, and chase newness, We wanted to slow down. To offer something that could live with you—not just decorate a shelf. Something that felt like being handed a note from your one to the loved one, folded with care, smelling faintly of smoke and jasmine."
+    },
+    {
+      "type": "image",
+      "src": "https://res.cloudinary.com/db5c7s6lw/image/upload/v1752967360/2_fr2iex.jpg",
+      "alt": "Jasmine flowers and smoke in background"
+    },
+    {
+      "type": "paragraph",
+      "text": "Luxury, to us, isn’t found in gold-plated things. It’s found in things made slowly, made by hand, made with love. It’s the quiet confidence of knowing where you come from. And the courage to share it with the world."
+    },
+    {
+      "type": "image",
+      "src": "https://res.cloudinary.com/db5c7s6lw/image/upload/v1752967360/2_fr2iex.jpg",
+      "alt": "Finished candles glowing softly"
+    },
+    {
+      "type": "paragraph",
+      "text": "That’s what we want you to feel when you light one of our candles. Not just fragrance—but legacy. A reminder: You don’t buy luxury. You remember it."
+    }
+  ]
+}
