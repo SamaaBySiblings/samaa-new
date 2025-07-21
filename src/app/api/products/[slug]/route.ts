@@ -6,10 +6,13 @@ interface Params {
   slug: string;
 }
 
-export async function GET(_req: Request, context: { params: Params }) {
+export async function GET(
+  req: NextRequest,
+  context: { params: Promise<Params> }
+) {
   await dbConnect();
 
-  // If context.params is a Promise, await it — but typically it's an object already
+  // In newer Next.js versions, params is a Promise
   const { slug } = await context.params;
 
   const product = await Product.findOne({ slug });

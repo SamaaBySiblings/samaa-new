@@ -4,11 +4,10 @@ import { Story } from "@/lib/models/Story";
 
 export async function GET(
   _req: NextRequest,
-  contextPromise: Promise<{ params: { slug: string } }>
+  context: { params: Promise<{ slug: string }> }
 ) {
-  const context = await contextPromise;
-  const params = await context.params;
-  const { slug } = params;
+  // Await the params Promise directly
+  const { slug } = await context.params;
 
   await dbConnect();
 
