@@ -162,7 +162,7 @@ export default function HiringPage() {
 
       {/* Footer */}
       <div className="font-[D-DIN] text-center mt-16 text-xs text-black">
-        <span className="capitalize">if</span> you had a great idea:{" "}
+        <span className="capitalize">if</span> you have a great idea:{" "}
         <a
           href="mailto:careers@samaabysiblings.com"
           className="underline font-[D-DIN]"

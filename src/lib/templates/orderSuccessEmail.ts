@@ -24,11 +24,11 @@ export function orderSuccessTemplate({
   return `
     <div style="font-family: 'Segoe UI', sans-serif; padding: 24px; color: #111; max-width: 600px; margin: auto;">
       <div style="text-align: center; margin-bottom: 20px;">
-        <img src="https://yourdomain.com/logo.png" alt="SAMAA Logo" width="80" />
+        <img src="https://res.cloudinary.com/db5c7s6lw/image/upload/v1752922285/logo_uuodpa.jpg" alt="SAMAA Logo" width="80" />
         <h2 style="margin-top: 10px;">🕯️ Thank you for your order, ${customer.name}!</h2>
       </div>
 
-      <p>Here’s a summary of your purchase:</p>
+      <p>Here's a summary of your purchase:</p>
 
       <table width="100%" cellpadding="0" cellspacing="0" style="margin-top: 20px;">
         <thead>
