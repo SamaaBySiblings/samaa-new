@@ -41,7 +41,7 @@ function ProcessingContent() {
       
       localStorage.setItem("samaa_last_order", JSON.stringify(data.order));
       clearCart();
-      router.replace("/success");
+      router.push("/success");
     },
     onError: () => {
       toast.error("Payment failed. Redirecting...");
