@@ -180,7 +180,7 @@ async function processOrderBackground(
       shiprocketData = (await Promise.race([
         shiprocketPromise,
         new Promise((_, reject) =>
-          setTimeout(() => reject(new Error("Shiprocket timeout")), 30000)
+          setTimeout(() => reject(new Error("Shiprocket timeout")), 80000)
         ),
       ])) as any;
     } catch (err) {
