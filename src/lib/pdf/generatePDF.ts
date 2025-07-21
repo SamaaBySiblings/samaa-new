@@ -1,4 +1,3 @@
-
 export async function generateInvoicePDF(data: {
   customer: { name: string };
   orderName: string;

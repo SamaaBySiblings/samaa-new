@@ -3,16 +3,6 @@ import { NextResponse } from "next/server";
 import Razorpay from "razorpay";
 import { dbConnect } from "@/lib/dbConnect";
 import { Order } from "@/lib/models/Order";
-import { sendSuccessEmail } from "@/lib/send-success-email";
-import { sendFailureEmail } from "@/lib/send-failure-email";
-import { generateInvoicePDF } from "@/lib/pdf/generatePDF";
-import { generateShiprocketInvoicePDF } from "@/lib/shiprocket/fetchShiprocketInvoice";
-import { orderSuccessTemplate } from "@/lib/templates/orderSuccessEmail";
-import { createShiprocketOrder } from "@/lib/shiprocket/createOrder";
-import { assignAWB } from "@/lib/shiprocket/assignAWB";
-import { requestShiprocketPickup } from "@/lib/shiprocket/requestPickup";
-import { generateLabelAndManifest } from "@/lib/shiprocket/generateLabelAndManifest";
-import items from "razorpay/dist/types/items";
 
 export const dynamic = "force-dynamic";
 
@@ -61,6 +51,7 @@ export async function POST(req: Request) {
       total,
     }: RequestBody = await req.json();
 
+    // Step 1: Verify payment signature FIRST
     const generatedSignature = crypto
       .createHmac("sha256", process.env.RAZORPAY_KEY_SECRET!)
       .update(`${razorpay_order_id}|${razorpay_payment_id}`)
@@ -73,13 +64,21 @@ export async function POST(req: Request) {
       );
     }
 
-    const payment = await razorpay.payments.fetch(razorpay_payment_id);
-
+    // Step 2: Check for existing order
     const existing = await Order.findOne({ payment_id: razorpay_payment_id });
     if (existing) {
       return NextResponse.json({ success: true, order: existing });
     }
 
+    // Step 3: Fetch payment details with timeout
+    const payment = (await Promise.race([
+      razorpay.payments.fetch(razorpay_payment_id),
+      new Promise((_, reject) =>
+        setTimeout(() => reject(new Error("Razorpay API timeout")), 10000)
+      ),
+    ])) as any;
+
+    // Step 4: Create order in database IMMEDIATELY
     const fullAddress = `${formData.street}, ${formData.city}, ${formData.state}, ${formData.pincode}, ${formData.country}`;
     const estimatedDelivery = new Date();
     estimatedDelivery.setDate(estimatedDelivery.getDate() + 5);
@@ -99,104 +98,11 @@ export async function POST(req: Request) {
       shipping_status: "not_shipped",
       payment_details: payment,
       estimated_delivery: estimatedDelivery,
+      admin_notes: "⏳ Processing shipping and invoices...",
     });
 
-    // -------- SHIPROCKET --------
-    try {
-      const { shiprocket_order_id, shipment_id } = await createShiprocketOrder({
-        orderId: newOrder._id.toString(),
-        customer: {
-          name: newOrder.name,
-          email: newOrder.email,
-          phone: newOrder.phone,
-        },
-        address: {
-          full: fullAddress,
-          city: formData.city,
-          state: formData.state,
-          country: formData.country,
-          pincode: formData.pincode,
-        },
-        items: cartItems,
-        total,
-      });
-
-      const { awb_code, courier } = await assignAWB(Number(shipment_id));
-      const pickup = await requestShiprocketPickup(Number(shipment_id));
-
-      const { label_url, manifest_url, shiprocket_invoice_url } =
-        await generateLabelAndManifest(Number(shipment_id));
-
-      Object.assign(newOrder, {
-        shiprocket_order_id,
-        shiprocket_shipment_id: shipment_id,
-        awb_code,
-        courier_company: courier,
-        invoice_url: shiprocket_invoice_url || label_url,
-        manifest_url,
-        admin_notes: `✅ Pickup confirmed by ${courier}: ${pickup.confirmation}`,
-      });
-    } catch (err) {
-      console.error("🚨 Shiprocket failed:", err);
-      newOrder.admin_notes =
-        "⚠️ Shiprocket failed. Label or invoice could not be generated.";
-    }
-
-    await newOrder.save();
-
-    // -------- EMAIL --------
-    const html = orderSuccessTemplate({
-      customer: { name: newOrder.name },
-      items: newOrder.items,
-      total: newOrder.total,
-      method: payment.method,
-    });
-
-    const invoiceData = {
-      customer: { name: newOrder.name },
-      orderName: `Order #${newOrder._id}`,
-      items: newOrder.items,
-      trackingNumber: newOrder.awb_code || "NA",
-    };
-
-    let customPdf: Buffer = Buffer.from([]);
-    let shiprocketPdf: Buffer = Buffer.from([]);
-
-    try {
-      customPdf = await generateInvoicePDF(invoiceData);
-    } catch (err) {
-      console.error("⚠️ Custom invoice PDF generation failed:", err);
-    }
-
-    try {
-      if (newOrder.shiprocket_order_id) {
-        shiprocketPdf = await generateShiprocketInvoicePDF(
-          Number(newOrder.shiprocket_order_id)
-        );
-      }
-    } catch (err) {
-      console.error("⚠️ Shiprocket invoice PDF fetch failed:", err);
-    }
-
-    await sendSuccessEmail({
-      to: newOrder.email,
-      subject: "🧾 Your SAMAA Order Confirmation",
-      htmlData: html,
-      orderId: newOrder._id.toString(),
-      customer: { name: newOrder.name },
-      items: newOrder.items,
-      total: newOrder.total,
-      method: payment.method,
-      pdfBuffers: [
-        { filename: `samaa_invoice_${newOrder._id}.pdf`, buffer: customPdf },
-        {
-          filename: `tax_invoice_shiprocket_${newOrder._id}.pdf`,
-          buffer: shiprocketPdf,
-        },
-      ],
-    });
-
-    return NextResponse.json({
+    // Step 5: Return SUCCESS immediately to user
+    const response = NextResponse.json({
       success: true,
       order: {
         id: newOrder._id,
@@ -209,33 +115,210 @@ export async function POST(req: Request) {
         status: newOrder.status,
         payment_id: newOrder.payment_id,
         createdAt: newOrder.createdAt,
-        awb_code: newOrder.awb_code,
-        courier: newOrder.courier_company,
         estimated_delivery: newOrder.estimated_delivery.toISOString(),
-        invoice_url: newOrder.invoice_url,
+        processing_message:
+          "Order confirmed! Shipping details and invoice will be emailed shortly.",
       },
     });
+
+    // Step 6: Process heavy operations in background (don't await)
+    processOrderBackground(newOrder, cartItems, formData, total, payment);
+
+    return response;
   } catch (error: unknown) {
-    console.error("❌ Razorpay verify failed:", error);
+    console.error("❌ Payment verification failed:", error);
 
-    try {
-      const body = (await req.json()) as Partial<RequestBody>;
-      if (body?.formData?.email && body?.formData?.name) {
-        await sendFailureEmail({
-          to: body.formData.email,
-          subject: "❌ Order Failed",
-          customer: { name: body.formData.name },
-          reason:
-            "We could not process your order due to a server issue. Please try again.",
-        });
-      }
-    } catch (e) {
-      console.error("Failure email fallback failed:", e);
-    }
-
+    // Quick failure response
     return NextResponse.json(
       { success: false, message: "Payment verification failed" },
       { status: 500 }
     );
   }
+}
+
+// Background processing function (runs after response is sent)
+async function processOrderBackground(
+  order: any,
+  cartItems: CartItem[],
+  formData: FormData,
+  total: number,
+  payment: any
+) {
+  try {
+    // Import heavy dependencies only when needed
+    const { createShiprocketOrder } = await import(
+      "@/lib/shiprocket/createOrder"
+    );
+    const { assignAWB } = await import("@/lib/shiprocket/assignAWB");
+    const { requestShiprocketPickup } = await import(
+      "@/lib/shiprocket/requestPickup"
+    );
+    const { generateLabelAndManifest } = await import(
+      "@/lib/shiprocket/generateLabelAndManifest"
+    );
+    const { sendSuccessEmail } = await import("@/lib/send-success-email");
+    const { generateInvoicePDF } = await import("@/lib/pdf/generatePDF");
+    const { generateShiprocketInvoicePDF } = await import(
+      "@/lib/shiprocket/fetchShiprocketInvoice"
+    );
+    const { orderSuccessTemplate } = await import(
+      "@/lib/templates/orderSuccessEmail"
+    );
+
+    const fullAddress = `${formData.street}, ${formData.city}, ${formData.state}, ${formData.pincode}, ${formData.country}`;
+
+    // Process Shiprocket with timeout
+    let shiprocketData = {};
+    try {
+      const shiprocketPromise = processShiprocket(
+        order,
+        cartItems,
+        formData,
+        fullAddress,
+        total
+      );
+      shiprocketData = (await Promise.race([
+        shiprocketPromise,
+        new Promise((_, reject) =>
+          setTimeout(() => reject(new Error("Shiprocket timeout")), 30000)
+        ),
+      ])) as any;
+    } catch (err) {
+      console.error("🚨 Shiprocket failed:", err);
+      shiprocketData = { error: err };
+    }
+
+    // Generate PDFs in parallel with timeout
+    const pdfPromises = [
+      Promise.race([
+        generateInvoicePDF({
+          customer: { name: order.name },
+          orderName: `Order #${order._id}`,
+          items: order.items,
+          trackingNumber: (shiprocketData as any).awb_code || "NA",
+        }),
+        new Promise<Buffer>((_, reject) =>
+          setTimeout(() => reject(new Error("Custom PDF timeout")), 15000)
+        ),
+      ]).catch(() => Buffer.from([])),
+
+      Promise.race([
+        (shiprocketData as any).shiprocket_order_id
+          ? generateShiprocketInvoicePDF(
+              Number((shiprocketData as any).shiprocket_order_id)
+            )
+          : Promise.resolve(Buffer.from([])),
+        new Promise<Buffer>((_, reject) =>
+          setTimeout(() => reject(new Error("Shiprocket PDF timeout")), 15000)
+        ),
+      ]).catch(() => Buffer.from([])),
+    ];
+
+    const [customPdf, shiprocketPdf] = await Promise.all(pdfPromises);
+
+    // Update order with shipping details
+    await Order.findByIdAndUpdate(order._id, {
+      ...shiprocketData,
+      admin_notes: (shiprocketData as any).error
+        ? "⚠️ Shipping setup had issues. Manual processing may be needed."
+        : "✅ Order processed successfully",
+    });
+
+    // Send email
+    const html = orderSuccessTemplate({
+      customer: { name: order.name },
+      items: order.items,
+      total: order.total,
+      method: payment.method,
+    });
+
+    await Promise.race([
+      sendSuccessEmail({
+        to: order.email,
+        subject: "🧾 Your SAMAA Order Confirmation",
+        htmlData: html,
+        orderId: order._id.toString(),
+        customer: { name: order.name },
+        items: order.items,
+        total: order.total,
+        method: payment.method,
+        pdfBuffers: [
+          { filename: `samaa_invoice_${order._id}.pdf`, buffer: customPdf },
+          {
+            filename: `tax_invoice_shiprocket_${order._id}.pdf`,
+            buffer: shiprocketPdf,
+          },
+        ],
+      }),
+      new Promise((_, reject) =>
+        setTimeout(() => reject(new Error("Email timeout")), 20000)
+      ),
+    ]);
+
+    console.log("✅ Background processing completed for order:", order._id);
+  } catch (error) {
+    console.error("❌ Background processing failed:", error);
+
+    // Update order with error status
+    try {
+      await Order.findByIdAndUpdate(order._id, {
+        admin_notes: "⚠️ Post-payment processing failed. Manual review needed.",
+      });
+    } catch (dbError) {
+      console.error("Failed to update order with error status:", dbError);
+    }
+  }
+}
+
+// Helper function for Shiprocket processing
+async function processShiprocket(
+  order: any,
+  cartItems: CartItem[],
+  formData: FormData,
+  fullAddress: string,
+  total: number
+) {
+  const { createShiprocketOrder } = await import(
+    "@/lib/shiprocket/createOrder"
+  );
+  const { assignAWB } = await import("@/lib/shiprocket/assignAWB");
+  const { requestShiprocketPickup } = await import(
+    "@/lib/shiprocket/requestPickup"
+  );
+  const { generateLabelAndManifest } = await import(
+    "@/lib/shiprocket/generateLabelAndManifest"
+  );
+
+  const { shiprocket_order_id, shipment_id } = await createShiprocketOrder({
+    orderId: order._id.toString(),
+    customer: {
+      name: order.name,
+      email: order.email,
+      phone: order.phone,
+    },
+    address: {
+      full: fullAddress,
+      city: formData.city,
+      state: formData.state,
+      country: formData.country,
+      pincode: formData.pincode,
+    },
+    items: cartItems,
+    total,
+  });
+
+  const { awb_code, courier } = await assignAWB(Number(shipment_id));
+  const pickup = await requestShiprocketPickup(Number(shipment_id));
+  const { label_url, manifest_url, shiprocket_invoice_url } =
+    await generateLabelAndManifest(Number(shipment_id));
+
+  return {
+    shiprocket_order_id,
+    shiprocket_shipment_id: shipment_id,
+    awb_code,
+    courier_company: courier,
+    invoice_url: shiprocket_invoice_url || label_url,
+    manifest_url,
+    admin_notes: `✅ Pickup confirmed by ${courier}: ${pickup.confirmation}`,
+  };
 }
