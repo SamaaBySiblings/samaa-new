@@ -5,7 +5,15 @@ const OrderSchema = new mongoose.Schema(
     name: { type: String, required: true },
     email: { type: String, required: true },
     phone: { type: String, required: true },
+
     address: { type: String, required: true },
+    addressObject: {
+      street: String,
+      city: String,
+      state: String,
+      pincode: String,
+      country: String,
+    },
 
     items: [
       {
@@ -17,7 +25,7 @@ const OrderSchema = new mongoose.Schema(
     ],
 
     total: { type: Number, required: true },
-    payment_method: { type: String, required: true }, // UPI, card, wallet, etc.
+    payment_method: { type: String, required: true },
     payment_id: { type: String, required: true },
     payment_details: { type: mongoose.Schema.Types.Mixed },
 
@@ -26,7 +34,6 @@ const OrderSchema = new mongoose.Schema(
       enum: ["pending", "paid", "failed"],
       default: "pending",
     },
-
     shipping_status: {
       type: String,
       enum: ["not_shipped", "shipped", "delivered"],
@@ -53,5 +60,6 @@ const OrderSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-export const Order =
-  mongoose.models.Order || mongoose.model("Order", OrderSchema);
+const Order = mongoose.models.Order || mongoose.model("Order", OrderSchema);
+
+export { Order };
