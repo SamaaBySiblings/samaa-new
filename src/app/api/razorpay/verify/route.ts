@@ -80,6 +80,7 @@ export async function POST(req: Request) {
 
     // Step 4: Create order in DB
     const fullAddress = `${formData.street}, ${formData.city}, ${formData.state}, ${formData.pincode}, ${formData.country}`;
+
     const estimatedDelivery = new Date();
     estimatedDelivery.setDate(estimatedDelivery.getDate() + 5);
 
@@ -88,6 +89,13 @@ export async function POST(req: Request) {
       email: formData.email,
       phone: formData.phone,
       address: fullAddress,
+      addressObject: {
+        street: formData.street,
+        city: formData.city,
+        state: formData.state,
+        pincode: formData.pincode,
+        country: formData.country,
+      },
       items: cartItems,
       total,
       payment_method: payment.method,
@@ -102,21 +110,24 @@ export async function POST(req: Request) {
     });
 
     // Step 5: Enqueue order for background processing
-   try {
-     const enqueueRes = await fetch("https://samaa-backend-ik0y.onrender.com/enqueue-order", {
-       method: "POST",
-       headers: { "Content-Type": "application/json" },
-       body: JSON.stringify({ orderId: newOrder._id }),
-     });
+    try {
+      const enqueueRes = await fetch(
+        "https://samaa-backend-ik0y.onrender.com/enqueue-order",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ orderId: newOrder._id }),
+        }
+      );
 
-     if (!enqueueRes.ok) {
-       console.error("❌ Failed to enqueue order:", await enqueueRes.text());
-     } else {
-       console.log("✅ Order enqueued for background processing");
-     }
-   } catch (err) {
-     console.error("❌ Error while enqueuing order:", err);
-   }
+      if (!enqueueRes.ok) {
+        console.error("❌ Failed to enqueue order:", await enqueueRes.text());
+      } else {
+        console.log("✅ Order enqueued for background processing");
+      }
+    } catch (err) {
+      console.error("❌ Error while enqueuing order:", err);
+    }
 
     // Step 6: Return success response immediately
     return NextResponse.json({
@@ -126,7 +137,13 @@ export async function POST(req: Request) {
         name: newOrder.name,
         email: newOrder.email,
         phone: newOrder.phone,
-        address: newOrder.address,
+        address: {
+          street: formData.street,
+          city: formData.city,
+          state: formData.state,
+          pincode: formData.pincode,
+          country: formData.country,
+        },
         items: newOrder.items,
         total: newOrder.total,
         status: newOrder.status,
