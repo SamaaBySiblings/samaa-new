@@ -85,11 +85,36 @@ export async function POST(req: Request) {
       );
     }
 
-    // Step 2: Check if order already exists
     const existing = await Order.findOne({ payment_id: razorpay_payment_id });
+
     if (existing) {
-      return NextResponse.json({ success: true, order: existing });
+      // Patch only if needed
+      const needsPatch =
+        !existing.addressObject?.street ||
+        !Array.isArray(existing.items) ||
+        existing.items.length === 0;
+
+      if (needsPatch) {
+        await Order.updateOne(
+          { payment_id: razorpay_payment_id },
+          {
+            $set: {
+              addressObject: formData,
+              items: cartItems,
+              total,
+              admin_notes: "✅ Order enriched via /verify",
+            },
+          }
+        );
+        console.log("🔄 Order patched via /verify");
+      }
+
+      return NextResponse.json({
+        success: true,
+        order: await Order.findOne({ payment_id: razorpay_payment_id }),
+      });
     }
+
 
     // Step 3: Fetch payment details from Razorpay
     const payment = (await Promise.race([
