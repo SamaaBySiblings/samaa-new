@@ -51,6 +51,27 @@ export async function POST(req: Request) {
       total,
     }: RequestBody = await req.json();
 
+    // ✅ Validate required fields
+    if (
+      !razorpay_order_id ||
+      !razorpay_payment_id ||
+      !razorpay_signature ||
+      !formData ||
+      !formData.phone ||
+      !formData.street ||
+      !formData.city ||
+      !formData.state ||
+      !formData.pincode ||
+      !formData.country ||
+      !formData.name ||
+      !formData.email
+    ) {
+      return NextResponse.json(
+        { success: false, message: "Incomplete order data" },
+        { status: 400 }
+      );
+    }
+
     // Step 1: Verify payment signature
     const generatedSignature = crypto
       .createHmac("sha256", process.env.RAZORPAY_KEY_SECRET!)
@@ -70,7 +91,7 @@ export async function POST(req: Request) {
       return NextResponse.json({ success: true, order: existing });
     }
 
-    // Step 3: Fetch payment details with timeout
+    // Step 3: Fetch payment details from Razorpay
     const payment = (await Promise.race([
       razorpay.payments.fetch(razorpay_payment_id),
       new Promise((_, reject) =>
@@ -78,9 +99,8 @@ export async function POST(req: Request) {
       ),
     ])) as any;
 
-    // Step 4: Create order in DB
+    // Step 4: Save order to DB
     const fullAddress = `${formData.street}, ${formData.city}, ${formData.state}, ${formData.pincode}, ${formData.country}`;
-
     const estimatedDelivery = new Date();
     estimatedDelivery.setDate(estimatedDelivery.getDate() + 5);
 
@@ -109,7 +129,7 @@ export async function POST(req: Request) {
       admin_notes: "⏳ Processing shipping and invoices...",
     });
 
-    // Step 5: Enqueue order for background processing
+    // Step 5: Enqueue background job
     try {
       const enqueueRes = await fetch(
         "https://samaa-backend-ik0y.onrender.com/enqueue-order",
@@ -129,7 +149,7 @@ export async function POST(req: Request) {
       console.error("❌ Error while enqueuing order:", err);
     }
 
-    // Step 6: Return success response immediately
+    // Step 6: Return success response
     return NextResponse.json({
       success: true,
       order: {
@@ -154,7 +174,7 @@ export async function POST(req: Request) {
           "Order confirmed! Shipping details and invoice will be emailed shortly.",
       },
     });
-  } catch (error: unknown) {
+  } catch (error) {
     console.error("❌ Payment verification failed:", error);
     return NextResponse.json(
       { success: false, message: "Payment verification failed" },
