@@ -2,10 +2,6 @@ import { NextResponse } from "next/server";
 import crypto from "crypto";
 import { dbConnect } from "@/lib/dbConnect";
 import { Order } from "@/lib/models/Order";
-import { sendSuccessEmail } from "@/lib/send-success-email";
-import { generateInvoicePDF } from "@/lib/pdf/generatePDF";
-import { orderSuccessTemplate } from "@/lib/templates/orderSuccessEmail";
-import { generateShiprocketInvoicePDF } from "@/lib/shiprocket/fetchShiprocketInvoice";
 
 // Strongly typed Razorpay webhook structure
 interface RazorpayPaymentEntity {
@@ -32,37 +28,37 @@ interface RazorpayWebhookEvent {
 }
 
 export async function POST(req: Request) {
-  const rawBody = await req.text(); // Important: use raw body for signature verification
+  const rawBody = await req.text(); // raw body needed for signature verification
   const signature = req.headers.get("x-razorpay-signature");
   const webhookSecret = process.env.RAZORPAY_WEBHOOK_SECRET!;
 
-  // Step 1: Verify webhook signature
+  // Step 1: Verify signature
   const expectedSignature = crypto
     .createHmac("sha256", webhookSecret)
     .update(rawBody)
     .digest("hex");
 
   if (signature !== expectedSignature) {
-    console.warn("⚠️ Razorpay webhook signature mismatch.");
+    console.warn("⚠️ Webhook signature mismatch.");
     return NextResponse.json(
       { success: false, message: "Invalid signature" },
       { status: 400 }
     );
   }
 
-  // Step 2: Parse and type the event payload
+  // Step 2: Parse event
   let event: RazorpayWebhookEvent;
   try {
-    event = JSON.parse(rawBody) as RazorpayWebhookEvent;
+    event = JSON.parse(rawBody);
   } catch (err) {
-    console.error("❌ Webhook payload parse error", err);
+    console.error("❌ Invalid webhook payload", err);
     return NextResponse.json(
       { success: false, message: "Invalid payload" },
       { status: 400 }
     );
   }
 
-  // Step 3: Process only payment.captured events
+  // Step 3: Only handle 'payment.captured' events
   if (event.event !== "payment.captured") {
     return NextResponse.json({ success: true, message: "Ignored event" });
   }
@@ -71,7 +67,7 @@ export async function POST(req: Request) {
 
   await dbConnect();
 
-  // Step 4: Idempotency check — avoid duplicate order entries
+  // Step 4: Idempotency check
   const existing = await Order.findOne({ payment_id: payment.id });
   if (existing) {
     console.log("✅ Webhook: Order already exists.");
@@ -81,13 +77,12 @@ export async function POST(req: Request) {
     });
   }
 
-  // Step 5: Extract and validate order data from payment notes
+  // Step 5: Extract & validate notes
   const { name, email, phone, address, items, total } = payment.notes || {};
-
   if (!email || !items || !total) {
-    console.error("❌ Webhook missing required notes data.");
+    console.error("❌ Missing data in notes");
     return NextResponse.json(
-      { success: false, message: "Missing data in notes" },
+      { success: false, message: "Missing required data" },
       { status: 400 }
     );
   }
@@ -95,9 +90,9 @@ export async function POST(req: Request) {
   let parsedItems;
   try {
     parsedItems = JSON.parse(items);
-    if (!Array.isArray(parsedItems)) throw new Error("Items not an array");
+    if (!Array.isArray(parsedItems)) throw new Error("Items not array");
   } catch {
-    console.error("❌ Invalid items JSON");
+    console.error("❌ Invalid items format");
     return NextResponse.json(
       { success: false, message: "Invalid items data" },
       { status: 400 }
@@ -108,12 +103,12 @@ export async function POST(req: Request) {
   if (isNaN(parsedTotal) || parsedTotal <= 0) {
     console.error("❌ Invalid total amount");
     return NextResponse.json(
-      { success: false, message: "Invalid total amount" },
+      { success: false, message: "Invalid total" },
       { status: 400 }
     );
   }
 
-  // Step 6: Save new order and send confirmation email inside try-catch
+  // Step 6: Save minimal order + enqueue
   try {
     const newOrder = await Order.create({
       name,
@@ -131,62 +126,35 @@ export async function POST(req: Request) {
       payment_details: payment,
     });
 
-    const safeName = name ?? "";
-
-    const html = orderSuccessTemplate({
-      customer: { name: newOrder.name },
-      items: newOrder.items,
-      total: newOrder.total,
-      method: payment.method,
-    });
-
-    const invoiceData = {
-          customer: { name: newOrder.name },
-          orderName: `Order #${newOrder._id}`,
-          items: newOrder.items,
-          trackingNumber: newOrder.awb_code || "NA",
-        };
-    
-        let customPdf: Buffer = Buffer.from([]);
-        let shiprocketPdf: Buffer = Buffer.from([]);
-    
-        try {
-          customPdf = await generateInvoicePDF(invoiceData);
-        } catch (err) {
-          console.error("⚠️ Custom invoice PDF generation failed:", err);
+    // ✅ Enqueue for backend processing (email, invoice, etc.)
+    try {
+      const enqueueRes = await fetch(
+        "https://samaa-backend-ik0y.onrender.com/enqueue-order",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ orderId: newOrder._id }),
         }
-    
-        try {
-          if (newOrder.shiprocket_order_id) {
-            shiprocketPdf = await generateShiprocketInvoicePDF(
-              Number(newOrder.shiprocket_order_id)
-            );
-          }
-        } catch (err) {
-          console.error("⚠️ Shiprocket invoice PDF fetch failed:", err);
-        }
-    
-        await sendSuccessEmail({
-          to: newOrder.email,
-          subject: "🧾 Your SAMAA Order Confirmation",
-          htmlData: html,
-          orderId: newOrder._id.toString(),
-          customer: { name: newOrder.name },
-          items: newOrder.items,
-          total: newOrder.total,
-          method: payment.method,
-          pdfBuffers: [
-            { filename: `samaa_invoice_${newOrder._id}.pdf`, buffer: customPdf },
-            {
-              filename: `tax_invoice_shiprocket_${newOrder._id}.pdf`,
-              buffer: shiprocketPdf,
-            },
-          ],
-        });
-  } catch (emailOrDbError) {
-    console.error("❌ Error saving order or sending email:", emailOrDbError);
-    // Optionally decide how to respond here: you might want to still send 200 to Razorpay
+      );
+
+      if (!enqueueRes.ok) {
+        console.error("❌ Failed to enqueue order:", await enqueueRes.text());
+      } else {
+        console.log("✅ Order enqueued via webhook");
+      }
+    } catch (err) {
+      console.error("❌ Error calling enqueue endpoint:", err);
+    }
+  } catch (err) {
+    console.error("❌ Webhook DB write failed:", err);
+    return NextResponse.json(
+      { success: false, message: "Order save failed" },
+      { status: 500 }
+    );
   }
 
-  return NextResponse.json({ success: true });
+  return NextResponse.json({
+    success: true,
+    message: "Order processed via webhook",
+  });
 }
