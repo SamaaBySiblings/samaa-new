@@ -3,36 +3,11 @@ import crypto from "crypto";
 import { dbConnect } from "@/lib/dbConnect";
 import { Order } from "@/lib/models/Order";
 
-// Strongly typed Razorpay webhook structure
-interface RazorpayPaymentEntity {
-  id: string;
-  method: string;
-  notes?: {
-    name?: string;
-    email?: string;
-    phone?: string;
-    address?: string;
-    items?: string;
-    total?: string;
-  };
-  [key: string]: unknown;
-}
-
-interface RazorpayWebhookEvent {
-  event: string;
-  payload: {
-    payment: {
-      entity: RazorpayPaymentEntity;
-    };
-  };
-}
-
 export async function POST(req: Request) {
-  const rawBody = await req.text(); // raw body needed for signature verification
+  const rawBody = await req.text();
   const signature = req.headers.get("x-razorpay-signature");
   const webhookSecret = process.env.RAZORPAY_WEBHOOK_SECRET!;
 
-  // Step 1: Verify signature
   const expectedSignature = crypto
     .createHmac("sha256", webhookSecret)
     .update(rawBody)
@@ -46,8 +21,7 @@ export async function POST(req: Request) {
     );
   }
 
-  // Step 2: Parse event
-  let event: RazorpayWebhookEvent;
+  let event;
   try {
     event = JSON.parse(rawBody);
   } catch (err) {
@@ -58,7 +32,6 @@ export async function POST(req: Request) {
     );
   }
 
-  // Step 3: Only handle 'payment.captured' events
   if (event.event !== "payment.captured") {
     return NextResponse.json({ success: true, message: "Ignored event" });
   }
@@ -67,7 +40,7 @@ export async function POST(req: Request) {
 
   await dbConnect();
 
-  // Step 4: Idempotency check
+  // Idempotency check
   const existing = await Order.findOne({ payment_id: payment.id });
   if (existing) {
     console.log("✅ Webhook: Order already exists.");
@@ -77,7 +50,7 @@ export async function POST(req: Request) {
     });
   }
 
-  // Step 5: Extract & validate notes
+  // Extract minimal info from notes
   const { name, email, phone, address, items, total } = payment.notes || {};
   if (!email || !items || !total) {
     console.error("❌ Missing data in notes");
@@ -108,9 +81,9 @@ export async function POST(req: Request) {
     );
   }
 
-  // Step 6: Save minimal order + enqueue
   try {
-    const newOrder = await Order.create({
+    // Save minimal order, NO enqueue here
+    await Order.create({
       name,
       email,
       phone,
@@ -121,30 +94,10 @@ export async function POST(req: Request) {
       payment_id: payment.id,
       status: "paid",
       is_test_order: false,
-      source: "web",
+      source: "webhook",
       shipping_status: "not_shipped",
       payment_details: payment,
     });
-
-    // ✅ Enqueue for backend processing (email, invoice, etc.)
-    try {
-      const enqueueRes = await fetch(
-        "https://samaa-backend-ik0y.onrender.com/enqueue-order",
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ orderId: newOrder._id }),
-        }
-      );
-
-      if (!enqueueRes.ok) {
-        console.error("❌ Failed to enqueue order:", await enqueueRes.text());
-      } else {
-        console.log("✅ Order enqueued via webhook");
-      }
-    } catch (err) {
-      console.error("❌ Error calling enqueue endpoint:", err);
-    }
   } catch (err) {
     console.error("❌ Webhook DB write failed:", err);
     return NextResponse.json(
@@ -155,6 +108,6 @@ export async function POST(req: Request) {
 
   return NextResponse.json({
     success: true,
-    message: "Order processed via webhook",
+    message: "Order recorded via webhook",
   });
 }
