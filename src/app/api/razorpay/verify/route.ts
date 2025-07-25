@@ -86,6 +86,9 @@ export async function POST(req: Request) {
       );
     }
 
+    let currentOrder;
+    let shouldCallBackendAPI = false;
+
     const existing = await Order.findOne({ payment_id: razorpay_payment_id });
 
     if (existing) {
@@ -108,74 +111,85 @@ export async function POST(req: Request) {
           }
         );
         console.log("🔄 Order patched via /verify");
+        shouldCallBackendAPI = true; // Only call API when order is patched
       }
 
-      return NextResponse.json({
-        success: true,
-        order: await Order.findOne({ payment_id: razorpay_payment_id }),
+      currentOrder = await Order.findOne({ payment_id: razorpay_payment_id });
+    } else {
+      // Step 3: Fetch payment details from Razorpay
+      const payment = (await Promise.race([
+        razorpay.payments.fetch(razorpay_payment_id),
+        new Promise((_, reject) =>
+          setTimeout(() => reject(new Error("Razorpay API timeout")), 10000)
+        ),
+      ])) as any;
+
+      // Step 4: Save order to DB
+      const fullAddress = `${formData.street}, ${formData.city}, ${formData.state}, ${formData.pincode}, ${formData.country}`;
+      const estimatedDelivery = new Date();
+      estimatedDelivery.setDate(estimatedDelivery.getDate() + 5);
+
+      currentOrder = await Order.create({
+        name: formData.name,
+        email: formData.email,
+        phone: formData.phone,
+        address: fullAddress,
+        addressObject: {
+          street: formData.street,
+          city: formData.city,
+          state: formData.state,
+          pincode: formData.pincode,
+          country: formData.country,
+        },
+        items: cartItems,
+        total,
+        payment_method: payment.method,
+        payment_id: razorpay_payment_id,
+        status: "paid",
+        is_test_order: false,
+        source: "web",
+        shipping_status: "not_shipped",
+        payment_details: payment,
+        estimated_delivery: estimatedDelivery,
+        admin_notes: "⏳ Processing shipping and invoices...",
       });
+
+      shouldCallBackendAPI = true; // Call API for new orders
     }
 
-    // Step 3: Fetch payment details from Razorpay
-    const payment = (await Promise.race([
-      razorpay.payments.fetch(razorpay_payment_id),
-      new Promise((_, reject) =>
-        setTimeout(() => reject(new Error("Razorpay API timeout")), 10000)
-      ),
-    ])) as any;
-
-    // Step 4: Save order to DB
-    const fullAddress = `${formData.street}, ${formData.city}, ${formData.state}, ${formData.pincode}, ${formData.country}`;
-    const estimatedDelivery = new Date();
-    estimatedDelivery.setDate(estimatedDelivery.getDate() + 5);
-
-    const newOrder = await Order.create({
-      name: formData.name,
-      email: formData.email,
-      phone: formData.phone,
-      address: fullAddress,
-      addressObject: {
-        street: formData.street,
-        city: formData.city,
-        state: formData.state,
-        pincode: formData.pincode,
-        country: formData.country,
-      },
-      items: cartItems,
-      total,
-      payment_method: payment.method,
-      payment_id: razorpay_payment_id,
-      status: "paid",
-      is_test_order: false,
-      source: "web",
-      shipping_status: "not_shipped",
-      payment_details: payment,
-      estimated_delivery: estimatedDelivery,
-      admin_notes: "⏳ Processing shipping and invoices...",
-    });
-
-    // Step 5: Enqueue background job
-    try {
-      const response = await axios.post(
-        "https://api.samaabysiblings.com/backend/enqueue-order",
-        { orderId: newOrder._id }
-      );
-      console.log("✅ Order enqueued for background processing");
-    } catch (error: any) {
-      console.error(
-        "❌ Failed to enqueue order:",
-        error?.response?.data || error.message
-      );
+    // Step 5: Always call backend API for processing (necessary for shipping, emails, etc.)
+    if (shouldCallBackendAPI) {
+      try {
+        const response = await axios.post(
+          "https://api.samaabysiblings.com/backend/enqueue-order",
+          { orderId: currentOrder._id }
+        );
+        console.log("✅ Order enqueued for background processing");
+        console.log("Response:", response.data);
+      } catch (error: any) {
+        console.error("❌ Failed to enqueue order:");
+        if (error.response) {
+          console.error("Status:", error.response.status);
+          console.error("Data:", error.response.data);
+          console.error("Headers:", error.response.headers);
+        } else if (error.request) {
+          console.error("No response received:", error.request);
+        } else {
+          console.error("Axios Error:", error.message);
+        }
+      }
+    } else {
+      console.log("⏭️ Order already complete - no backend processing needed");
     }
 
     // Step 6: Return success response
     return NextResponse.json({
       success: true,
       order: {
-        id: newOrder._id,
-        name: newOrder.name,
-        email: newOrder.email,
-        phone: newOrder.phone,
+        id: currentOrder._id,
+        name: currentOrder.name,
+        email: currentOrder.email,
+        phone: currentOrder.phone,
         address: {
           street: formData.street,
           city: formData.city,
@@ -183,14 +197,15 @@ export async function POST(req: Request) {
           pincode: formData.pincode,
           country: formData.country,
         },
-        items: newOrder.items,
-        total: newOrder.total,
-        status: newOrder.status,
-        payment_id: newOrder.payment_id,
-        createdAt: newOrder.createdAt,
-        estimated_delivery: newOrder.estimated_delivery.toISOString(),
-        processing_message:
-          "Order confirmed! Shipping details and invoice will be emailed shortly.",
+        items: currentOrder.items,
+        total: currentOrder.total,
+        status: currentOrder.status,
+        payment_id: currentOrder.payment_id,
+        createdAt: currentOrder.createdAt,
+        estimated_delivery: currentOrder.estimated_delivery.toISOString(),
+        processing_message: shouldCallBackendAPI
+          ? "Order confirmed! Shipping details and invoice will be emailed shortly."
+          : "Order found but already processed - no further action needed.",
       },
     });
   } catch (error) {
