@@ -182,6 +182,15 @@ export async function POST(req: Request) {
       console.log("⏭️ Order already complete - no backend processing needed");
     }
 
+    // Debug: Log the currentOrder to see what fields might be undefined
+    console.log("📋 Current Order Debug:", {
+      id: currentOrder._id,
+      createdAt: currentOrder.createdAt,
+      estimated_delivery: currentOrder.estimated_delivery,
+      hasCreatedAt: !!currentOrder.createdAt,
+      hasEstimatedDelivery: !!currentOrder.estimated_delivery,
+    });
+
     // Step 6: Return success response
     return NextResponse.json({
       success: true,
@@ -202,7 +211,6 @@ export async function POST(req: Request) {
         status: currentOrder.status,
         payment_id: currentOrder.payment_id,
         createdAt: currentOrder.createdAt,
-        estimated_delivery: currentOrder.estimated_delivery.toISOString(),
         processing_message: shouldCallBackendAPI
           ? "Order confirmed! Shipping details and invoice will be emailed shortly."
           : "Order found but already processed - no further action needed.",
