@@ -3,6 +3,7 @@ import { NextResponse } from "next/server";
 import Razorpay from "razorpay";
 import { dbConnect } from "@/lib/dbConnect";
 import { Order } from "@/lib/models/Order";
+import axios from "axios";
 
 export const dynamic = "force-dynamic";
 
@@ -115,7 +116,6 @@ export async function POST(req: Request) {
       });
     }
 
-
     // Step 3: Fetch payment details from Razorpay
     const payment = (await Promise.race([
       razorpay.payments.fetch(razorpay_payment_id),
@@ -156,22 +156,16 @@ export async function POST(req: Request) {
 
     // Step 5: Enqueue background job
     try {
-      const enqueueRes = await fetch(
-        `${process.env.SERVER_URL}/enqueue-order`,
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ orderId: newOrder._id }),
-        }
+      const response = await axios.post(
+        "https://api.samaabysiblings.com/backend/enqueue-order",
+        { orderId: newOrder._id }
       );
-
-      if (!enqueueRes.ok) {
-        console.error("❌ Failed to enqueue order:", await enqueueRes.text());
-      } else {
-        console.log("✅ Order enqueued for background processing");
-      }
-    } catch (err) {
-      console.error("❌ Error while enqueuing order:", err);
+      console.log("✅ Order enqueued for background processing");
+    } catch (error: any) {
+      console.error(
+        "❌ Failed to enqueue order:",
+        error?.response?.data || error.message
+      );
     }
 
     // Step 6: Return success response
