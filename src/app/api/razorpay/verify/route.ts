@@ -157,7 +157,7 @@ export async function POST(req: Request) {
     // Step 5: Enqueue background job
     try {
       const enqueueRes = await fetch(
-        "https://samaa-backend-ik0y.onrender.com/enqueue-order",
+        `${process.env.SERVER_URL}/enqueue-order`,
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },

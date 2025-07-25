@@ -52,7 +52,7 @@ const OrderSchema = new mongoose.Schema(
     is_test_order: { type: Boolean, default: false },
     source: {
       type: String,
-      enum: ["web", "admin"],
+      enum: ["web", "admin", "webhook"],
       default: "web",
     },
     admin_notes: { type: String, default: "" },
