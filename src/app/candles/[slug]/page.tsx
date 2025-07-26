@@ -9,7 +9,7 @@ import { useCurrencyStore } from "@/store/currency";
 import { convertPrice, getCurrencySymbol } from "@/lib/currency";
 import { useProduct } from "@/hooks/useProduct";
 import ProductPageSkeleton from "@/components/ProductPageSkeleton";
-import { useRouter } from "next/router";
+import { useSearchParams } from "next/navigation";
 
 const bundleOptions = [
   "Golden Sandal",
@@ -27,8 +27,8 @@ interface CandlePageProps {
 
 export default function CandlePage({ params }: CandlePageProps) {
   const { slug } = use(params);
-  const router = useRouter();
-  const { scent: scentFromQuery } = router.query;
+ const searchParams = useSearchParams();
+ const scentFromQuery = searchParams.getAll("scent");
   const { product, loading, error } = useProduct(slug);
   const addToCart = useCartStore((s) => s.addToCart);
   const currency = useCurrencyStore((s) => s.currency);
@@ -49,17 +49,15 @@ export default function CandlePage({ params }: CandlePageProps) {
   const [showMood, setShowMood] = useState(false);
 
   // When query param changes, update selectedScents filter
-  useEffect(() => {
-    if (typeof scentFromQuery === "string") {
-      setSelectedScents([scentFromQuery]);
-    } else if (Array.isArray(scentFromQuery)) {
-      // If multiple scents passed (like ?scent=sharp&scent=soft)
-      setSelectedScents(scentFromQuery);
-    } else {
-      // If no scent param, clear scents filter
-      setSelectedScents([]);
-    }
-  }, [scentFromQuery]);
+ useEffect(() => {
+   if (typeof scentFromQuery === "string") {
+     setSelectedScents([scentFromQuery]);
+   } else if (Array.isArray(scentFromQuery)) {
+     setSelectedScents(scentFromQuery);
+   } else {
+     setSelectedScents([]);
+   }
+ }, [scentFromQuery]);
 
   useEffect(() => {
     if (!product) return;
