@@ -56,13 +56,17 @@ export default function CandleStorePage() {
 
         // If no filters, get all candles; else, get filtered candles
         const endpoint =
-          Object.keys(params).length > 0 ? "/api/v1/candles/filter" : "/api/v1/candles";
+          Object.keys(params).length > 0
+            ? "/api/v1/candles/filter"
+            : "/api/v1/candles";
 
         const response = await axios.get(
           `${process.env.NEXT_PUBLIC_SERVER_URL}${endpoint}`,
           { params }
         );
         if (response.data.success) {
+          console.log("API base URL:", process.env.NEXT_PUBLIC_SERVER_URL);
+
           setProducts(response.data.data);
         } else {
           console.error("Failed to load products");
