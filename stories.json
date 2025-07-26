@@ -1,61 +1,220 @@
-{
-  "_id": {
-    "$oid": "687c30ea87de75b70a712b0c"
+[
+  {
+    "_id": {
+      "$oid": "687c30ea87de75b70a712b0c"
+    },
+    "slug": "luxury-is-an-inheritance",
+    "title": "Luxury is an Inheritance",
+    "image": "https://res.cloudinary.com/db5c7s6lw/image/upload/v1752922290/luxury-inheritance-4_aupvjs.jpg",
+    "excerpt": "A reflection on memory, rituals, and heirlooms...",
+    "date": "2025-07-15",
+    "content": [
+      {
+        "type": "paragraph",
+        "text": "Luxury is an Inheritance, Not a Purchase. I didn't grow up with luxury. Not the kind you see in magazines, anyway. We didn’t have marble countertops or long-haul vacations or anything that glittered unnecessarily. But we had rituals. My grandmother’s silver comb laid out each morning beside a brass bowl of coconut oil. My mother’s voice humming while she rubbed sandalwood paste on her wrists before temple. A silence during chai time that felt more sacred than any sermon."
+      },
+      {
+        "type": "image",
+        "src": "https://res.cloudinary.com/db5c7s6lw/image/upload/v1752967364/4_qqgaav.jpg",
+        "alt": "Grandmother's silver comb beside a brass bowl of coconut oil"
+      },
+      {
+        "type": "paragraph",
+        "text": "It's only now, building this brand, that I realize—that was luxury. Not the price tag. Not the packaging. But the care. The intention. The repetition of small gestures done with reverence, passed from one hand to another like heirlooms. These weren’t products; they were inheritances."
+      },
+      {
+        "type": "image",
+        "src": "https://res.cloudinary.com/db5c7s6lw/image/upload/v1752967362/3_jaamtm.jpg",
+        "alt": "Handmade candles in process"
+      },
+      {
+        "type": "paragraph",
+        "text": "When we started curating candles, it wasn't just about scent. It was about memory. About preserving that hush of the morning when the house smelled like wet earth and rose milk. About creating something that didn’t scream for attention, but whispered of where it came from."
+      },
+      {
+        "type": "image",
+        "src": "https://res.cloudinary.com/db5c7s6lw/image/upload/v1752967361/1000152257_h6vodu.jpg",
+        "alt": "Candle making in traditional workshop"
+      },
+      {
+        "type": "paragraph",
+        "text": "In a world that tells us to buy more, collect faster, and chase newness, We wanted to slow down. To offer something that could live with you—not just decorate a shelf. Something that felt like being handed a note from your one to the loved one, folded with care, smelling faintly of smoke and jasmine."
+      },
+      {
+        "type": "image",
+        "src": "https://res.cloudinary.com/db5c7s6lw/image/upload/v1752967360/2_fr2iex.jpg",
+        "alt": "Jasmine flowers and smoke in background"
+      },
+      {
+        "type": "paragraph",
+        "text": "Luxury, to us, isn't found in gold-plated things. It's found in things made slowly, made by hand, made with love. It’s the quiet confidence of knowing where you come from. And the courage to share it with the world."
+      },
+      {
+        "type": "image",
+        "src": "https://res.cloudinary.com/db5c7s6lw/image/upload/v1752967360/2_fr2iex.jpg",
+        "alt": "Finished candles glowing softly"
+      },
+      {
+        "type": "paragraph",
+        "text": "That's what we want you to feel when you light one of our candles. Not just fragrance—but legacy. A reminder: You don’t buy luxury. You remember it."
+      }
+    ]
   },
-  "slug": "luxury-is-an-inheritance",
-  "title": "Luxury is an Inheritance",
-  "image": "https://res.cloudinary.com/db5c7s6lw/image/upload/v1752922290/luxury-inheritance-4_aupvjs.jpg",
-  "excerpt": "A reflection on memory, rituals, and heirlooms...",
-  "date": "2025-07-15",
+  {
+    "_id": {
+      "$oid": "688c41fb98ef86c81b823c1d"
+    },
+    "slug": "how-to-build-a-room-that-misses-you",
+    "title": "How to Build a Room That Misses You",
+    "image": "https://res.cloudinary.com/db5c7s6lw/image/upload/v1753527145/Screenshot_2025-05-26_at_13.16.49_mqhal2.jpg",
+    "excerpt": "On scent, memory, texture, and presence as interior design tools...",
+    "date": "2025-07-26",
+    "content": [
+      {
+        "type": "paragraph",
+        "text": "There are rooms that wait for you. And then there are rooms that ache for you. The moment you walk in, they exhale. Their curtains sigh. Their cushions plump with anticipation. The light curls softly around your shadow, as if it has been holding its breath since the last time your feet graced the floor. These rooms don’t just contain you. They know you. They are your quiet lovers."
+      },
+      {
+        "type": "paragraph",
+        "text": "How do you build that kind of room? The kind that remembers you, and misses you when you're gone?"
+      },
+      {
+        "type": "paragraph",
+        "text": "Let’s begin with scent. Because memory begins in the nose. A whisper of pinecones. A hint of sandalwood. A trace of orange blossom from the candle you only light when you're feeling tender and brave. Scent doesn’t just decorate a space — it binds time. It clings to linen, weaves through velvet, and lingers in the quiet hours, like a secret you once told the walls."
+      },
+      {
+        "type": "image",
+        "src": "https://res.cloudinary.com/db5c7s6lw/image/upload/v1753527145/Screenshot_2025-05-26_at_13.16.49_mqhal2.jpg",
+        "alt": "Candle flickering near velvet curtains"
+      },
+      {
+        "type": "paragraph",
+        "text": "Now touch. Texture. Sensation. We underestimate how much the body wants to feel home. The brushed cotton sheet you saved for special occasions. The cool marble countertop that holds the weight of your coffee mug, and your worries. When your fingers find comfort in these textures, your spirit follows."
+      },
+      {
+        "type": "image",
+        "src": "https://res.cloudinary.com/db5c7s6lw/image/upload/v1753527148/PXL_20250526_074433342_eiyqsu.jpg",
+        "alt": "Hand touching textured fabric in soft morning light"
+      },
+      {
+        "type": "paragraph",
+        "text": "Presence. Here’s the thing no one speaks about: your home holds your energy like a fingerprint. Every time you laugh in a room, the walls remember. Every time you weep, the floor learns compassion. Your presence is not passive — it charges a space. It says: I lived here. I felt here. This is mine."
+      },
+      {
+        "type": "paragraph",
+        "text": "And memory — not the polished kind you post online — but the emotional memory of a space, is your co-architect. Hang the art your grandmother once touched. Keep the metro token you once stole from a memorable night out. Let there be corners that contain silence and shadows that contain soul."
+      },
+      {
+        "type": "image",
+        "src": "https://res.cloudinary.com/db5c7s6lw/image/upload/v1753527148/PXL_20250526_074403071_jst2p9.jpg",
+        "alt": "Shelf corner with photo frame and vintage keepsakes"
+      },
+      {
+        "type": "paragraph",
+        "text": "A home isn’t made of things. It’s made of echoes. So if you want to build a room that misses you — don’t just decorate it. Haunt it beautifully. Live in it like a poem. Laugh in it like a prayer. And let your absence feel like a story that still lingers in the air, waiting for the next chapter."
+      },
+      {
+        "type": "paragraph",
+        "text": "And let us know — what things are you keeping in your corners?"
+      }
+    ]
+  },
+  {
+  "_id": {
+    "$oid": "689d52fc12ab97d92c934d2e"
+  },
+  "slug": "why-choose-soy",
+  "title": "Why Choose Soy: This Humble Bean Holds the Secret to the Perfect Flame",
+  "image": "https://res.cloudinary.com/db5c7s6lw/image/upload/v1753527388/Main_Banner_in_stories_page_h40zrn.jpg",
+  "excerpt": "You must understand: We didn’t choose soy wax as an ingredient. It chose us.",
+  "date": "2025-07-26",
   "content": [
     {
       "type": "paragraph",
-      "text": "Luxury is an Inheritance, Not a Purchase. I didn’t grow up with luxury. Not the kind you see in magazines, anyway. We didn’t have marble countertops or long-haul vacations or anything that glittered unnecessarily. But we had rituals. My grandmother’s silver comb laid out each morning beside a brass bowl of coconut oil. My mother’s voice humming while she rubbed sandalwood paste on her wrists before temple. A silence during chai time that felt more sacred than any sermon."
-    },
-    {
-      "type": "image",
-      "src": "https://res.cloudinary.com/db5c7s6lw/image/upload/v1752967364/4_qqgaav.jpg",
-      "alt": "Grandmother’s silver comb beside a brass bowl of coconut oil"
+      "text": "You must understand: We didn’t choose soy wax as an ingredient. It chose us. You know how some truths hide in plain sight? Like how the softest whispers often carry the deepest meaning, or how the humblest ingredients—a pinch of salt, a drizzle of honey—can transform a meal into a sacrament. Soy wax is like that. Unpretentious, gentle, and quietly revolutionary."
     },
     {
       "type": "paragraph",
-      "text": "It’s only now, building this brand, that I realize—that was luxury. Not the price tag. Not the packaging. But the care. The intention. The repetition of small gestures done with reverence, passed from one hand to another like heirlooms. These weren’t products; they were inheritances."
-    },
-    {
-      "type": "image",
-      "src": "https://res.cloudinary.com/db5c7s6lw/image/upload/v1752967362/3_jaamtm.jpg",
-      "alt": "Handmade candles in process"
+      "text": "When you light a candle, you’re not just lighting a room—you’re igniting an atmosphere. And when that candle is made with soy wax, the difference is more than visible. It’s visceral."
     },
     {
       "type": "paragraph",
-      "text": "When we started curating candles, it wasn’t just about scent. It was about memory. About preserving that hush of the morning when the house smelled like wet earth and rose milk. About creating something that didn’t scream for attention, but whispered of where it came from."
+      "text": "In the world of candle-making, soy wax has emerged as the gold standard for those who crave not only beauty but meaning. If you’ve ever wondered, “Why choose soy wax for candles instead of paraffin or other blends… they do the job?”—this story is for you. It is the tender offering of the soybean—renewable, humble, abundant—pressed into a form that cradles fire."
     },
-    {
-      "type": "image",
-      "src": "https://res.cloudinary.com/db5c7s6lw/image/upload/v1752967361/1000152257_h6vodu.jpg",
-      "alt": "Candle making in traditional workshop"
-    },
+
     {
       "type": "paragraph",
-      "text": "In a world that tells us to buy more, collect faster, and chase newness, We wanted to slow down. To offer something that could live with you—not just decorate a shelf. Something that felt like being handed a note from your one to the loved one, folded with care, smelling faintly of smoke and jasmine."
+      "text": "1. Soy roots: A Love Story Written by the Earth\nPicture a soybean field at dawn. No fanfare, no grandeur—just tidy green rows stretching toward the horizon, roots cradling the soil like a mother’s hands. Renewable, biodegradable, and carbon-neutral, it’s the antithesis of paraffin, a fossil fuel relic that exhales benzene and soot into your living room. Soy says, “Burn me. I’ll return to the earth as softly as I came.”"
     },
-    {
-      "type": "image",
-      "src": "https://res.cloudinary.com/db5c7s6lw/image/upload/v1752967360/2_fr2iex.jpg",
-      "alt": "Jasmine flowers and smoke in background"
-    },
+
     {
       "type": "paragraph",
-      "text": "Luxury, to us, isn’t found in gold-plated things. It’s found in things made slowly, made by hand, made with love. It’s the quiet confidence of knowing where you come from. And the courage to share it with the world."
+      "text": "2. The Slow Dance of Light: How Soy Wax Changes the Mood\nIt burns slower, like a love letter written over days, each sentence savored. It melts evenly, gracefully. There’s no harsh smoke just the pure, clean dance of flame. 30-50% longer burn time…they say—but it’s more than math. It’s physics as poetry, cooler, steadier, no oily smoke, no chemical ghosts. Just the crisp sigh of a Midwest breeze trapped in wax."
     },
+
     {
       "type": "image",
-      "src": "https://res.cloudinary.com/db5c7s6lw/image/upload/v1752967360/2_fr2iex.jpg",
-      "alt": "Finished candles glowing softly"
+      "src": "https://res.cloudinary.com/db5c7s6lw/image/upload/v1753527388/Main_Banner_in_stories_page_h40zrn.jpg",
+      "alt": "Soybean fields at dawn with green rows stretching to the horizon"
     },
+
     {
       "type": "paragraph",
-      "text": "That’s what we want you to feel when you light one of our candles. Not just fragrance—but legacy. A reminder: You don’t buy luxury. You remember it."
+      "text": "3. The Scented Soul: How Soy Wax Wears Fragrance Like a Memory\nCan I tell you something strange and beautiful? Scent has a way of slipping past logic and settling straight into your memory. One whiff, and suddenly—you’re back. Your childhood kitchen. A rain-drenched street in June. The way your grandmother folded linen, with lavender tucked between the folds. Now here’s where soy wax comes in—not just as wax, but as a kind of memory keeper."
+    },
+
+    {
+      "type": "paragraph",
+      "text": "Because soy wax burns cooler than paraffin. Slower too. That means it doesn’t just burn fragrance—it releases it, gently. Like steam rising from a teacup. Like a secret being told slowly, one word at a time. First, the citrus arrives—playful, golden, gone in a breath. Then jasmine walks in, warm and barefoot. And just when you think it’s over, cedar leans close and stays, earthy and kind."
+    },
+
+    {
+      "type": "image",
+      "src": "https://res.cloudinary.com/db5c7s6lw/image/upload/v1753527388/ff646979-e102-4054-9148-fbd63fcbec6c_b0oyyd.jpg",
+      "alt": "Soy candle with soft flame and aromatic smoke"
+    },
+
+    {
+      "type": "paragraph",
+      "text": "4. The Texture of Tenderness: Smoothness as an Act of Rebellion\nAnd when you run your finger over the top of a freshly cooled soy candle? It’s like touching creamy, flawless, satin that has memorized the shape of moonlight. “Like alabaster or fresh-churned butter”. It’s proof that sustainability and sophistication aren’t rivals, but kindred spirits."
+    },
+
+    {
+      "type": "paragraph",
+      "text": "5. An Eco-Friendly Candle Choice\nLet’s be honest: sustainability matters now more than ever. Choosing eco-friendly candles made with soy wax is one small but powerful way to reduce your carbon footprint. When your candle has burned to its very end, you’ll know it left no harmful trace behind. Just like a good memory. Choosing soy wax is choosing mindfulness. It is choosing to honor the small things, the quiet moments. It’s choosing to light something not just to illuminate a room, but to bring a kind of warmth that reaches all the way to the soul."
+    },
+
+    {
+      "type": "paragraph",
+      "text": "6. Why We Chose Soy Wax for Our Candles\nBecause we believe that a candle should be more than a scent. It should be a ceremony. We chose soy wax because it aligns with our values—of craftsmanship, care, and conscious living. Every candle we create is an invitation into a slower, more beautiful world. One where ingredients matter. One where even fire can be tender."
+    },
+
+    {
+      "type": "image",
+      "src": "https://res.cloudinary.com/db5c7s6lw/image/upload/v1753527148/PXL_20250526_074433342_eiyqsu.jpg",
+      "alt": "Handmade soy candles arranged beautifully"
+    },
+
+    {
+      "type": "paragraph",
+      "text": "7. A Candle’s Covenant: Your Questions, Answered\nDo soy candles really purify the air? In a way. They refuse to pollute it—no toxins, no parabens, no lies. Just clean oxygen and the faintest kiss of bergamot."
+    },
+
+    {
+      "type": "paragraph",
+      "text": "Are soy candles worth the cost? Think of it as a lifelong romance, not a fling. One jar burns for 50 hours. That’s 30 sunsets, 45 bubble baths, 40 chances to relearn stillness."
+    },
+
+    {
+      "type": "paragraph",
+      "text": "Can soy wax hold bold scents? Like a librarian holds stories. Try our smoked teakwood blend—it’ll hum, low and rich, as if the candle itself remembers the forest."
+    },
+
+    {
+      "type": "paragraph",
+      "text": "So strike a match. Let the light pool. And know that this small, glowing act—this choice of soy over sludge, patience over haste—is how we keep the world’s fragile and flickering magic alive."
     }
   ]
 }
+
+]

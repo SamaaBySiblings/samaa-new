@@ -1,6 +1,7 @@
 "use client";
 import { useState } from "react";
 import Link from "next/link";
+import axios from "axios";
 
 export default function Footer() {
   const [helpOpen, setHelpOpen] = useState(false);
@@ -11,28 +12,32 @@ export default function Footer() {
   const [error, setError] = useState("");
   const year = new Date().getFullYear();
 
-  const handleSubscribe = async () => {
-    setError("");
-    if (!email) {
-      setError("Please enter your email.");
-      return;
+  
+const handleSubscribe = async () => {
+  setError("");
+  if (!email) {
+    setError("Please enter your email.");
+    return;
+  }
+  setLoading(true);
+  try {
+    const res = await axios.post(
+      `${process.env.NEXT_PUBLIC_SERVER_URL}/subscribe`,
+      { email }
+    );
+    if (res.status !== 200) throw new Error("Failed to subscribe");
+    setSubscribed(true);
+    setEmail("");
+  } catch (err: unknown) {
+    if (axios.isAxiosError(err)) {
+      setError(err.response?.data?.message || "Error subscribing");
+    } else {
+      setError("Error subscribing");
     }
-    setLoading(true);
-    try {
-      const res = await fetch("/api/subscribe", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email }),
-      });
-      if (!res.ok) throw new Error("Failed to subscribe");
-      setSubscribed(true);
-      setEmail("");
-    } catch (err) {
-      setError(err instanceof Error ? err.message : "Error subscribing");
-    } finally {
-      setLoading(false);
-    }
-  };
+  } finally {
+    setLoading(false);
+  }
+};
 
   const handleClose = () => {
     setSubscribed(false);

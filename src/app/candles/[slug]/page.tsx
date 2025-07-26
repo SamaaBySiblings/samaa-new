@@ -9,6 +9,7 @@ import { useCurrencyStore } from "@/store/currency";
 import { convertPrice, getCurrencySymbol } from "@/lib/currency";
 import { useProduct } from "@/hooks/useProduct";
 import ProductPageSkeleton from "@/components/ProductPageSkeleton";
+import { useRouter } from "next/router";
 
 const bundleOptions = [
   "Golden Sandal",
@@ -26,6 +27,8 @@ interface CandlePageProps {
 
 export default function CandlePage({ params }: CandlePageProps) {
   const { slug } = use(params);
+  const router = useRouter();
+  const { scent: scentFromQuery } = router.query;
   const { product, loading, error } = useProduct(slug);
   const addToCart = useCartStore((s) => s.addToCart);
   const currency = useCurrencyStore((s) => s.currency);
@@ -35,6 +38,7 @@ export default function CandlePage({ params }: CandlePageProps) {
   const [qty, setQty] = useState(1);
   const [modalOpen, setModalOpen] = useState(false);
   const [modalImageIndex, setModalImageIndex] = useState(0);
+  const [selectedScents, setSelectedScents] = useState<string[]>([]);
   const [bundleSelection, setBundleSelection] = useState<string[]>([]);
   const [touchStartX, setTouchStartX] = useState<number | null>(null);
   const [activeImage, setActiveImage] = useState(0);
@@ -42,7 +46,20 @@ export default function CandlePage({ params }: CandlePageProps) {
   // Collapsible toggles for left column
   const [showNotes, setShowNotes] = useState(false);
   const [showFeatures, setShowFeatures] = useState(false);
-  const [showMood, setShowMood]=useState(false);
+  const [showMood, setShowMood] = useState(false);
+
+  // When query param changes, update selectedScents filter
+  useEffect(() => {
+    if (typeof scentFromQuery === "string") {
+      setSelectedScents([scentFromQuery]);
+    } else if (Array.isArray(scentFromQuery)) {
+      // If multiple scents passed (like ?scent=sharp&scent=soft)
+      setSelectedScents(scentFromQuery);
+    } else {
+      // If no scent param, clear scents filter
+      setSelectedScents([]);
+    }
+  }, [scentFromQuery]);
 
   useEffect(() => {
     if (!product) return;
@@ -428,3 +445,4 @@ export default function CandlePage({ params }: CandlePageProps) {
     </>
   );
 }
+

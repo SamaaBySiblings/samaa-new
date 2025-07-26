@@ -83,12 +83,14 @@ export default function HomePage() {
           {
             src: "https://res.cloudinary.com/db5c7s6lw/image/upload/v1752922296/sharp-scent_wxdm2e.jpg",
             text: "Sharp Notes",
+            scent: "sharp",
           },
           {
             src: "https://res.cloudinary.com/db5c7s6lw/image/upload/v1752922297/soft-scent_usjkze.jpg",
             text: "Soft Notes",
+            scent: "soft",
           },
-        ].map(({ src, text }) => (
+        ].map(({ src, text, scent }) => (
           <div
             key={src}
             className="relative h-[60vh] sm:h-[70vh] md:h-[75vh] rounded overflow-hidden shadow-md"
@@ -101,11 +103,10 @@ export default function HomePage() {
               sizes="(max-width: 768px) 100vw, 50vw"
               priority
             />
-            <div className="absolute inset-0 bg-black/30" />{" "}
-            {/* Optional dark overlay for text visibility */}
+            <div className="absolute inset-0 bg-black/30" />
             <div className="absolute inset-x-0 bottom-6 flex justify-center">
               <Link
-                href="/candles"
+                href={`/candles?scent=${encodeURIComponent(scent)}`}
                 className="font-[D-DIN] border border-white px-5 py-2 text-sm text-white bg-transparent hover:bg-white hover:text-black transition"
               >
                 {text}
