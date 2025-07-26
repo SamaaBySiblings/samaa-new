@@ -21,7 +21,6 @@ export interface Product {
   isBundle?: boolean;
   stock?: number;
   description?: string;
-  status?: "active" | "inactive";
   createdAt?: string;
 }
 
@@ -61,7 +60,7 @@ export default function CandleStorePage() {
             : "/api/v1/candles";
 
         const response = await axios.get(
-          `${process.env.NEXT_PUBLIC_SERVER_URL}${endpoint}`,
+          `https://api.samaabysiblings.com/backend/${endpoint}`,
           { params }
         );
         if (response.data.success) {
