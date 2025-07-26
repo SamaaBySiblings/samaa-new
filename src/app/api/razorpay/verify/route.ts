@@ -126,8 +126,6 @@ export async function POST(req: Request) {
 
       // Step 4: Save order to DB
       const fullAddress = `${formData.street}, ${formData.city}, ${formData.state}, ${formData.pincode}, ${formData.country}`;
-      const estimatedDelivery = new Date();
-      estimatedDelivery.setDate(estimatedDelivery.getDate() + 5);
 
       currentOrder = await Order.create({
         name: formData.name,
@@ -150,7 +148,6 @@ export async function POST(req: Request) {
         source: "web",
         shipping_status: "not_shipped",
         payment_details: payment,
-        estimated_delivery: estimatedDelivery,
         admin_notes: "⏳ Processing shipping and invoices...",
       });
 
@@ -186,9 +183,7 @@ export async function POST(req: Request) {
     console.log("📋 Current Order Debug:", {
       id: currentOrder._id,
       createdAt: currentOrder.createdAt,
-      estimated_delivery: currentOrder.estimated_delivery,
       hasCreatedAt: !!currentOrder.createdAt,
-      hasEstimatedDelivery: !!currentOrder.estimated_delivery,
     });
 
     // Step 6: Return success response
