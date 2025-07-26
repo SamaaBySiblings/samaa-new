@@ -24,7 +24,7 @@ export function useProduct(slug?: string) {
     setLoading(true);
     setError(false); // reset error state on new fetch
 
-    fetch(`/api/v1candles/${slug}`)
+    fetch(`/api/v1/candles/${slug}`)
       .then(async (res) => {
         if (!res.ok) throw new Error("Product not found");
         const json = await res.json();
