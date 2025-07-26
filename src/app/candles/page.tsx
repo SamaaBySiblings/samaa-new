@@ -56,7 +56,7 @@ export default function CandleStorePage() {
 
         // If no filters, get all candles; else, get filtered candles
         const endpoint =
-          Object.keys(params).length > 0 ? "/api/v1/candles/filter" : "/api/v1candles";
+          Object.keys(params).length > 0 ? "/api/v1/candles/filter" : "/api/v1/candles";
 
         const response = await axios.get(
           `${process.env.NEXT_PUBLIC_SERVER_URL}${endpoint}`,
