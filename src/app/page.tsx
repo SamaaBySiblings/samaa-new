@@ -83,14 +83,14 @@ export default function HomePage() {
           {
             src: "https://res.cloudinary.com/db5c7s6lw/image/upload/v1752922296/sharp-scent_wxdm2e.jpg",
             text: "Sharp Notes",
-            scent: "sharp",
+            category: "sharp",
           },
           {
             src: "https://res.cloudinary.com/db5c7s6lw/image/upload/v1752922297/soft-scent_usjkze.jpg",
             text: "Soft Notes",
-            scent: "soft",
+            category: "soft",
           },
-        ].map(({ src, text, scent }) => (
+        ].map(({ src, text, category }) => (
           <div
             key={src}
             className="relative h-[60vh] sm:h-[70vh] md:h-[75vh] rounded overflow-hidden shadow-md"
@@ -106,7 +106,9 @@ export default function HomePage() {
             <div className="absolute inset-0 bg-black/30" />
             <div className="absolute inset-x-0 bottom-6 flex justify-center">
               <Link
-                href={`/candles/filter?scent=${encodeURIComponent(scent)}`}
+                href={`/candles/filter?category=${encodeURIComponent(
+                  category
+                )}`}
                 className="font-[D-DIN] border border-white px-5 py-2 text-sm text-white bg-transparent hover:bg-white hover:text-black transition"
               >
                 {text}

@@ -1,10 +1,16 @@
 import { useEffect, useState } from "react";
+import axios from "axios";
+
+// This allows easy env management — remember to set it in your `.env` or Vercel env
+const API_BASE_URL =
+  process.env.NEXT_PUBLIC_SERVER_URL ||
+  "https://api.samaabysiblings.com/backend";
 
 export interface CandleProduct {
   slug: string;
   name: string;
   images: string[];
-  tagline: string[]; // already correct
+  tagline: string[];
   price: number;
   description: string;
   notes: string[];
@@ -21,23 +27,23 @@ export function useProduct(slug?: string) {
   useEffect(() => {
     if (!slug) return;
 
-    setLoading(true);
-    setError(false); // reset error state on new fetch
+    const fetchProduct = async () => {
+      setLoading(true);
+      setError(false);
 
-    fetch(`/api/v1/candles/${slug}`)
-      .then(async (res) => {
-        if (!res.ok) throw new Error("Product not found");
-        const json = await res.json();
+      try {
+        const response = await axios.get(
+          `${API_BASE_URL}/api/v1/candles/${slug}`
+        );
 
-        if (json.success && json.data) {
-          const data = json.data;
+        if (response.data.success && response.data.data) {
+          const data = response.data.data;
 
-          // Optional: Basic validation/fallbacks
           const safeProduct: CandleProduct = {
             slug: data.slug,
             name: data.name,
             images: Array.isArray(data.images) ? data.images : [],
-            tagline: Array.isArray(data.tagline) ? data.tagline : [],
+            tagline: Array.isArray(data.taglines) ? data.taglines : [],
             price: typeof data.price === "number" ? data.price : 0,
             description:
               typeof data.description === "string" ? data.description : "",
@@ -46,16 +52,21 @@ export function useProduct(slug?: string) {
             mood: typeof data.mood === "string" ? data.mood : "",
             isBundle: !!data.isBundle,
           };
+
           setProduct(safeProduct);
         } else {
-          throw new Error("Invalid data format");
+          throw new Error("Invalid product data format");
         }
-      })
-      .catch(() => {
+      } catch (err) {
+        console.error("Error fetching product:", err);
         setError(true);
         setProduct(null);
-      })
-      .finally(() => setLoading(false));
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchProduct();
   }, [slug]);
 
   return { product, loading, error };
