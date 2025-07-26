@@ -4,6 +4,7 @@ import { useEffect, useState, useRef } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import toast from "react-hot-toast";
+import axios from "axios";
 import { useCartStore } from "@/store/cart";
 import { useCurrencyStore } from "@/store/currency";
 import { convertPrice, getCurrencySymbol } from "@/lib/currency";
@@ -42,14 +43,27 @@ export default function CandleStorePage() {
 
   const filterRef = useRef<HTMLDivElement>(null);
 
-  // Fetch products on mount
+  // Fetch products on mount or when filters change
   useEffect(() => {
     const fetchProducts = async () => {
+      setLoading(true);
       try {
-        const res = await fetch("/api/products");
-        const json = await res.json();
-        if (json.success) {
-          setProducts(json.data);
+        // Build query params for filters
+        const params: Record<string, string> = {};
+        if (selectedScents.length) params.scent = selectedScents.join(",");
+        if (selectedCategories.length)
+          params.category = selectedCategories.join(",");
+
+        // If no filters, get all candles; else, get filtered candles
+        const endpoint =
+          Object.keys(params).length > 0 ? "/candles/filter" : "/candles";
+
+        const response = await axios.get(
+          `${process.env.NEXT_PUBLIC_SERVER_URL}${endpoint}`,
+          { params }
+        );
+        if (response.data.success) {
+          setProducts(response.data.data);
         } else {
           console.error("Failed to load products");
         }
@@ -61,7 +75,7 @@ export default function CandleStorePage() {
     };
 
     fetchProducts();
-  }, []);
+  }, [selectedScents, selectedCategories]);
 
   // Close filter if clicked outside
   useEffect(() => {
@@ -106,21 +120,6 @@ export default function CandleStorePage() {
     setSelectedCategories([]);
   };
 
-  const filteredProducts = products.filter((product) => {
-    if (product.isBundle) return true;
-
-
-    const matchesScent =
-      selectedScents.length === 0 ||
-      selectedScents.includes(product.scent || "");
-
-    const matchesCategory =
-      selectedCategories.length === 0 ||
-      selectedCategories.includes(product.category || "");
-
-    return matchesScent && matchesCategory;
-  });
-
   return (
     <>
       <div className="bg-[#f5f5eb] pt-32 pb-20 px-6 sm:px-12 lg:px-20 relative min-h-screen flex">
@@ -139,8 +138,8 @@ export default function CandleStorePage() {
               Array.from({ length: 6 }).map((_, i) => (
                 <ProductPageSkeleton key={i} />
               ))
-            ) : filteredProducts.length > 0 ? (
-              filteredProducts.map((product) => {
+            ) : products.length > 0 ? (
+              products.map((product) => {
                 return (
                   <div
                     key={product.slug}
