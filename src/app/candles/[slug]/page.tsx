@@ -27,8 +27,7 @@ interface CandlePageProps {
 
 export default function CandlePage({ params }: CandlePageProps) {
   const { slug } = use(params);
- const searchParams = useSearchParams();
- const scentFromQuery = searchParams.getAll("scent");
+  const searchParams = useSearchParams();
   const { product, loading, error } = useProduct(slug);
   const addToCart = useCartStore((s) => s.addToCart);
   const currency = useCurrencyStore((s) => s.currency);
@@ -49,18 +48,17 @@ export default function CandlePage({ params }: CandlePageProps) {
   const [showMood, setShowMood] = useState(false);
 
   // When query param changes, update selectedScents filter
- useEffect(() => {
-   if (typeof scentFromQuery === "string") {
-     setSelectedScents([scentFromQuery]);
-   } else if (Array.isArray(scentFromQuery)) {
-     setSelectedScents(scentFromQuery);
-   } else {
-     setSelectedScents([]);
-   }
- }, [scentFromQuery]);
+  useEffect(() => {
+    const scents = searchParams.getAll("scent");
+    if (scents.length > 0) {
+      setSelectedScents(scents);
+    } else {
+      setSelectedScents([]);
+    }
+  }, [searchParams]);
 
   useEffect(() => {
-    if (!product) return;
+    if (!product || !product.images || product.images.length === 0) return;
 
     const interval = setInterval(() => {
       setActiveImage((prev) =>
@@ -127,11 +125,28 @@ export default function CandlePage({ params }: CandlePageProps) {
 
   // Format description into 3 paragraphs by splitting sentences
   const formatDescription = (text: string) => {
-    const sentences = text.split(". ").map((s) => s.trim());
-    const para1 = sentences.slice(0, 3).join(". ") + ".";
-    const para2 = sentences.slice(3, 6).join(". ") + ".";
-    const para3 = sentences.slice(6).join(".");
-    return [para1, para2, para3];
+    const sentences = text
+      .split(". ")
+      .map((s) => s.trim())
+      .filter((s) => s);
+    if (sentences.length === 0) return ["", "", ""];
+
+    const totalSentences = sentences.length;
+    const sentencesPerPara = Math.ceil(totalSentences / 3);
+
+    const para1 =
+      sentences.slice(0, sentencesPerPara).join(". ") +
+      (sentences.slice(0, sentencesPerPara).length > 0 ? "." : "");
+    const para2 =
+      sentences.slice(sentencesPerPara, sentencesPerPara * 2).join(". ") +
+      (sentences.slice(sentencesPerPara, sentencesPerPara * 2).length > 0
+        ? "."
+        : "");
+    const para3 =
+      sentences.slice(sentencesPerPara * 2).join(". ") +
+      (sentences.slice(sentencesPerPara * 2).length > 0 ? "." : "");
+
+    return [para1, para2, para3].filter((p) => p.trim() !== ".");
   };
 
   const paragraphs = formatDescription(product.description);
@@ -360,12 +375,14 @@ export default function CandlePage({ params }: CandlePageProps) {
             }}
             onClick={() => openModal(activeImage)}
           >
-            <Image
-              src={product.images[activeImage]}
-              alt={`${product.name} image ${activeImage + 1}`}
-              fill
-              className="object-cover"
-            />
+            {product.images && product.images.length > 0 && (
+              <Image
+                src={product.images[activeImage]}
+                alt={`${product.name} image ${activeImage + 1}`}
+                fill
+                className="object-cover"
+              />
+            )}
 
             {/* Vertical Dot Navigation on Right */}
             <div className="absolute top-1/2 right-2 -translate-y-1/2 flex flex-col gap-2">
@@ -390,7 +407,7 @@ export default function CandlePage({ params }: CandlePageProps) {
       </div>
 
       {/* Modal */}
-      {modalOpen && (
+      {modalOpen && product.images && product.images.length > 0 && (
         <div
           className="fixed inset-0 z-50 flex items-center justify-center bg-white/30 bg-opacity-70"
           onClick={() => setModalOpen(false)}
@@ -443,4 +460,3 @@ export default function CandlePage({ params }: CandlePageProps) {
     </>
   );
 }
-
