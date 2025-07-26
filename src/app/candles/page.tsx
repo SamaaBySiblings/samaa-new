@@ -54,11 +54,9 @@ export default function CandleStorePage() {
         if (selectedCategories.length)
           params.category = selectedCategories.join(",");
 
-        // Fixed: Updated endpoint to match server routes
+        // If no filters, get all candles; else, get filtered candles
         const endpoint =
-          Object.keys(params).length > 0
-            ? "/api/candles/filter"
-            : "/api/candles";
+          Object.keys(params).length > 0 ? "/api/v1/candles/filter" : "/api/v1candles";
 
         const response = await axios.get(
           `${process.env.NEXT_PUBLIC_SERVER_URL}${endpoint}`,
@@ -252,7 +250,7 @@ export default function CandleStorePage() {
 
         <div className="p-4 overflow-y-auto h-[calc(100%-64px)] space-y-6">
           <div>
-            <h4 className="font-semibold font-[D-DIN] mb-2">by Scent</h4>
+            <h4 className="font-semibold font-[D-DIN] mb-2"> by Scent</h4>
             <div className="flex flex-col gap-2">
               {["morga", "sandalwood", "lemon grass", "jasmine"].map(
                 (scent) => {
@@ -261,7 +259,7 @@ export default function CandleStorePage() {
                     <div
                       key={scent}
                       onClick={() => toggleFilterScent(scent)}
-                      className={`cursor-pointer font-[D-DIN] text-sm transition-colors ${
+                      className={`cursor-pointer font-[D-DIN] text-sm  transition-colors ${
                         isSelected
                           ? "text-black font-semibold decoration-black decoration-2"
                           : "text-gray-700 decoration-gray-400 decoration-1 hover:decoration-black"
@@ -275,29 +273,27 @@ export default function CandleStorePage() {
             </div>
           </div>
 
-          <div>
-            <h4 className="font-semibold font-[D-DIN] mb-2">by Category</h4>
-            <div className="flex flex-col gap-2">
-              {["soft", "sharp"].map((cat) => {
-                const isSelected = selectedCategories.includes(cat);
-                return (
-                  <div
-                    key={cat}
-                    onClick={() => toggleFilterCategory(cat)}
-                    className={`cursor-pointer font-[D-DIN] text-sm decoration-1 ${
-                      isSelected ? "font-semibold text-black" : "text-gray-700"
-                    }`}
-                  >
-                    {cat}
-                  </div>
-                );
-              })}
-            </div>
+          <h4 className="font-semibold font-[D-DIN] mb-2">by Category</h4>
+          <div className="flex flex-col gap-2">
+            {["soft", "sharp"].map((cat) => {
+              const isSelected = selectedCategories.includes(cat);
+              return (
+                <div
+                  key={cat}
+                  onClick={() => toggleFilterCategory(cat)}
+                  className={`cursor-pointer text-sm decoration-1 ${
+                    isSelected ? "font-semibold text-black" : "text-gray-700"
+                  }`}
+                >
+                  {cat}
+                </div>
+              );
+            })}
           </div>
 
           <button
             onClick={clearFilters}
-            className="mt-6 w-full bg-black text-white font-[D-DIN] uppercase py-4 hover:bg-[#323232] transition text-xs"
+            className="mt-95 w-full bg-black text-white font-[D-DIN] uppercase py-4  hover:bg-[#323232] transition text-xs"
           >
             Clear Filters
           </button>
