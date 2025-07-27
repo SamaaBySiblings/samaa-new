@@ -174,7 +174,7 @@ export default function InternationalPage() {
             )}
             <button
               type="submit"
-              className="w-full px-8 py-4 bg-white font-[D-DIN]  text-xs text-black  transition-colors hover:bg-black hover:text-white"
+              className="w-full px-8 py-4 bg-white font-[D-DIN]  text-xs text-[#262626]  transition-colors hover:bg-black hover:text-white"
             >
               SUBMIT REQUEST
             </button>

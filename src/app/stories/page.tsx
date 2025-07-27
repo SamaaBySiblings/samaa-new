@@ -70,7 +70,7 @@ export default function StoriesPage() {
                   className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition"
                   style={{ backgroundColor: hoverColors[idx] }}
                 >
-                  <h2 className="font-[D-DIN] text-xs uppercase tracking-widest px-2 text-black text-center">
+                  <h2 className="font-[D-DIN] text-xs uppercase tracking-widest px-2 text-[#262626] text-center">
                     {post.title}
                   </h2>
                 </div>

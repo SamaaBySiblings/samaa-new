@@ -88,7 +88,7 @@ export default function HiringPage() {
 
       {/* Center Text */}
       <div className="text-center mb-15">
-        <h2 className="font-[TANTanglon] text-lg md:text-xl font-bold text-black uppercase tracking-wider">
+        <h2 className="font-[TANTanglon] text-lg md:text-xl font-bold text-[#262626] uppercase tracking-wider">
           Come Create
         </h2>
       </div>
@@ -161,7 +161,7 @@ export default function HiringPage() {
       </div>
 
       {/* Footer */}
-      <div className="font-[D-DIN] text-center mt-16 text-xs text-black">
+      <div className="font-[D-DIN] text-center mt-16 text-xs text-[#262626]">
         <span className="capitalize">if</span> you have a great idea:{" "}
         <a
           href="mailto:careers@samaabysiblings.com"

@@ -3,7 +3,7 @@ import Link from "next/link";
 
 export default function HomePage() {
   return (
-    <div className="bg-[var(--brand-light)] text-black font-light">
+    <div className="bg-[var(--brand-light)] text-[#262626] font-light">
       {/* Hero Section - Fullscreen Banner */}
       <section className="relative w-full h-screen overflow-hidden">
         <Image
@@ -13,7 +13,7 @@ export default function HomePage() {
           className="object-cover"
         />
         <div className="absolute inset-0 flex items-center justify-center text-center px-4">
-          <h1 className="text-3xl md:text-3xl font-semibold font-[TANTanglon] tracking-widest text-black animate-fade-up">
+          <h1 className="text-3xl md:text-3xl font-semibold font-[TANTanglon] tracking-widest text-[#262626] animate-fade-up">
             Light Love Heritage
           </h1>
         </div>
@@ -21,7 +21,7 @@ export default function HomePage() {
 
       {/* Text below Hero */}
       <div
-        className="text-center font-[D-DIN] px-6 lowercase py-10 text-sm md:text-base font-light leading-relaxed text-black"
+        className="text-center font-[D-DIN] px-6 lowercase py-10 text-sm md:text-base font-light leading-relaxed text-[#262626]"
         style={{ backgroundColor: "#f5f5eb" }}
       >
         “<span className="capitalize">The</span> hum Of A 16Th-century loom.{" "}
@@ -58,7 +58,7 @@ export default function HomePage() {
 
       {/* Text below Community */}
       <div
-        className="font-[D-DIN] text-center lowercase px-6 py-10 text-sm md:text-base font-light leading-relaxed text-black whitespace-pre-line"
+        className="font-[D-DIN] text-center lowercase px-6 py-10 text-sm md:text-base font-light leading-relaxed text-[#262626] whitespace-pre-line"
         style={{ backgroundColor: "#f5f5eb" }}
       >
         “<span className="capitalize">Share</span>{" "}
@@ -105,7 +105,7 @@ export default function HomePage() {
             <div className="absolute inset-x-0 bottom-6 flex justify-center">
               <Link
                 href="https://samaabysiblings.com/candles"
-                className="font-[D-DIN] border border-white px-5 py-2 text-sm text-white bg-transparent hover:bg-white hover:text-black transition"
+                className="font-[D-DIN] border border-white px-5 py-2 text-sm text-white bg-transparent hover:bg-white hover:text-[#262626] transition"
               >
                 {text}
               </Link>
@@ -136,7 +136,7 @@ export default function HomePage() {
 
       {/* Text below Soy */}
       <div
-        className="font-[D-DIN] text-center lowercase px-10 py-10 text-sm md:text-base font-light leading-relaxed text-black"
+        className="font-[D-DIN] text-center lowercase px-10 py-10 text-sm md:text-base font-light leading-relaxed text-[#262626]"
         style={{ backgroundColor: "#f5f5eb" }}
       >
         “Soy wax has emerged as the gold standard for those who crave not only

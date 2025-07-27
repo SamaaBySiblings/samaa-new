@@ -1,10 +1,11 @@
 // app/about/page.tsx
 import React from "react";
 import Image from "next/image";
+import Link from "next/link";
 
 const AboutPage: React.FC = () => {
   return (
-    <div className="bg-[#f5f5eb] text-black">
+    <div className="bg-[#f5f5eb] text-[#262626]">
       {/* Top hero image */}
       <div className="pt-24 pb-10 flex justify-center px-4">
         <Image
@@ -392,7 +393,9 @@ const AboutPage: React.FC = () => {
               </p>
 
               <p className="pt-4 underline italic font-[D-DIN]">
-                Come as You Are
+                <Link href="https://substack.com/@samaacircle">
+                  Come as You Are
+                </Link>
               </p>
             </div>
           </div>

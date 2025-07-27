@@ -254,7 +254,7 @@ export default function CandleStorePage() {
                       onClick={() => toggleFilterScent(scent)}
                       className={`cursor-pointer font-[D-DIN] text-sm transition-colors ${
                         isSelected
-                          ? "text-black font-semibold decoration-black decoration-2"
+                          ? "text-[#262626] font-semibold decoration-black decoration-2"
                           : "text-gray-700 decoration-gray-400 decoration-1 hover:decoration-black"
                       }`}
                     >
@@ -275,7 +275,7 @@ export default function CandleStorePage() {
                   key={cat}
                   onClick={() => toggleFilterCategory(cat)}
                   className={`cursor-pointer text-sm decoration-1 ${
-                    isSelected ? "font-semibold text-black" : "text-gray-700"
+                    isSelected ? "font-semibold text-[#262626]" : "text-gray-700"
                   }`}
                 >
                   {cat}

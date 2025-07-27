@@ -109,7 +109,7 @@ export default function Header() {
               isOpen ? "opacity-0 pointer-events-none" : "opacity-100"
             }`}
           >
-            <h1 className="text-4xl md:text-4xl text-black tracking-tight font-[TANTanglon]">
+            <h1 className="text-4xl md:text-4xl text-[#262626] tracking-tight font-[TANTanglon]">
               SAMAA
             </h1>
           </Link>
@@ -141,7 +141,7 @@ export default function Header() {
         </div>
 
         {/* Desktop Nav */}
-        <nav className="font-[D-DIN] mt-0 text-black hidden md:flex gap-12 text-sm justify-center max-w-6xl mx-auto">
+        <nav className="font-[D-DIN] mt-0 text-[#262626] hidden md:flex gap-12 text-sm justify-center max-w-6xl mx-auto">
           <Link href="/candles">CANDLES</Link>
           <Link href="/luxury">LUXURY</Link>
           <Link href="/stories">STORIES</Link>

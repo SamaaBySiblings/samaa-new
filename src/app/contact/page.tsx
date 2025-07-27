@@ -74,7 +74,7 @@ export default function ContactPage() {
             <h3 className="text-sm text-[#4d272e] font-[D-DIN]">
               Email Us:{" "}
               <a
-                href="mailto:info@samaabysiblings.com"
+                href="mailto:support@samaabysiblings.com"
                 className="underline font-normal text-sm font-[D-DIN]"
               >
                 info@samaabysiblings.com

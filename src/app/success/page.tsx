@@ -56,7 +56,7 @@ export default function SuccessPage() {
           />
         </div>
 
-        <h1 className="text-4xl font-bold mb-4 text-black animate-fade-in">
+        <h1 className="text-4xl font-bold mb-4 text-[#262626] animate-fade-in">
           Payment Successful!
         </h1>
 

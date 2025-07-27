@@ -180,11 +180,15 @@ export default function CheckoutPage() {
 
           <h2 className="text-lg font-semibold mt-6">Shipping Address</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            {["street", "pincode", "city", "state", "country"].map((field) => (
+            {["street", "city", "state", "pincode", "country"].map((field) => (
               <input
                 key={field}
                 name={field}
-                placeholder={field[0].toUpperCase() + field.slice(1)}
+                placeholder={
+                  field === "street"
+                    ? "Flat / Door / Building Name"
+                    : field[0].toUpperCase() + field.slice(1)
+                }
                 value={form[field as keyof FormData]}
                 onChange={handleChange}
                 className="w-full border px-4 py-2 text-sm"
@@ -196,7 +200,7 @@ export default function CheckoutPage() {
             <button
               onClick={handlePayment}
               disabled={loading}
-              className={`bg-black text-white px-4 py-2 text-sm rounded transition duration-200 ${
+              className={`bg-black text-white px-4 py-2 text-sm transition duration-200 ${
                 loading ? "opacity-50 cursor-not-allowed" : "hover:bg-gray-800"
               }`}
             >
