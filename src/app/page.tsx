@@ -104,7 +104,7 @@ export default function HomePage() {
             <div className="absolute inset-0 bg-black/30" />
             <div className="absolute inset-x-0 bottom-6 flex justify-center">
               <Link
-                href="https://samaabysiblings.com/candles"
+                href={`/candles?category=${category}`}
                 className="font-[D-DIN] border border-white px-5 py-2 text-sm text-white bg-transparent hover:bg-white hover:text-[#262626] transition"
               >
                 {text}

@@ -5,6 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 import toast from "react-hot-toast";
 import axios from "axios";
+import { useSearchParams } from "next/navigation";
 import { useCartStore } from "@/store/cart";
 import { useCurrencyStore } from "@/store/currency";
 import { convertPrice, getCurrencySymbol } from "@/lib/currency";
@@ -41,6 +42,25 @@ export default function CandleStorePage() {
   const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
 
   const filterRef = useRef<HTMLDivElement>(null);
+
+  const searchParams = useSearchParams();
+
+
+ useEffect(() => {
+   const category = searchParams.get("category");
+   const scent = searchParams.get("scent");
+
+   if (category) {
+     setSelectedCategories([category]);
+   }
+
+   if (scent) {
+     setSelectedScents([scent]);
+   }
+ }, [searchParams]);
+
+
+
 
   useEffect(() => {
     const fetchProducts = async () => {
