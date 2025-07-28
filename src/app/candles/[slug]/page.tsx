@@ -414,6 +414,16 @@ export default function CandlePage({ params }: CandlePageProps) {
           className="fixed inset-0 z-50 bg-white/80 bg-opacity-75 flex items-center justify-center"
           onClick={() => setModalOpen(false)}
         >
+          {/* Close button - positioned at top-right of modal viewport */}
+          <button
+            onClick={() => setModalOpen(false)}
+            className="absolute top-6 right-6 bg-transparent hover:bg-transparent text-black text-3xl font-bold  p-2 transition z-50"
+            aria-label="Close modal"
+          >
+            &times;
+          </button>
+
+          {/* Modal content */}
           <div
             className="relative max-w-3xl w-full h-[80vh] cursor-pointer"
             onClick={(e) => e.stopPropagation()}
@@ -424,12 +434,7 @@ export default function CandlePage({ params }: CandlePageProps) {
               fill
               className="object-contain"
             />
-            <button
-              onClick={() => setModalOpen(false)}
-              className="absolute top-4 right-4 text-black text-3xl font-bold"
-            >
-              &times;
-            </button>
+
             {/* Optional navigation buttons */}
             {product.images.length > 1 && (
               <>
@@ -440,10 +445,9 @@ export default function CandlePage({ params }: CandlePageProps) {
                       prev === 0 ? product.images.length - 1 : prev - 1
                     )
                   }
-                  className="fixed left-4 md:left-10 top-1/2 -translate-y-1/2 z-50
-                 bg-white/70 text-black text-5xl 
-                 border border-black px-4 py-2 
-                 shadow-lg hover:bg-white transition-all duration-200"
+                  className="absolute left-[-210px] top-1/2 -translate-y-1/2 z-50
+              bg-white/90 text-black text-4xl border border-black px-3 py-1 
+               shadow hover:bg-white transition-all"
                   aria-label="Previous image"
                 >
                   ‹
@@ -456,10 +460,9 @@ export default function CandlePage({ params }: CandlePageProps) {
                       prev === product.images.length - 1 ? 0 : prev + 1
                     )
                   }
-                  className="fixed right-4 md:right-10 top-1/2 -translate-y-1/2 z-50
-                 bg-white/70 text-black text-5xl 
-                 border border-black px-4 py-2 
-                 shadow-lg hover:bg-white transition-all duration-200"
+                  className="absolute right-[-200px] top-1/2 -translate-y-1/2 z-50
+              bg-gray-50 text-black text-4xl border border-black px-3 py-1 
+               shadow hover:bg-white transition-all"
                   aria-label="Next image"
                 >
                   ›
