@@ -436,6 +436,67 @@ export default function CandlePage({ params }: CandlePageProps) {
           </div>
         </div>
       )}
+      {/* Image Modal */}
+      {modalOpen && (
+        <div
+          className="fixed inset-0 z-50 bg-white/80 bg-opacity-75 flex items-center justify-center"
+          onClick={() => setModalOpen(false)}
+        >
+          <div
+            className="relative max-w-3xl w-full h-[80vh] cursor-pointer"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <Image
+              src={product.images[modalImageIndex]}
+              alt={`Modal view - ${product.name}`}
+              fill
+              className="object-contain"
+            />
+            <button
+              onClick={() => setModalOpen(false)}
+              className="absolute top-4 right-4 text-black text-3xl font-bold"
+            >
+              &times;
+            </button>
+            {/* Optional navigation buttons */}
+            {product.images.length > 1 && (
+              <>
+                {/* Left Arrow */}
+                <button
+                  onClick={() =>
+                    setModalImageIndex((prev) =>
+                      prev === 0 ? product.images.length - 1 : prev - 1
+                    )
+                  }
+                  className="fixed left-4 md:left-10 top-1/2 -translate-y-1/2 z-50
+                 bg-white/70 text-black text-5xl 
+                 border border-black px-4 py-2 
+                 shadow-lg hover:bg-white transition-all duration-200"
+                  aria-label="Previous image"
+                >
+                  ‹
+                </button>
+
+                {/* Right Arrow */}
+                <button
+                  onClick={() =>
+                    setModalImageIndex((prev) =>
+                      prev === product.images.length - 1 ? 0 : prev + 1
+                    )
+                  }
+                  className="fixed right-4 md:right-10 top-1/2 -translate-y-1/2 z-50
+                 bg-white/70 text-black text-5xl 
+                 border border-black px-4 py-2 
+                 shadow-lg hover:bg-white transition-all duration-200"
+                  aria-label="Next image"
+                >
+                  ›
+                </button>
+              </>
+            )}
+          </div>
+        </div>
+      )}
     </>
   );
 }
