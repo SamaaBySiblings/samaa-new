@@ -149,7 +149,7 @@ export default function HomePage() {
       {/* Logo after Soy Section */}
       <div className="flex justify-center mt-2 mb-6">
         <Image
-          src={`https://res.cloudinary.com/db5c7s6lw/image/upload/v1752922295/samaa_logo_down_pc9wx4.png`}
+          src={`https://res.cloudinary.com/db5c7s6lw/image/upload/v1753737255/logo_ye0qyk.png`}
           alt="SAMAA Logo"
           width={35} // adjust width as needed
           height={35} // adjust height as needed

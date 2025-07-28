@@ -11,7 +11,7 @@ const CustomCursor = () => {
   const mouseY = useRef(0);
   const currentX = useRef(0);
   const currentY = useRef(0);
-  const speed = 0.15;
+  const speed = 0.9;
 
   useEffect(() => {
     const handleMouseMove = (e: MouseEvent) => {
@@ -63,7 +63,7 @@ const CustomCursor = () => {
       {/* Default shallow cursor */}
       <img
         ref={cursorRef1}
-        src="https://res.cloudinary.com/db5c7s6lw/image/upload/v1752992612/cursor_iffryp.png"
+        src="https://res.cloudinary.com/db5c7s6lw/image/upload/v1753737255/1_emu3w6.png"
         className="custom-cursor default-cursor"
         alt=""
       />
@@ -71,7 +71,7 @@ const CustomCursor = () => {
       {/* Filled cursor on hover only */}
       <img
         ref={cursorRef2}
-        src="https://res.cloudinary.com/db5c7s6lw/image/upload/v1752991577/filled_fk8nza.png"
+        src="https://res.cloudinary.com/db5c7s6lw/image/upload/v1753737254/2_ona2jy.png"
         className={`custom-cursor filled-cursor ${isHovering ? "show" : ""}`}
         alt=""
       />
