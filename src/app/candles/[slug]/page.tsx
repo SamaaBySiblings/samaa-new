@@ -19,7 +19,7 @@ const bundleOptions = [
 ];
 
 const getBundlePrice = (count: number) =>
-  count === 2 ? 1010 : count === 3 ? 1449 : count === 4 ? 1799 : 0;
+  count === 2 ? 1118 : count === 3 ? 1677 : count === 4 ? 2236 : 0;
 
 interface CandlePageProps {
   params: Promise<{ slug: string }>;
@@ -234,46 +234,33 @@ export default function CandlePage({ params }: CandlePageProps) {
 
             {/* Quantity or Bundle */}
             {isBundle ? (
-              <div>
-                <h3 className="font-medium mb-2 font-[D-DIN]">
-                  Select 2-4 candles
-                </h3>
-                <div className="grid grid-cols-2 gap-2">
-                  {bundleOptions.map((opt) => {
-                    const isChecked = bundleSelection.includes(opt);
-                    const canSelectMore = bundleSelection.length < 4;
+              <div className="grid grid-cols-2 gap-2">
+                {bundleOptions.map((opt) => {
+                  const isChecked = bundleSelection.includes(opt);
+                  const canSelectMore = bundleSelection.length < 4;
 
-                    return (
-                      <label
-                        key={opt}
-                        className={`flex items-center gap-2 px-2 py-1  border text-sm cursor-pointer transition ${
-                          isChecked
-                            ? "bg-black text-white border-black"
-                            : "bg-[#f5f5eb] text-[#262626] hover:bg-gray-100 border-gray-400"
-                        }`}
-                      >
-                        <input
-                          type="checkbox"
-                          checked={isChecked}
-                          onChange={() => {
-                            if (isChecked) {
-                              setBundleSelection(
-                                bundleSelection.filter((i) => i !== opt)
-                              );
-                            } else if (canSelectMore) {
-                              setBundleSelection([...bundleSelection, opt]);
-                            }
-                          }}
-                          className="accent-black cursor-pointer"
-                        />
-                        {opt}
-                      </label>
-                    );
-                  })}
-                </div>
-                <p className="text-xs text-gray-600 font-[D-DIN] mt-1">
-                  Selected: {bundleSelection.length} / 4
-                </p>
+                  return (
+                    <label
+                      key={opt}
+                      className={`flex items-center font-[D-DIN] gap-2 px-2 py-1  border text-sm cursor-pointer transition ${
+                        isChecked
+                          ? "bg-black text-white border-black"
+                          : "bg-[#f5f5eb] text-[#262626] hover:bg-gray-100 border-gray-400"
+                      }`}
+                      onClick={() => {
+                        if (isChecked) {
+                          setBundleSelection(
+                            bundleSelection.filter((i) => i !== opt)
+                          );
+                        } else if (canSelectMore) {
+                          setBundleSelection([...bundleSelection, opt]);
+                        }
+                      }}
+                    >
+                      {opt}
+                    </label>
+                  );
+                })}
               </div>
             ) : (
               <div className="flex items-center gap-2">
@@ -382,7 +369,7 @@ export default function CandlePage({ params }: CandlePageProps) {
             onClick={(e) => e.stopPropagation()}
           >
             <h2 className="text-lg font-[D-DIN] font-semibold mb-4">
-              Select 2–4 Candles
+              Select 2-4 Candles
             </h2>
             <div className="grid grid-cols-1 gap-3">
               {bundleOptions.map((opt) => (
@@ -390,21 +377,6 @@ export default function CandlePage({ params }: CandlePageProps) {
                   key={opt}
                   className="flex items-center space-x-2 text-sm font-[D-DIN]"
                 >
-                  <input
-                    type="checkbox"
-                    checked={tempSelection.includes(opt)}
-                    onChange={(e) => {
-                      if (e.target.checked) {
-                        if (tempSelection.length < 4) {
-                          setTempSelection([...tempSelection, opt]);
-                        }
-                      } else {
-                        setTempSelection(
-                          tempSelection.filter((i) => i !== opt)
-                        );
-                      }
-                    }}
-                  />
                   <span>{opt}</span>
                 </label>
               ))}
