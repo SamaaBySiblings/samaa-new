@@ -200,7 +200,7 @@ export default function CheckoutPage() {
             <button
               onClick={handlePayment}
               disabled={loading}
-              className={`bg-black text-white px-4 py-2 text-sm transition duration-200 ${
+              className={`bg-black text-white px-6 py-4 text-sm transition duration-200 ${
                 loading ? "opacity-50 cursor-not-allowed" : "hover:bg-gray-800"
               }`}
             >
