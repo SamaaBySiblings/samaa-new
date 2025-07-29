@@ -44,6 +44,27 @@ export default function StoryPageClient() {
   if (error) return <p>Error: {error}</p>;
   if (!story) return <p>No story found</p>;
 
+  function toTitleCase(str: string): string {
+    return str.replace(
+      /\w\S*/g,
+      (word) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()
+    );
+  }
+
+  function capitalizeFirstWordOnly(text: string): string {
+    const trimmed = text.trim();
+    const firstSpace = trimmed.indexOf(" ");
+    if (firstSpace === -1)
+      return trimmed.charAt(0).toUpperCase() + trimmed.slice(1).toLowerCase();
+
+    return (
+      trimmed.charAt(0).toUpperCase() +
+      trimmed.slice(1, firstSpace).toLowerCase() +
+      trimmed.slice(firstSpace)
+    );
+  }
+
+
   return (
     <div className="pt-45 px-4 md:px-8 lg:px-16 bg-[var(--brand-light)] text-[var(--brand-dark)]">
       <div className="max-w-3xl mx-auto space-y-12">
@@ -65,7 +86,7 @@ export default function StoryPageClient() {
         <article className="font-[D-DIN] lowercase prose prose-lg mx-auto">
           {story.content.map((block, i) => {
             if (block.type === "paragraph") {
-              return <p key={i}>{block.text}</p>;
+              return <p key={i}>{capitalizeFirstWordOnly(block.text || "")}</p>;
             }
             if (block.type === "image") {
               return (
@@ -84,9 +105,11 @@ export default function StoryPageClient() {
             }
             return null;
           })}
-          <div className="mt-8 text-center">
+          <div className="mt-8 text-center italic">
             <Link
               href="https://substack.com/@samaacircle"
+              target="_blank"
+              rel="noopener noreferrer"
               className="font-[D-DIN] text-sm text-gray-600 hover:text-gray-800 underline"
             >
               -{">"} It's your turn to twist it

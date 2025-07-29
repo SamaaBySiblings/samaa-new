@@ -304,7 +304,7 @@ export default function CandlePage({ params }: CandlePageProps) {
               <hr className="w-full border-t border-gray-800" />
             </div>
             {paragraphs.map((para, idx) => (
-              <p key={idx} className="font-light font-[D-DIN]">
+              <p key={idx} className="font-light font-[D-DIN] lowercase">
                 {para}
               </p>
             ))}
@@ -450,7 +450,7 @@ export default function CandlePage({ params }: CandlePageProps) {
     flex items-center justify-center transition-all hover:bg-black hover:text-white"
                   aria-label="Previous image"
                 >
-                  ‹
+                 {"<"}
                 </button>
 
                 {/* Right Arrow */}
@@ -465,7 +465,7 @@ export default function CandlePage({ params }: CandlePageProps) {
     flex items-center justify-center transition-all hover:bg-black hover:text-white"
                   aria-label="Next image"
                 >
-                  ›
+                  {">"}
                 </button>
               </>
             )}
