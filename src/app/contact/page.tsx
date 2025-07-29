@@ -77,7 +77,7 @@ export default function ContactPage() {
                 href="mailto:support@samaabysiblings.com"
                 className="underline font-normal text-sm font-[D-DIN]"
               >
-                info@samaabysiblings.com
+                support@samaabysiblings.com
               </a>
             </h3>
             <p className="text-xs text-gray-600 mt-5 font-[D-DIN] leading-loose">
