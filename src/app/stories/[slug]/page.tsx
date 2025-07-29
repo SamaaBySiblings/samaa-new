@@ -62,7 +62,7 @@ export default function StoryPageClient() {
           />
         </div>
 
-        <article className="font-[D-DIN] prose prose-lg mx-auto">
+        <article className="font-[D-DIN] lowercase prose prose-lg mx-auto">
           {story.content.map((block, i) => {
             if (block.type === "paragraph") {
               return <p key={i}>{block.text}</p>;
@@ -84,6 +84,14 @@ export default function StoryPageClient() {
             }
             return null;
           })}
+          <div className="mt-8 text-center">
+            <Link
+              href="https://substack.com/@samaacircle"
+              className="font-[D-DIN] text-sm text-gray-600 hover:text-gray-800 underline"
+            >
+              -{">"} It's your turn to twist it
+            </Link>
+          </div>
         </article>
 
         <Link
