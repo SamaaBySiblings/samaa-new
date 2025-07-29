@@ -446,8 +446,8 @@ export default function CandlePage({ params }: CandlePageProps) {
                     )
                   }
                   className="absolute left-[-210px] top-1/2 -translate-y-1/2 z-50
-              bg-white/90 text-black text-4xl border border-black px-3 py-1 
-               shadow hover:bg-white transition-all"
+    bg-transparent text-black text-4xl border border-black w-12 h-12 
+    flex items-center justify-center transition-all hover:bg-black hover:text-white"
                   aria-label="Previous image"
                 >
                   ‹
@@ -461,8 +461,8 @@ export default function CandlePage({ params }: CandlePageProps) {
                     )
                   }
                   className="absolute right-[-200px] top-1/2 -translate-y-1/2 z-50
-              bg-gray-50 text-black text-4xl border border-black px-3 py-1 
-               shadow hover:bg-white transition-all"
+    bg-transparent text-black text-4xl border border-black w-12 h-12 
+    flex items-center justify-center transition-all hover:bg-black hover:text-white"
                   aria-label="Next image"
                 >
                   ›
