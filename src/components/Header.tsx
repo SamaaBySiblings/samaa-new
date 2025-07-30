@@ -109,7 +109,7 @@ export default function Header() {
               isOpen ? "opacity-0 pointer-events-none" : "opacity-100"
             }`}
           >
-            <h1 className="text-3xl md:text-3xl text-[#262626] tracking-tight font-[TANTanglon]">
+            <h1 className="text-2xl md:text-2xl text-[#262626] tracking-tight font-[TANTanglon]">
               SAMAA
             </h1>
           </Link>
