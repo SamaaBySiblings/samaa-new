@@ -122,7 +122,7 @@ export default function Header() {
               aria-label="Open cart"
             >
               <Image
-                src={`https://res.cloudinary.com/db5c7s6lw/image/upload/v1752994713/shopping-cart-icon_dncpuu.png`}
+                src={`https://res.cloudinary.com/db5c7s6lw/image/upload/v1753862359/cart_2_luoo5x.png`}
                 alt="Cart"
                 width={25}
                 height={25}
