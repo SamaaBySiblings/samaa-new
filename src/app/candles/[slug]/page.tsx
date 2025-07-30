@@ -411,21 +411,21 @@ export default function CandlePage({ params }: CandlePageProps) {
       {/* Image Modal */}
       {modalOpen && (
         <div
-          className="fixed inset-0 z-50 bg-white/80 bg-opacity-75 flex items-center justify-center"
+          className="fixed inset-0 z-50 bg-white/90 flex items-center justify-center px-4"
           onClick={() => setModalOpen(false)}
         >
-          {/* Close button - positioned at top-right of modal viewport */}
+          {/* Close button */}
           <button
             onClick={() => setModalOpen(false)}
-            className="absolute top-6 right-6 bg-transparent hover:bg-transparent text-black text-3xl font-bold  p-2 transition z-50"
+            className="absolute top-4 right-4 text-black text-3xl font-bold p-2 z-50"
             aria-label="Close modal"
           >
             &times;
           </button>
 
-          {/* Modal content */}
+          {/* Modal Content */}
           <div
-            className="relative max-w-3xl w-full h-[80vh] cursor-pointer"
+            className="relative w-full max-w-3xl h-[80vh] sm:h-[90vh]"
             onClick={(e) => e.stopPropagation()}
           >
             <Image
@@ -435,7 +435,7 @@ export default function CandlePage({ params }: CandlePageProps) {
               className="object-contain"
             />
 
-            {/* Optional navigation buttons */}
+            {/* Navigation Arrows */}
             {product.images.length > 1 && (
               <>
                 {/* Left Arrow */}
@@ -445,12 +445,12 @@ export default function CandlePage({ params }: CandlePageProps) {
                       prev === 0 ? product.images.length - 1 : prev - 1
                     )
                   }
-                  className="absolute left-[-210px] top-1/2 -translate-y-1/2 z-50
-    bg-transparent text-black text-4xl border border-black w-12 h-12 
-    flex items-center justify-center transition-all hover:bg-black hover:text-white"
+                  className="absolute left-2 top-1/2 -translate-y-1/2 z-50
+            bg-white text-black text-3xl border border-black w-10 h-10 
+            flex items-center justify-center  hover:bg-black hover:text-white"
                   aria-label="Previous image"
                 >
-                 {"<"}
+                  {"<"}
                 </button>
 
                 {/* Right Arrow */}
@@ -460,9 +460,9 @@ export default function CandlePage({ params }: CandlePageProps) {
                       prev === product.images.length - 1 ? 0 : prev + 1
                     )
                   }
-                  className="absolute right-[-200px] top-1/2 -translate-y-1/2 z-50
-    bg-transparent text-black text-4xl border border-black w-12 h-12 
-    flex items-center justify-center transition-all hover:bg-black hover:text-white"
+                  className="absolute right-2 top-1/2 -translate-y-1/2 z-50
+            bg-white text-black text-3xl border border-black w-10 h-10 
+            flex items-center justify-center  hover:bg-black hover:text-white"
                   aria-label="Next image"
                 >
                   {">"}
