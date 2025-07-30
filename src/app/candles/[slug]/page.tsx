@@ -19,7 +19,7 @@ const bundleOptions = [
 ];
 
 const getBundlePrice = (count: number) =>
-  count === 2 ? 1118 : count === 3 ? 1677 : count === 4 ? 2236 : 0;
+  count === 2 ? 1099 : count === 3 ? 1599 : count === 4 ? 1999 : 0;
 
 interface CandlePageProps {
   params: Promise<{ slug: string }>;
