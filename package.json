@@ -28,6 +28,7 @@
     "mongoose": "^8.16.1",
     "next": "15.3.4",
     "next-mdx-remote": "^5.0.0",
+    "nextjs-google-analytics": "^2.3.7",
     "nodemailer": "^7.0.3",
     "razorpay": "^2.9.6",
     "react": "^19.0.0",
