@@ -1,5 +1,13 @@
 import Image from "next/image";
 import Link from "next/link";
+import type { Metadata } from "next";
+
+
+export const metadata: Metadata = {
+  title: "SAMAA - Luxury Soy Wax Candles Rooted in India",
+  description:
+    "Discover handcrafted soy candles by SAMAA—rooted in Indian tradition, designed for modern, mindful luxury around the world.",
+};
 
 export default function HomePage() {
   return (
