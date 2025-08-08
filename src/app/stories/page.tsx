@@ -2,6 +2,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { useState, useEffect } from "react";
+import axios from "axios";
 
 interface Post {
   slug: string;
@@ -9,13 +10,17 @@ interface Post {
   title: string;
 }
 
+const API_BASE_URL =
+  process.env.NEXT_PUBLIC_SERVER_URL ||
+  "https://api.samaabysiblings.com/backend";
+
 export default function StoriesPage() {
   const [posts, setPosts] = useState<Post[]>([]);
 
   useEffect(() => {
-    fetch("/api/stories")
-      .then((res) => res.json())
-      .then(setPosts)
+    axios
+      .get(`${API_BASE_URL}/api/v1/stories/`)
+      .then((response) => setPosts(response.data))
       .catch(console.error);
   }, []);
 

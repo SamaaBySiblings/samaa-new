@@ -4,6 +4,11 @@ import { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { useParams } from "next/navigation";
+import axios from "axios";
+
+const API_BASE_URL =
+  process.env.NEXT_PUBLIC_SERVER_URL ||
+  "https://api.samaabysiblings.com/backend";
 
 interface ContentBlock {
   type: "paragraph" | "image";
@@ -26,17 +31,21 @@ export default function StoryPageClient() {
 
   useEffect(() => {
     if (!slug) return;
+
     setLoading(true);
-    fetch(`/api/stories/${slug}`)
-      .then((res) => {
-        if (!res.ok) throw new Error("Story not found");
-        return res.json();
-      })
-      .then((data) => {
-        setStory(data.data);
+    axios
+      .get(`${API_BASE_URL}/api/v1/stories/${slug}`)
+      .then((response) => {
+        setStory(response.data.data);
         setError(null);
       })
-      .catch((e) => setError(e.message))
+      .catch((error) => {
+        if (error.response && error.response.status === 404) {
+          setError("Story not found");
+        } else {
+          setError(error.message);
+        }
+      })
       .finally(() => setLoading(false));
   }, [slug]);
 
@@ -63,7 +72,6 @@ export default function StoryPageClient() {
       trimmed.slice(firstSpace)
     );
   }
-
 
   return (
     <div className="pt-45 px-4 md:px-8 lg:px-16 bg-[var(--brand-light)] text-[var(--brand-dark)]">

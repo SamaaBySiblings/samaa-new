@@ -2,6 +2,15 @@
 import React from "react";
 import Image from "next/image";
 import Link from "next/link";
+import { Metadata } from "next";
+
+// Metadata for the About page
+
+export const metadata: Metadata = {
+  title: "About SAMAA - Indian Soul, Luxury Craft",
+  description:
+    "Learn the story behind SAMAA—candles inspired by heritage, designed for soulful, sustainable living.",
+};
 
 const AboutPage: React.FC = () => {
   return (

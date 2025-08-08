@@ -1,6 +1,4 @@
 // app/layout.tsx or app/layout.ts
-
-import type { Metadata } from "next";
 import "./globals.css";
 import Footer from "@/components/Footer";
 import { Toaster } from "react-hot-toast";
@@ -12,10 +10,7 @@ import { SpeedInsights } from "@vercel/speed-insights/next";
 import { Analytics } from "@vercel/analytics/next";
 import CustomCursor from "@/components/CustomCursor";
 
-export const metadata: Metadata = {
-  title: "SAMAA | Luxury Candles & Stories",
-  description: "Elegant luxury candles and inspiring stories by SAMAA.",
-};
+
 
 // GTM ID
 const GTM_ID = "GTM-5F66PPD9";
