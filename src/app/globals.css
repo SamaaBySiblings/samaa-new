@@ -141,7 +141,6 @@ body {
   background-color: var(--brand-light);
   color: var(--brand-dark);
   scroll-behavior: smooth;
-  text-transform: uppercase;
 }
 
 @layer utilities {

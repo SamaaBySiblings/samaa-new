@@ -102,15 +102,18 @@ export default function CheckoutPage() {
     }
 
     try {
-      const createOrder = await fetch(`/api/razorpay/create-order`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          amount: totalINR,
-          formData: form,
-          cartItems: cartItems,
-        }),
-      });
+      const createOrder = await fetch(
+        `https://api.samaabysiblings.com/backend/api/v1/payments/create-order`,
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            amount: totalINR,
+            formData: form,
+            cartItems: cartItems,
+          }),
+        }
+      );
 
       const data = await createOrder.json();
       if (!data.success) throw new Error("Failed to create Razorpay order");

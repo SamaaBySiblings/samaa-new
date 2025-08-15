@@ -23,7 +23,7 @@ function ProcessingContent() {
       const parsed = JSON.parse(atob(raw)); // { cartItems, formData, total }
       
       const res = await fetch(
-        `/api/razorpay/verify`,
+        `https://api.samaabysiblings.com/backend/api/v1/payments/verify`,
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },

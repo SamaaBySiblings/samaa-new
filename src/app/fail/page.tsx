@@ -1,15 +1,19 @@
-// app/fail/page.tsx
-import Image from "next/image";
+"use client";
+
 import Link from "next/link";
+import { useEffect } from "react";
 
 export default function FailPage() {
+  useEffect(() => {
+    localStorage.removeItem("samaa_last_order");
+    sessionStorage.removeItem("verify_lock");
+  }, []);
+
   return (
     <div className="min-h-screen flex items-center justify-center bg-[var(--brand-light)] px-6">
       <div className="bg-[#f5f5eb] p-8 rounded shadow max-w-md text-center space-y-5">
-        <Image
-          src={
-            "https://res.cloudinary.com/db5c7s6lw/image/upload/v1752922264/crossmark_hq8vqe.svg"
-          }
+        <img
+          src="https://res.cloudinary.com/db5c7s6lw/image/upload/v1752922264/crossmark_hq8vqe.svg"
           alt="Payment Failed"
           width={64}
           height={64}
