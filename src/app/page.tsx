@@ -144,14 +144,14 @@ export default function HomePage() {
 
       {/* Text below Soy */}
       <div
-        className="font-[D-DIN] text-center lowercase px-10 py-10 text-sm md:text-base font-light leading-relaxed text-[#262626]"
+        className="font-[D-DIN] text-center px-10 py-10 text-sm md:text-base font-light leading-relaxed text-[#262626]"
         style={{ backgroundColor: "#f5f5eb" }}
       >
         “Soy wax has emerged as the gold standard for those who crave not only
         <br />
-        beauty but meaning. A tender offering of the soybean—renewable, humble,
+        Beauty but meaning. A tender offering of the soybean—renewable, humble,
         <br />
-        abundant—pressed into a form that cradles fire.”
+        Abundant—pressed into a form that cradles fire.”
       </div>
 
       {/* Logo after Soy Section */}

@@ -91,7 +91,7 @@ export default function StoryPageClient() {
           />
         </div>
 
-        <article className="font-[D-DIN] lowercase prose prose-lg mx-auto">
+        <article className="font-[D-DIN] prose prose-lg mx-auto">
           {story.content.map((block, i) => {
             if (block.type === "paragraph") {
               return <p key={i}>{capitalizeFirstWordOnly(block.text || "")}</p>;

@@ -304,7 +304,7 @@ export default function CandlePage({ params }: CandlePageProps) {
               <hr className="w-full border-t border-gray-800" />
             </div>
             {paragraphs.map((para, idx) => (
-              <p key={idx} className="font-light font-[D-DIN] lowercase">
+              <p key={idx} className="font-light font-[D-DIN]">
                 {para}
               </p>
             ))}
