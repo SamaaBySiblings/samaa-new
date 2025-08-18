@@ -28,7 +28,6 @@ const AboutPage: React.FC = () => {
           priority
         />
       </div>
-
       {/* Poetic Intro */}
       <div className="max-w-screen-lg mx-auto px-4 sm:px-6 lg:px-8 text-center mb-20">
         <p className="font-[D-DIN] text-xs leading-relaxed">
@@ -46,17 +45,17 @@ const AboutPage: React.FC = () => {
           wandered with art, culture,
         </p>
         <p className="font-[D-DIN] text-xs leading-relaxed">
-          and a weather-beaten journal tucked under their arm. But both of
+          And a weather-beaten journal tucked under their arm. But both of
         </p>
         <p className="font-[D-DIN] text-xs leading-relaxed">
-          us—always—felt the same pull.
+          Us—always—felt the same pull.
         </p>
       </div>
 
-      <section className="max-w-screen-lg mx-auto px-4 sm:px-6 lg:px-8 w-full py-1">
-        <div className="flex flex-col md:flex-row items-center gap-8">
+      <section className="w-full py-1">
+        <div className="flex flex-col md:flex-row justify-center items-center gap-8 max-w-screen-lg mx-auto px-4 sm:px-6 lg:px-8">
           {/* Left: Text */}
-          <div className="md:w-2/3 w-full">
+          <div className="w-full md:w-auto max-w-md text-center md:text-left">
             <p className="font-[D-DIN] text-xs leading-relaxed text-gray-800 font-light">
               A pull to
               <br />
@@ -74,21 +73,22 @@ const AboutPage: React.FC = () => {
             </p>
           </div>
 
-          {/* Right: Smaller Image */}
-          <div className="md:w-1/3 w-full">
+          {/* Right: Image */}
+          <div className="w-full md:w-auto flex justify-center">
             <Image
-              src={
-                "https://res.cloudinary.com/db5c7s6lw/image/upload/v1752922256/client_pic_lb7rqr.jpg"
-              }
+              src="https://res.cloudinary.com/db5c7s6lw/image/upload/v1752922256/client_pic_lb7rqr.jpg"
               alt="Descriptive image"
-              width={700}
-              height={500}
-              className="w-full h-auto object-cover rounded-lg shadow-md"
+              width={245}
+              height={245}
+              className="w-full max-w-xs md:max-w-sm h-auto object-cover rounded-lg shadow-md"
               priority
             />
           </div>
         </div>
+      </section>
 
+      {/* Story Section */}
+      <section className="max-w-screen-lg mx-auto px-4 sm:px-6 lg:px-8 w-full py-1">
         <p className="font-[D-DIN] text-xs leading-relaxed text-gray-800 mt-8 text-center">
           This is our rebellion: to rekindle what the world forgot. Not with
           opulence, but with embers.
@@ -97,11 +97,11 @@ const AboutPage: React.FC = () => {
         <p className="font-[D-DIN] text-xs leading-relaxed text-gray-800 mt-4 text-center">
           Even in the chaos of wedding planning as Naman's background, he was
           always drawn to <br />
-          candles—their gentle flicker, the calm warmth they brought. They
+          Candles—their gentle flicker, the calm warmth they brought. They
           weren't just decor; they <br />
-          turned ordinary spaces into something sacred. That quiet magic stayed
+          Turned ordinary spaces into something sacred. That quiet magic stayed
           with me, and became <br />
-          one of the inspiration for SAMAA Candle."
+          One of the inspiration for SAMAA Candle."
         </p>
 
         {/* Two-picture collage 2x1 */}
@@ -131,9 +131,10 @@ const AboutPage: React.FC = () => {
         <p className="font-[D-DIN] text-xs leading-relaxed text-gray-800 mt-8 text-center">
           SAMAA is not because the world needed another “luxury brand,” but
           because luxury had <br />
-          stopped feeling like anything at all.
+          Stopped feeling like anything at all.
         </p>
       </section>
+
 
       <section className="max-w-screen-lg mx-auto my-16 px-4 sm:px-6 lg:px-8 p-8 bg-[#5B261D] rounded-xl border text-white">
         {/* Top row: heading, subtitle, logo */}
@@ -201,16 +202,16 @@ const AboutPage: React.FC = () => {
               atmosphere of an ancient
             </p>
             <p className="text-center font-[D-DIN]">
-              time, surrounded in those candles, reawakened in
+              Time, surrounded in those candles, reawakened in
             </p>
-            <p className="text-center font-[D-DIN]">the modern world.</p>
+            <p className="text-center font-[D-DIN]">The modern world.</p>
             <p className="text-center font-[D-DIN]">
-              it is the warmth of the soil of india.
+              It is the warmth of the soil of india.
             </p>
             <p className="text-center font-[D-DIN]">
-              it is a life lived not for attention, but with
+              It is a life lived not for attention, but with
             </p>
-            <p className="text-center font-[D-DIN]">intention.</p>
+            <p className="text-center font-[D-DIN]">Intention.</p>
           </div>
         </div>
 
@@ -225,11 +226,11 @@ const AboutPage: React.FC = () => {
             confidence to wear a
           </p>
           <p className="font-[D-DIN]">
-            threadbare shawl because its stitches hum stories of past winters.
+            Threadbare shawl because its stitches hum stories of past winters.
             It's the radical act of
           </p>
           <p className="font-[D-DIN]">
-            slowing down to feel the weight of a candleholder carved by a
+            Slowing down to feel the weight of a candleholder carved by a
             90-year-old's hands.
           </p>
           <p className="font-[D-DIN]">
@@ -242,7 +243,6 @@ const AboutPage: React.FC = () => {
           </p>
         </div>
       </section>
-
       {/* Unweighted 3×2 Pic Collage */}
       <section className="pb-16">
         <div className="mt-11 max-w-screen-lg mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-1">
@@ -308,7 +308,7 @@ const AboutPage: React.FC = () => {
           />
         </div>
 
-        <div className="max-w-screen-md mx-auto mt-8 font-serif lowercase text-gray-800">
+        <div className="max-w-screen-md mx-auto mt-8 font-serif text-gray-800">
           <p className="font-[D-DIN] text-sm leading-relaxed text-center">
             For purity over polish. <br />
             For sustainability not as a selling point, but as an ancestral
@@ -340,13 +340,13 @@ const AboutPage: React.FC = () => {
                 priority
               />
               <div className="bg-[#94562A] py-20 px-20 shadow-sm">
-                <p className="font-[D-DIN] text-sm text-white leading-relaxed lowercase">
+                <p className="font-[D-DIN] text-sm text-white leading-relaxed">
                   Gather Around the Flame: <br />
                   This is not a "brand." It's a circle.
                   <br />
                   Here, you'll share monsoon-season poetry at 2 AM. Trade
                   <br />
-                  secrets for reviving moth-eaten silk saris. Debate whether
+                  Secrets for reviving moth-eaten silk saris. Debate Whether
                   jasmine or marigold makes better midnight company.
                   <br /> Every candle you light becomes a signal fire: "I'm
                   here. remember."
@@ -373,7 +373,7 @@ const AboutPage: React.FC = () => {
 
         {/* “So Tell Us…” section unchanged */}
         <section className="w-full py-16 px-4 bg-[#f5f5eb]">
-          <div className="max-w-3xl mx-auto font-serif text-gray-800 lowercase">
+          <div className="max-w-3xl mx-auto font-serif text-gray-800">
             <h2 className="font-[D-DIN]text-2xl sm:text-3xl font-semibold tracking-wide text-center mb-6">
               So Tell Us…
             </h2>
