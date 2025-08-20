@@ -30,24 +30,24 @@ const AboutPage: React.FC = () => {
       </div>
       {/* Poetic Intro */}
       <div className="max-w-screen-lg mx-auto px-4 sm:px-6 lg:px-8 text-center mb-20">
-        <p className="font-[D-DIN] text-xs leading-relaxed">
+        <p className="font-[D-DIN] text-sm leading-relaxed">
           For the ones who want to feel again. <br />
         </p>
         <br />
-        <p className="font-[D-DIN] text-xs leading-relaxed">
+        <p className="font-[D-DIN] text-sm leading-relaxed">
           There are two of us- siblings Naman and Garima, but not mirrors.
           <br />
           Born into the same soil, shaped by very different winds.
         </p>
         <br />
-        <p className="font-[D-DIN] text-xs leading-relaxed">
+        <p className="font-[D-DIN] text-sm leading-relaxed">
           One of us grew in the wild rhythm of the corporate world. The other
           wandered with art, culture,
         </p>
-        <p className="font-[D-DIN] text-xs leading-relaxed">
+        <p className="font-[D-DIN] text-sm leading-relaxed">
           And a weather-beaten journal tucked under their arm. But both of
         </p>
-        <p className="font-[D-DIN] text-xs leading-relaxed">
+        <p className="font-[D-DIN] text-sm leading-relaxed">
           Us—always—felt the same pull.
         </p>
       </div>
@@ -56,7 +56,7 @@ const AboutPage: React.FC = () => {
         <div className="flex flex-col md:flex-row justify-center items-center gap-8 max-w-screen-lg mx-auto px-4 sm:px-6 lg:px-8">
           {/* Left: Text */}
           <div className="w-full md:w-auto max-w-md text-center md:text-left">
-            <p className="font-[D-DIN] text-xs leading-relaxed text-gray-800 font-light">
+            <p className="font-[D-DIN] text-sm leading-relaxed text-gray-800 font-light">
               A pull to
               <br />
               return. To
@@ -89,12 +89,12 @@ const AboutPage: React.FC = () => {
 
       {/* Story Section */}
       <section className="max-w-screen-lg mx-auto px-4 sm:px-6 lg:px-8 w-full py-1">
-        <p className="font-[D-DIN] text-xs leading-relaxed text-gray-800 mt-8 text-center">
+        <p className="font-[D-DIN] text-sm leading-relaxed text-gray-800 mt-8 text-center">
           This is our rebellion: to rekindle what the world forgot. Not with
           opulence, but with embers.
         </p>
 
-        <p className="font-[D-DIN] text-xs leading-relaxed text-gray-800 mt-4 text-center">
+        <p className="font-[D-DIN] text-sm leading-relaxed text-gray-800 mt-4 text-center">
           Even in the chaos of wedding planning as Naman's background, he was
           always drawn to <br />
           Candles—their gentle flicker, the calm warmth they brought. They
@@ -128,13 +128,12 @@ const AboutPage: React.FC = () => {
           />
         </div>
 
-        <p className="font-[D-DIN] text-xs leading-relaxed text-gray-800 mt-8 text-center">
+        <p className="font-[D-DIN] text-sm leading-relaxed text-gray-800 mt-8 text-center">
           SAMAA is not because the world needed another “luxury brand,” but
           because luxury had <br />
           Stopped feeling like anything at all.
         </p>
       </section>
-
 
       <section className="max-w-screen-lg mx-auto my-16 px-4 sm:px-6 lg:px-8 p-8 bg-[#5B261D] rounded-xl border text-white">
         {/* Top row: heading, subtitle, logo */}
@@ -143,7 +142,7 @@ const AboutPage: React.FC = () => {
             So what is Samaa?
           </h2>
 
-          <p className="font-[D-DIN] text-center italic flex-1 text-xs normal-case">
+          <p className="font-[D-DIN] text-center italic flex-1 text-sm normal-case">
             It's not a product line. It's a love language.
           </p>
 
@@ -163,7 +162,7 @@ const AboutPage: React.FC = () => {
 
         {/* Vintage paragraph */}
         <div
-          className="max-w-xl font-[D-DIN] mx-auto text-center text-xs leading-relaxed space-y-0 mb-14 normal-case"
+          className="max-w-xl font-[D-DIN] mx-auto text-center text-sm leading-relaxed space-y-0 mb-14 normal-case"
           style={{ fontSize: "0.85rem" }}
         >
           <p>
@@ -196,7 +195,7 @@ const AboutPage: React.FC = () => {
           </div>
 
           {/* Paragraph */}
-          <div className="md:w-1/2 w-full text-right max-w-md mx-auto text-xs leading-relaxed space-y-1 normal-case">
+          <div className="md:w-1/2 w-full text-right max-w-md mx-auto text-sm leading-relaxed space-y-1 normal-case">
             <p className="text-center font-[D-DIN]">
               <span className="uppercase font-[D-DIN]">SAMAA</span> is the sheer
               atmosphere of an ancient
@@ -216,7 +215,7 @@ const AboutPage: React.FC = () => {
         </div>
 
         {/* Bottom centered paragraph */}
-        <div className="max-w-3xl mx-auto text-center text-xs leading-relaxed space-y-1 normal-case">
+        <div className="max-w-3xl mx-auto text-center text-sm leading-relaxed space-y-1 normal-case">
           <p>
             <span className="capitalize font-[D-DIN]">luxury</span>, to us, is
             not gold leaf—it's the soil.
@@ -243,67 +242,55 @@ const AboutPage: React.FC = () => {
           </p>
         </div>
       </section>
-      {/* Unweighted 3×2 Pic Collage */}
+      {/* weighted 3×2 Pic Collage */}
       <section className="pb-16">
-        <div className="mt-11 max-w-screen-lg mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-1">
+        <div className="mt-11 max-w-screen-lg mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-3 grid-rows-2 gap-4">
           <Image
-            src={
-              "https://res.cloudinary.com/db5c7s6lw/image/upload/v1752922255/collage1_khgtgy.jpg"
-            }
+            src="https://res.cloudinary.com/db5c7s6lw/image/upload/v1752922255/collage1_khgtgy.jpg"
             alt="Collage 1"
-            width={200}
-            height={150}
-            className="w-full h-auto object-cover"
+            width={600}
+            height={600}
+            className="w-full h-[350px] object-cover -translate-y-2"
             priority
           />
           <Image
-            src={
-              "https://res.cloudinary.com/db5c7s6lw/image/upload/v1752922255/collage2_jp9wpd.jpg"
-            }
+            src="https://res.cloudinary.com/db5c7s6lw/image/upload/v1752922255/collage2_jp9wpd.jpg"
             alt="Collage 2"
-            width={200}
-            height={150}
-            className="w-full h-auto object-cover"
+            width={600}
+            height={600}
+            className="w-full h-[340px] object-cover translate-y-2"
             priority
           />
           <Image
-            src={
-              "https://res.cloudinary.com/db5c7s6lw/image/upload/v1752922256/collage3_ojssra.jpg"
-            }
+            src="https://res.cloudinary.com/db5c7s6lw/image/upload/v1752922256/collage3_ojssra.jpg"
             alt="Collage 3"
-            width={200}
-            height={150}
-            className="w-full h-auto object-cover"
+            width={400}
+            height={300}
+            className="w-full h-[350px] object-cover -translate-y-2"
             priority
           />
           <Image
-            src={
-              "https://res.cloudinary.com/db5c7s6lw/image/upload/v1752922258/collage4_olbvg7.jpg"
-            }
+            src="https://res.cloudinary.com/db5c7s6lw/image/upload/v1752922258/collage4_olbvg7.jpg"
             alt="Collage 4"
-            width={200}
-            height={150}
-            className="w-full h-auto object-cover"
+            width={400}
+            height={300}
+            className="w-full h-[350px] object-cover translate-y-2"
             priority
           />
           <Image
-            src={
-              "https://res.cloudinary.com/db5c7s6lw/image/upload/v1752922259/collage5_dcq2gt.jpg"
-            }
+            src="https://res.cloudinary.com/db5c7s6lw/image/upload/v1752922259/collage5_dcq2gt.jpg"
             alt="Collage 5"
-            width={200}
-            height={150}
-            className="w-full h-auto object-cover"
+            width={400}
+            height={300}
+            className="w-full h-[350px] object-cover -translate-y-2"
             priority
           />
           <Image
-            src={
-              "https://res.cloudinary.com/db5c7s6lw/image/upload/v1752922260/collage6_vzkuug.jpg"
-            }
+            src="https://res.cloudinary.com/db5c7s6lw/image/upload/v1752922260/collage6_vzkuug.jpg"
             alt="Collage 6"
-            width={170}
-            height={150}
-            className="w-full h-auto object-cover"
+            width={400}
+            height={300}
+            className="w-full h-[350px] object-cover translate-y-2"
             priority
           />
         </div>

@@ -10,6 +10,7 @@ import { SpeedInsights } from "@vercel/speed-insights/next";
 import { Analytics } from "@vercel/analytics/next";
 import CustomCursor from "@/components/CustomCursor";
 
+
 // GTM ID
 const GTM_ID = "GTM-5F66PPD9";
 
@@ -49,9 +50,7 @@ export default function RootLayout({
           <ReactQueryProvider>
             <CurrencyProvider>
               <CustomCursor />
-
               {children}
-
               <Toaster position="top-right" />
               <ClientCartWrapper />
             </CurrencyProvider>
