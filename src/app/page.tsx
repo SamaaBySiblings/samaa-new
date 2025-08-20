@@ -22,7 +22,7 @@ export default function HomePage() {
         />
         <div className="absolute inset-0 flex items-center justify-center text-center px-4">
           <h1 className="text-3xl md:text-3xl font-semibold font-[TANTanglon] tracking-widest text-[#262626] animate-fade-up">
-            Light Love Heritage
+            LIGHT LOVE HERITAGE
           </h1>
         </div>
       </section>
