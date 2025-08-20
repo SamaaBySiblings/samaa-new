@@ -1,9 +1,10 @@
 "use client";
-
 import { useEffect, useRef, useState } from "react";
 
 const CustomCursor = () => {
   const [isHovering, setIsHovering] = useState(false);
+  const [isInsideWindow, setIsInsideWindow] = useState(true);
+
   const cursorRef1 = useRef<HTMLImageElement | null>(null);
   const cursorRef2 = useRef<HTMLImageElement | null>(null);
 
@@ -13,66 +14,80 @@ const CustomCursor = () => {
   const currentY = useRef(0);
   const speed = 0.9;
 
-  useEffect(() => {
-    const handleMouseMove = (e: MouseEvent) => {
-      mouseX.current = e.clientX;
-      mouseY.current = e.clientY;
+ useEffect(() => {
+   const handleMouseMove = (e: MouseEvent) => {
+     mouseX.current = e.clientX;
+     mouseY.current = e.clientY;
 
-      const target = e.target as HTMLElement;
+     const target = e.target as HTMLElement;
+     const hovering =
+       target.closest("a") ||
+       target.closest("button") ||
+       target.getAttribute("role") === "button";
 
-      // Check if hovered element is a link, button, or role="button"
-      const hovering =
-        target.closest("a") ||
-        target.closest("button") ||
-        target.getAttribute("role") === "button";
+     setIsHovering(!!hovering);
+     setIsInsideWindow(true);
+   };
 
-      setIsHovering(!!hovering);
-    };
+   const handleMouseOut = (e: MouseEvent) => {
+     // Only hide if cursor truly left the window, not just into a child element
+     if (!e.relatedTarget) {
+       setIsInsideWindow(false);
+     }
+   };
 
-    window.addEventListener("mousemove", handleMouseMove);
+   const handleFocus = () => setIsInsideWindow(true);
+   const handleBlur = () => setIsInsideWindow(false);
 
-    const animate = () => {
-      currentX.current += (mouseX.current - currentX.current) * speed;
-      currentY.current += (mouseY.current - currentY.current) * speed;
+   document.addEventListener("mousemove", handleMouseMove);
+   window.addEventListener("mouseout", handleMouseOut); // improved!
+   window.addEventListener("blur", handleBlur);
+   window.addEventListener("focus", handleFocus);
 
-      const x = currentX.current;
-      const y = currentY.current;
+   const animate = () => {
+     currentX.current += (mouseX.current - currentX.current) * speed;
+     currentY.current += (mouseY.current - currentY.current) * speed;
 
-      if (cursorRef1.current) {
-        cursorRef1.current.style.left = `${x}px`;
-        cursorRef1.current.style.top = `${y}px`;
-      }
+     const x = currentX.current;
+     const y = currentY.current;
 
-      if (cursorRef2.current) {
-        cursorRef2.current.style.left = `${x}px`;
-        cursorRef2.current.style.top = `${y}px`;
-      }
+     if (cursorRef1.current) {
+       cursorRef1.current.style.left = `${x}px`;
+       cursorRef1.current.style.top = `${y}px`;
+     }
 
-      requestAnimationFrame(animate);
-    };
+     if (cursorRef2.current) {
+       cursorRef2.current.style.left = `${x}px`;
+       cursorRef2.current.style.top = `${y}px`;
+     }
 
-    animate();
+     requestAnimationFrame(animate);
+   };
 
-    return () => {
-      window.removeEventListener("mousemove", handleMouseMove);
-    };
-  }, []);
+   animate();
+
+   return () => {
+     document.removeEventListener("mousemove", handleMouseMove);
+     window.removeEventListener("mouseout", handleMouseOut);
+     window.removeEventListener("blur", handleBlur);
+     window.removeEventListener("focus", handleFocus);
+   };
+ }, []);
+
+
 
   return (
     <>
-      {/* Default shallow cursor */}
       <img
         ref={cursorRef1}
         src="https://res.cloudinary.com/db5c7s6lw/image/upload/v1753737255/1_emu3w6.png"
-        className="custom-cursor default-cursor"
+        className={`custom-cursor default-cursor ${isInsideWindow ? "opacity-100" : "opacity-0"}`}
         alt=""
       />
-
-      {/* Filled cursor on hover only */}
       <img
         ref={cursorRef2}
         src="https://res.cloudinary.com/db5c7s6lw/image/upload/v1753737254/2_ona2jy.png"
-        className={`custom-cursor filled-cursor ${isHovering ? "show" : ""}`}
+        className={`custom-cursor filled-cursor ${isHovering && isInsideWindow ? "opacity-100" : "opacity-0"}`}
         alt=""
       />
     </>

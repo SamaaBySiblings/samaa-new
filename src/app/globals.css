@@ -179,7 +179,11 @@ label {
   height: 20px;
   transform: translate(-50%, -50%);
   will-change: transform, opacity;
+  transition: opacity 0.2s ease;
 }
+
+
+
 
 @media (hover: none), (pointer: coarse) {
   .custom-cursor {
@@ -194,7 +198,6 @@ label {
 
 /* Filled circle: only visible on hover */
 .filled-cursor {
-  opacity: 0;
   transition: opacity 0.1s ease;
 }
 

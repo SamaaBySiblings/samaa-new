@@ -4,7 +4,6 @@ import { useCartStore } from "@/store/cart";
 import { useUIStore } from "@/store/ui";
 import Image from "next/image";
 import toast from "react-hot-toast";
-import Link from "next/link";
 import { convertPrice, getCurrencySymbol } from "@/lib/currency"; // adjust the path as needed
 import { useCurrencyStore } from "@/store/currency";
 
