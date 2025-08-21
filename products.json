@@ -1,52 +1,15 @@
 [
   {
-    "_id": { "$oid": "687b89151e99a8828ccc7adf" },
-    "slug": "golden-sandal",
-    "name": "Golden Sandal",
-    "price": 1299,
-    "image": "https://res.cloudinary.com/db5c7s6lw/image/upload/v1752922277/golden-sandal_wdv8oc.jpg",
-    "isBundle": false,
-    "category": "sharp",
-    "taglines": [
-      "240g Soy Candle",
-      "Sandalwood",
-      "Earth-warmed",
-      "Sun-drenched",
-      "Quietly Opulent."
-    ],
-    "scent": "sandalwood",
-    "images": [
-      "https://res.cloudinary.com/db5c7s6lw/image/upload/v1752922279/golden-sandal-1_rtelvc.jpg",
-      "https://res.cloudinary.com/db5c7s6lw/image/upload/v1752922279/golden-sandal-3_rjzrcb.jpg",
-      "https://res.cloudinary.com/db5c7s6lw/image/upload/v1752922278/golden-sandal-2_s3ph9q.jpg"
-    ],
-    "description": "Golden Sandal takes you somewhere slow—somewhere sacred. The air is thick with spice and softened by light. You’ve just stepped barefoot onto warm earth, and the scent rising around you is woodsy, creamy, grounding.\n\nIsn’t just a candle. It’s a ritual. A walk-through memory and myth, where sandalwood glows like gold dust in the air.\n\nPoured by hand into a matte clear glass jar, Golden Sandal uses 100% natural soy wax and an unbleached cotton wick for a clean, long-lasting burn. Designed to accompany you through stillness, story, and the soft unraveling of the day.",
-    "notes": [
-      "Top: Crushed Cardamom, Sun-warmed Skin",
-      "Heart: Indian Sandalwood, Creamy Cedar",
-      "Base: Smoked Vanilla, White Musk"
-    ],
-    "features": [
-      "240g / 8.5oz | Up to 50 hours burn time",
-      "Hand-poured in small batches using 100% soy wax",
-      "Unbleached cotton wick for a clean, even burn",
-      "Reusable tinted glass vessel—wipe clean and repurpose",
-      "Vegan, toxin-free, paraffin-free",
-      "Made to ground, calm, and cocoon your senses"
-    ],
-    "mood": "The golden hour in scent form. A slow, steady flame for grounding rituals, post-yoga stillness, or writing letters to your past self."
-  },
-  {
     "_id": { "$oid": "687b89151e99a8828ccc7ae0" },
     "slug": "gajray-bonds",
     "name": "Gajray Bonds",
-    "price": 1299,
-    "image": "https://res.cloudinary.com/db5c7s6lw/image/upload/v1752922271/gajray-bonds_wuxo86.jpg",
+    "price": 559,
+    "image": "https://res.cloudinary.com/db5c7s6lw/image/upload/v1752922272/gajray-bonds-1_uaf3dr.jpg",
     "isBundle": false,
     "category": "soft",
     "taglines": [
       "240g Soy Candle",
-      "Mogra",
+      "Morga",
       "Dusk-soft",
       "Skin-kiss",
       "Infinite in memory"
@@ -54,8 +17,8 @@
     "scent": "mogra",
     "images": [
       "https://res.cloudinary.com/db5c7s6lw/image/upload/v1752922272/gajray-bonds-1_uaf3dr.jpg",
-      "https://res.cloudinary.com/db5c7s6lw/image/upload/v1752922272/gajray-bonds-2_ogtiek.jpg",
-      "https://res.cloudinary.com/db5c7s6lw/image/upload/v1752922276/gajray-bonds-3_r0zcvd.jpg"
+      "https://res.cloudinary.com/db5c7s6lw/image/upload/v1752922276/gajray-bonds-3_r0zcvd.jpg",
+      "https://res.cloudinary.com/db5c7s6lw/image/upload/v1752922272/gajray-bonds-2_ogtiek.jpg"
     ],
     "description": "Gajray Bonds wraps you in nostalgia and nectar—like the feeling of leaning into someone you love who just came home from a wedding under moonlight. The scent is lush with night-blooming mogra—rich, white, and alive—twined with sheer rosewater and a whisper of vetiver on wet earth.\n\nThis is not just fragrance. It is the memory of silk, bangles, and whispers in the corridor. A garland made of stories.\n\nPoured into a delicate pearl-toned glass jar and finished with an unbleached cotton wick, Gajray Bonds is a soy wax candle that burns clean, slow, and soft—just like the traditions it draws from.",
     "notes": [
@@ -69,26 +32,65 @@
       "Clean-burning cotton wick—no toxins, no parabens",
       "Elegant, reusable glass vessel in opalescent pearl",
       "Inspired by Indian jasmine garlands—Gajra—worn to bind beauty and belonging",
-      "Cruelty-free, paraffin-free, handcrafted with care"
+      "Cruelty-free, paraffin-free, handcrafted with care",
+      "A perfect gift of nostalgia and warmth"
     ],
     "mood": "A dusky courtyard filled with moonlight, anklets, laughter and intimacy. Gajray Bonds was made for evenings of slow dressing, storytelling, or letting your hair down—literally."
+  },
+  {
+    "_id": { "$oid": "687b89151e99a8828ccc7adf" },
+    "slug": "golden-sandal",
+    "name": "Golden Sandal",
+    "price": 559,
+    "image": "https://res.cloudinary.com/db5c7s6lw/image/upload/v1752922279/golden-sandal-3_rjzrcb.jpg",
+    "isBundle": false,
+    "category": "sharp",
+    "taglines": [
+      "240g Soy Candle",
+      "Sandalwood",
+      "Earth-warmed",
+      "Sun-drenched",
+      "Quietly Opulent."
+    ],
+    "scent": "sandalwood",
+    "images": [
+      "https://res.cloudinary.com/db5c7s6lw/image/upload/v1752922279/golden-sandal-3_rjzrcb.jpg",
+      "https://res.cloudinary.com/db5c7s6lw/image/upload/v1752922278/golden-sandal-2_s3ph9q.jpg",
+      "https://res.cloudinary.com/db5c7s6lw/image/upload/v1752922277/golden-sandal_wdv8oc.jpg"
+    ],
+    "description": "Golden Sandal takes you somewhere slow—somewhere sacred. The air is thick with spice and softened by light. You’ve just stepped barefoot onto warm earth, and the scent rising around you is woodsy, creamy, grounding.\n\nIsn’t just a candle. It’s a ritual. A walk-through memory and myth, where sandalwood glows like gold dust in the air.\n\nPoured by hand into a matte clear glass jar, Golden Sandal uses 100% natural soy wax and an unbleached cotton wick for a clean, long-lasting burn. Designed to accompany you through stillness, story, and the soft unraveling of the day.",
+    "notes": [
+      "Top: Crushed Cardamom, Sun-warmed Skin",
+      "Heart: Indian Sandalwood, Creamy Cedar",
+      "Base: Smoked Vanilla, White Musk"
+    ],
+    "features": [
+      "240g / 8.5oz | Up to 50 hours burn time",
+      "Hand-poured in small batches using 100% soy wax",
+      "Unbleached cotton wick for a clean, even burn",
+      "Reusable tinted glass vessel—wipe clean and repurpose",
+      "Vegan, toxin-free, paraffin-free",
+      "Made to ground, calm, and cocoon your senses",
+      "A thoughtful gift for loved ones"
+    ],
+    "mood": "The golden hour in scent form. A slow, steady flame for grounding rituals, post-yoga stillness, or writing letters to your past self."
   },
   {
     "_id": { "$oid": "687b89151e99a8828ccc7ae1" },
     "slug": "lemon-crystals",
     "name": "Lemon Crystals",
-    "price": 1299,
-    "image": "https://res.cloudinary.com/db5c7s6lw/image/upload/v1752922283/lemon-crystals_ti6fpb.jpg",
+    "price": 559,
+    "image": "https://res.cloudinary.com/db5c7s6lw/image/upload/v1752922288/lemon-crystals-3_thsppv.jpg",
     "isBundle": false,
     "category": "sharp",
-    "taglines": ["240g Soy Candle", "Crisp. Electric", "Clean like truth"],
+    "taglines": [" 240g Soy Candle", " Crisp. Electric", "Clean like truth"],
     "scent": "lemon grass",
     "images": [
+      "https://res.cloudinary.com/db5c7s6lw/image/upload/v1752922288/lemon-crystals-3_thsppv.jpg",
       "https://res.cloudinary.com/db5c7s6lw/image/upload/v1752922287/lemon-crystals-1_ojmm23.jpg",
-      "https://res.cloudinary.com/db5c7s6lw/image/upload/v1752922287/lemon-crystals-2_fdqyhg.jpg",
-      "https://res.cloudinary.com/db5c7s6lw/image/upload/v1752922288/lemon-crystals-3_thsppv.jpg"
+      "https://res.cloudinary.com/db5c7s6lw/image/upload/v1752922287/lemon-crystals-2_fdqyhg.jpg"
     ],
-    "description": "Lemon Crystals is not your mellow citrus—zesty, green, and full of momentum. It doesn't whisper in the background. It leads and lights clarity.\n\nThere’s something about this fragrance that clears the static. The moment the scent hits the air, the mind sharpens, the breath deepens. You feel more awake. If “fresh” had a backbone, this would be it. This is not a candle for background mood—it is the mood.\n\nHoused in a polished citron-glass vessel, Lemon Crystals is a soy wax candle designed to wake the air up. Boldly herbal, sharply citrus, with edges like crystal facets—it brings focus, energy, and luminous calm.",
+    "description": "Lemon Crystals is not your mellow citrus—zesty, green, and full of momentum. It doesn’t whisper in the background. It leads and lights clarity.\n\nThere’s something about this fragrance that clears the static. The moment the scent hits the air, the mind sharpens, the breath deepens. You feel more awake. If “fresh” had a backbone, this would be it. This is not a candle for background mood—it is the mood.\n\nHoused in a polished citron-glass vessel, Lemon Crystals is a soy wax candle designed to wake the air up. Boldly herbal, sharply citrus, with edges like crystal facets—it brings focus, energy, and luminous calm.",
     "notes": [
       "Top: Lemongrass, Kaffir Lime, Crushed Mint",
       "Heart: Lemon Verbena, Eucalyptus Leaf",
@@ -100,7 +102,8 @@
       "Hand-poured with an unbleached cotton wick",
       "Sleek glass vessel in translucent citron yellow",
       "Bold lemongrass-forward scent with an herbal backbone",
-      "Clean-burning, cruelty-free, paraffin-free"
+      "Clean-burning, cruelty-free, paraffin-free",
+      "Perfect for gifting or refreshing your home"
     ],
     "mood": "Think kitchen just scrubbed, thoughts just sorted, morning just started. Lemon Crystals doesn’t ask for attention. It commands it—quietly, beautifully, without apology."
   },
@@ -108,8 +111,8 @@
     "_id": { "$oid": "687b89151e99a8828ccc7ae2" },
     "slug": "velvet-pearls",
     "name": "Velvet Pearls",
-    "price": 1299,
-    "image": "https://res.cloudinary.com/db5c7s6lw/image/upload/v1752922310/velvet-pearls_db6hg0.jpg",
+    "price": 559,
+    "image": "https://res.cloudinary.com/db5c7s6lw/image/upload/v1752922308/velvet-pearls-2_l7dwfp.jpg",
     "isBundle": false,
     "category": "soft",
     "taglines": [
@@ -121,8 +124,8 @@
     "scent": "jasmine",
     "images": [
       "https://res.cloudinary.com/db5c7s6lw/image/upload/v1752922308/velvet-pearls-2_l7dwfp.jpg",
-      "https://res.cloudinary.com/db5c7s6lw/image/upload/v1752922307/velvet-pearls-3_wnlcre.jpg",
-      "https://res.cloudinary.com/db5c7s6lw/image/upload/v1752922307/velvet-pearls-1_hhmepi.jpg"
+      "https://res.cloudinary.com/db5c7s6lw/image/upload/v1752922307/velvet-pearls-1_hhmepi.jpg",
+      "https://res.cloudinary.com/db5c7s6lw/image/upload/v1752922310/velvet-pearls_db6hg0.jpg"
     ],
     "description": "Velvet Pearls is jasmine in its purest form—creamy, radiant, and unmistakably feminine. It doesn’t just scent the air. It wraps around you like silk slipping over skin.\n\nThis candle is an ode to moonlit walks, delicate rituals, and the kind of beauty that doesn’t try—it just is. It opens with the narcotic sweetness of Indian Jasmine Sambac, lifted by the airy brightness of neroli and a whisper of white peach.\n\nBeneath that, creamy sandalwood and warm musk cradle the florals in a base that feels like second skin. Velvet Pearls is not loud. It lingers and glows.",
     "notes": [
@@ -136,7 +139,8 @@
       "Triple-scented, clean-burning",
       "Hand-poured into a pearly blush frosted jar",
       "Unbleached cotton wick",
-      "Cruelty-free, phthalate-free"
+      "Cruelty-free, phthalate-free",
+      "Ideal for self-care or a heartfelt gift"
     ],
     "mood": "A handwritten letter on silk paper. A kiss just behind the ear. That moment before a secret is shared. Velvet Pearls doesn’t decorate the room—it elevates it. A scent for slow mornings, soft glances, and stories whispered without words."
   },
@@ -150,9 +154,9 @@
     "category": "bundle",
     "scent": "bundle",
     "images": [
+      "https://res.cloudinary.com/db5c7s6lw/image/upload/v1752922255/bundle_hfhbzd.jpg",
       "https://res.cloudinary.com/db5c7s6lw/image/upload/v1752922257/bundle-1_cejj9i.jpg",
-      "https://res.cloudinary.com/db5c7s6lw/image/upload/v1752922253/bundle-2_gkrh3s.jpg",
-      "https://res.cloudinary.com/db5c7s6lw/image/upload/v1752928339/bundle-3_stbsx5.jpg"
+      "https://res.cloudinary.com/db5c7s6lw/image/upload/v1753806903/bundle2_q1ec9f.jpg"
     ],
     "description": "Some stories are too big for a single flame.\n\nWhether it’s two souls stitched together by time, three wishes whispered into the dark, or four seasons of love lived out loud—this bundle is for the moments that ask for more. More warmth. More meaning.\n\nCurate your own set from our signature candles—each one a love letter in wax.\n\nGolden Sandal: Earthy sandalwood with a golden hush\nGajray Bonds: Intoxicating mogra, soft and ceremonial\nLemon Crystals: Zesty lemongrass, bold and untamed\nVelvet Pearls: Jasmine’s delicate, eternal glow\n\nWrapped in elegance, ready to gift. For birthdays and soulmates. For apologies and beginnings. For no reason at all—except that you love them.",
     "notes": [
@@ -164,7 +168,8 @@
     "features": [
       "Custom bundle of your chosen candles",
       "Gift-ready presentation",
-      "Sustainable and elegant packaging"
+      "Sustainable and elegant packaging",
+      "4 soy candles to create a thoughtful gift set."
     ],
     "mood": "Because the best gifts don’t just light up a room—they leave something glowing behind."
   }

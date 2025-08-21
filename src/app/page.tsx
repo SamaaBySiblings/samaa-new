@@ -159,8 +159,8 @@ export default function HomePage() {
         <Image
           src={`https://res.cloudinary.com/db5c7s6lw/image/upload/v1753737255/logo_ye0qyk.png`}
           alt="SAMAA Logo"
-          width={25} // adjust width as needed
-          height={25} // adjust height as needed
+          width={20} // adjust width as needed
+          height={20} // adjust height as needed
           priority // optional, for faster loading
         />
       </div>
