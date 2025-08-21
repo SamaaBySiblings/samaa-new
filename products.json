@@ -36,7 +36,6 @@
     ],
     "mood": "The golden hour in scent form. A slow, steady flame for grounding rituals, post-yoga stillness, or writing letters to your past self."
   },
-
   {
     "_id": { "$oid": "687b89151e99a8828ccc7ae0" },
     "slug": "gajray-bonds",
@@ -47,7 +46,7 @@
     "category": "soft",
     "taglines": [
       "240g Soy Candle",
-      "Morga",
+      "Mogra",
       "Dusk-soft",
       "Skin-kiss",
       "Infinite in memory"
@@ -64,7 +63,6 @@
       "Heart: Rosewater, Green Tuberose",
       "Base: Vetiver, Rain-drenched Earth, Musk"
     ],
-
     "features": [
       "240g / 8.5oz | Up to 50 hours burn time",
       "Hand-poured with 100% natural soy wax",
@@ -75,7 +73,6 @@
     ],
     "mood": "A dusky courtyard filled with moonlight, anklets, laughter and intimacy. Gajray Bonds was made for evenings of slow dressing, storytelling, or letting your hair down—literally."
   },
-
   {
     "_id": { "$oid": "687b89151e99a8828ccc7ae1" },
     "slug": "lemon-crystals",
@@ -84,14 +81,14 @@
     "image": "https://res.cloudinary.com/db5c7s6lw/image/upload/v1752922283/lemon-crystals_ti6fpb.jpg",
     "isBundle": false,
     "category": "sharp",
-    "taglines": [" 240g Soy Candle", " Crisp. Electric", "Clean like truth"],
+    "taglines": ["240g Soy Candle", "Crisp. Electric", "Clean like truth"],
     "scent": "lemon grass",
     "images": [
       "https://res.cloudinary.com/db5c7s6lw/image/upload/v1752922287/lemon-crystals-1_ojmm23.jpg",
       "https://res.cloudinary.com/db5c7s6lw/image/upload/v1752922287/lemon-crystals-2_fdqyhg.jpg",
       "https://res.cloudinary.com/db5c7s6lw/image/upload/v1752922288/lemon-crystals-3_thsppv.jpg"
     ],
-    "description": "Lemon Crystals is not your mellow citrus—zesty, green, and full of momentum. It doesn’t whisper in the background. It leads and lights clarity.\n\nThere’s something about this fragrance that clears the static. The moment the scent hits the air, the mind sharpens, the breath deepens. You feel more awake. If “fresh” had a backbone, this would be it. This is not a candle for background mood—it is the mood.\n\nHoused in a polished citron-glass vessel, Lemon Crystals is a soy wax candle designed to wake the air up. Boldly herbal, sharply citrus, with edges like crystal facets—it brings focus, energy, and luminous calm.",
+    "description": "Lemon Crystals is not your mellow citrus—zesty, green, and full of momentum. It doesn't whisper in the background. It leads and lights clarity.\n\nThere’s something about this fragrance that clears the static. The moment the scent hits the air, the mind sharpens, the breath deepens. You feel more awake. If “fresh” had a backbone, this would be it. This is not a candle for background mood—it is the mood.\n\nHoused in a polished citron-glass vessel, Lemon Crystals is a soy wax candle designed to wake the air up. Boldly herbal, sharply citrus, with edges like crystal facets—it brings focus, energy, and luminous calm.",
     "notes": [
       "Top: Lemongrass, Kaffir Lime, Crushed Mint",
       "Heart: Lemon Verbena, Eucalyptus Leaf",
