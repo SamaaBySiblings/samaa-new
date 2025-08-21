@@ -44,7 +44,15 @@ export default function RefundPolicyPage() {
             <li>If they have been burned</li>
           </ul>
 
-          <h2 className="font-semibold mt-6">2. Contact</h2>
+          <h2 className="font-semibold mt-6">2. Cancellation Window</h2>
+          <p>
+            We allow a 2.5 hour cancellation window from the time your order is
+            placed. If you change your mind within this period, your payment
+            will be refunded in full. After this window closes, the order is
+            processed and cannot be canceled.
+          </p>
+
+          <h2 className="font-semibold mt-6">3. Contact</h2>
           <p>
             Questions about our refund policy? Reach out to us at{" "}
             <a href="mailto:samaa@samaabysiblings.com" className="underline">
