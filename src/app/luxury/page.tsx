@@ -16,7 +16,7 @@ export default function LuxuryPage() {
         {/* Centered Text */}
         <div className="absolute inset-0 flex items-center justify-center">
           <h1 className="text-white font-[TANTanglon] text-2xl md:text-4xl tracking-wider">
-            coming to shine
+            COMING TO SHINE
           </h1>
         </div>
       </div>

@@ -10,7 +10,7 @@ export const metadata: Metadata = {
     "Learn the story behind SAMAA—candles inspired by heritage, designed for soulful, sustainable living.",
 };
 
-export default function AboutPage () {
+export default function AboutPage() {
   return (
     <div className="bg-[#f5f5eb] text-[#262626]">
       {/* Top hero image */}
