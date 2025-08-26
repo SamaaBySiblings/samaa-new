@@ -53,85 +53,73 @@ export default function StoryPageClient() {
   if (error) return <p>Error: {error}</p>;
   if (!story) return <p>No story found</p>;
 
-  function toTitleCase(str: string): string {
-    return str.replace(
-      /\w\S*/g,
-      (word) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()
-    );
-  }
-
-  function capitalizeFirstWordOnly(text: string): string {
-    const trimmed = text.trim();
-    const firstSpace = trimmed.indexOf(" ");
-    if (firstSpace === -1)
-      return trimmed.charAt(0).toUpperCase() + trimmed.slice(1).toLowerCase();
-
-    return (
-      trimmed.charAt(0).toUpperCase() +
-      trimmed.slice(1, firstSpace).toLowerCase() +
-      trimmed.slice(firstSpace)
-    );
-  }
-
   return (
-    <div className="pt-45 px-4 md:px-8 lg:px-16 bg-[var(--brand-light)] text-[var(--brand-dark)]">
-      <div className="max-w-3xl mx-auto space-y-12">
-        <header className="space-y-4">
-          <h1 className="font-[D-DIN] font-logo uppercase tracking-wide text-4xl md:text-lg leading-tight">
-            {story.title}
-          </h1>
-        </header>
+    <div className="px-4 md:px-8 lg:px-16 py-24 bg-[var(--brand-light)] text-[var(--brand-dark)]">
+      <article className="max-w-3xl mx-auto font-[D-DIN]">
+        {/* Title */}
+        <h1 className="text-4xl md:text-5xl font-bold text-center leading-tight tracking-wide mb-8">
+          {story.title}
+        </h1>
 
-        <div className="relative w-full h-[40vh] md:h-[50vh] lg:h-[60vh] overflow-hidden rounded-xl shadow-lg">
+        {/* Hero Image */}
+        <div className="w-full h-[300px] md:h-[450px] relative mb-12">
           <Image
             src={story.image}
             alt={story.title}
             fill
-            className="object-cover"
+            className="object-cover rounded"
           />
         </div>
 
-        <article className="font-[D-DIN] prose prose-lg mx-auto">
+        {/* Body Content */}
+        <div className="prose prose-lg prose-invert max-w-none space-y-8 text-[var(--brand-dark)]">
           {story.content.map((block, i) => {
             if (block.type === "paragraph") {
-              return <p key={i}>{capitalizeFirstWordOnly(block.text || "")}</p>;
+              return <p key={i}>{block.text}</p>;
             }
+
             if (block.type === "image") {
               return (
                 <div
                   key={i}
-                  className="font-[D-DIN] my-8 relative w-full h-[300px] md:h-[400px] rounded overflow-hidden shadow-lg"
+                  className="relative w-full h-[300px] md:h-[400px] my-8"
                 >
                   <Image
                     src={block.src!}
                     alt={block.alt || ""}
                     fill
-                    className="object-cover"
+                    className="object-cover rounded"
                   />
                 </div>
               );
             }
+
             return null;
           })}
-          <div className="mt-8 text-center italic">
-            <Link
-              href="https://substack.com/@samaacircle"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="font-[D-DIN] text-sm text-gray-600 hover:text-gray-800 underline"
-            >
-              -{">"} It's your turn to twist it
-            </Link>
-          </div>
-        </article>
+        </div>
 
-        <Link
-          href="/stories"
-          className="font-[D-DIN] text-sm text-gray-600 hover:text-gray-800 underline"
-        >
-          ← Back to all stories
-        </Link>
-      </div>
+        {/* CTA */}
+        <div className="mt-12 text-right italic text-sm">
+          <Link
+            href="https://substack.com/@samaacircle"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-gray-600 hover:text-gray-800 underline"
+          >
+            -{">"} It’s your turn to twist it
+          </Link>
+        </div>
+
+        {/* Back Link */}
+        <div className="mt-8">
+          <Link
+            href="/stories"
+            className="text-sm text-gray-600 hover:text-gray-800 underline"
+          >
+            ← Back to all stories
+          </Link>
+        </div>
+      </article>
     </div>
   );
 }

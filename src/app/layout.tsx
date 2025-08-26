@@ -9,7 +9,7 @@ import ClientCartWrapper from "@/components/ClientCartWrapper";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import { Analytics } from "@vercel/analytics/next";
 import CustomCursor from "@/components/CustomCursor";
-
+import ToastProvider from "@/lib/toastConfig";
 
 // GTM ID
 const GTM_ID = "GTM-5F66PPD9";
@@ -50,7 +50,7 @@ export default function RootLayout({
           <ReactQueryProvider>
             <CurrencyProvider>
               <CustomCursor />
-              {children}
+              <ToastProvider>{children}</ToastProvider>
               <Toaster position="top-right" />
               <ClientCartWrapper />
             </CurrencyProvider>
