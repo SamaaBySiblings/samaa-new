@@ -1,6 +1,8 @@
 @import "tailwindcss";
 @import "tw-animate-css";
 
+
+
 @custom-variant dark (&:is(.dark *));
 
 @theme inline {
@@ -133,7 +135,6 @@
   --font-heading: "Glacial Indifference", sans-serif;
   --font-logo: "TAN Angleton", serif;
   --font-body: "D-DIN", serif;
-  --font-script: "Pinyon Script", cursive;
 }
 
 body {
@@ -221,4 +222,19 @@ label {
   font-family: "GlacialIndifference";
   src: url("https://res.cloudinary.com/db5c7s6lw/raw/upload/v1753010669/GlacialIndifference-Regular_s7gd4w.otf");
   font-display: swap;
+}
+
+
+
+@keyframes scroll-text {
+  0% {
+    transform: translateX(100%);
+  }
+  100% {
+    transform: translateX(-100%);
+  }
+}
+
+.animate-scroll-text {
+  animation: scroll-text 15s linear infinite;
 }

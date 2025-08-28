@@ -83,6 +83,14 @@ export default function HomePage() {
         <span className="capitalize">I</span> remember.”
       </div>
 
+      {/* Scrolling line after the quote */}
+      <div className="overflow-hidden whitespace-nowrap bg-[var(--brand-light)] py-4">
+        <p className="inline-block animate-scroll-text text-[#262626] font-[D-Din] font-light text-sm md:text-base">
+          &nbsp; &nbsp; &nbsp; Countdown to Diwali! Exciting products and offers coming soon!! &nbsp;
+          Free Delivery !!! &nbsp; &nbsp; &nbsp;
+        </p>
+      </div>
+
       {/* Section 3: Scent Blocks */}
       <section className="px-4 md:px-8 py-10 md:py-16 grid grid-cols-1 md:grid-cols-2 gap-6">
         {[
