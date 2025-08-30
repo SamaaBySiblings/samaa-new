@@ -128,7 +128,7 @@ export default function CandleStorePageInner({
       quantity: 1,
       image: product.image,
     });
-    toast.success(`Added "${product.name}" to cart`);
+    toast.success(`"${product.name}" to cart`);
   };
 
   const toggleFilterScent = (scent: string) => {

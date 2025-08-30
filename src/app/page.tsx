@@ -19,6 +19,7 @@ export default function HomePage() {
           alt="SAMAA Banner"
           fill
           className="object-cover"
+          priority
         />
         <div className="absolute inset-0 flex items-center justify-center text-center px-4">
           <h1 className="text-3xl md:text-3xl font-semibold font-[TANTanglon] tracking-widest text-[#262626] animate-fade-up">
@@ -48,6 +49,7 @@ export default function HomePage() {
           alt="Community"
           fill
           className="object-cover"
+          priority
         />
         <div className="absolute inset-0 flex items-end justify-center text-white text-center pb-8 px-4">
           <div className="mb-4 animate-fade-up">
@@ -83,12 +85,14 @@ export default function HomePage() {
         <span className="capitalize">I</span> remember.”
       </div>
 
-      {/* Scrolling line after the quote */}
-      <div className="overflow-hidden whitespace-nowrap bg-[var(--brand-light)] py-4">
-        <p className="inline-block animate-scroll-text text-[#262626] font-[D-Din] font-light text-sm md:text-base">
-          &nbsp; &nbsp; &nbsp; Countdown to Diwali! Exciting products and offers coming soon!! &nbsp;
-          Free Delivery !!! &nbsp; &nbsp; &nbsp;
-        </p>
+      <div className="relative overflow-hidden bg-[var(--brand-light)] py-4">
+        <div className="animate-scroll-text flex whitespace-nowrap">
+          <p className="text-[#262626] font-[D-Din] font-light text-3xl md:text-base mr-12">
+            Countdown to Diwali! Exciting products and offers coming soon!! Free
+            Delivery !!!
+          </p>
+          
+        </div>
       </div>
 
       {/* Section 3: Scent Blocks */}
@@ -137,6 +141,7 @@ export default function HomePage() {
           alt="Soy"
           fill
           className="object-cover"
+          priority
         />
         <div className="absolute inset-0 flex items-end justify-center text-center pb-8 px-4">
           <div className="text-white mb-4 animate-fade-up">

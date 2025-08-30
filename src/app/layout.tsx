@@ -51,7 +51,6 @@ export default function RootLayout({
             <CurrencyProvider>
               <CustomCursor />
               <ToastProvider>{children}</ToastProvider>
-              <Toaster position="top-right" />
               <ClientCartWrapper />
             </CurrencyProvider>
           </ReactQueryProvider>
