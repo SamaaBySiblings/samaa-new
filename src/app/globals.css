@@ -134,14 +134,14 @@
 
   --font-heading: "Glacial Indifference", sans-serif;
   --font-logo: "TAN Angleton", serif;
-  --font-body: "D-DIN", serif;
+  --font-body: "D-DIN",serif;
+  --font-cursive: 'Pinyon Script', cursive;
 }
 
 body {
   font-family: var(--font-body);
   background-color: var(--brand-light);
   color: var(--brand-dark);
-  scroll-behavior: smooth;
 }
 
 @layer utilities {
@@ -227,15 +227,36 @@ label {
 
 
 
-@keyframes scroll-text {
+
+
+
+html{
+  scroll-behavior: smooth;
+}
+
+
+@keyframes scroll-ticker {
   0% {
-    transform: translateX(100%);
+    transform: translateX(0%);
   }
   100% {
-    transform: translateX(-100%);
+    transform: translateX(-50%); /* Changed from -50% to work with duplicated content */
   }
 }
 
-.animate-scroll-text {
-  animation: scroll-text 13.5s linear infinite;
+.ticker-track {
+  display: flex;
+  width: max-content;
+  animation: scroll-ticker 5s linear infinite; /* Increased from 5s */
+  white-space: nowrap;
+  will-change: transform; /* Better performance */
+}
+
+.ticker-content {
+  padding-right: 4rem;
+  font-family: var(--font-cursive);
+  font-size: 1.5rem; /* Increased from x-large for consistency */
+  color: #262626;
+  white-space: nowrap;
+  flex-shrink: 0; /* Prevent shrinking */
 }

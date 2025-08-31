@@ -1,7 +1,6 @@
 // app/layout.tsx or app/layout.ts
 import "./globals.css";
 import Footer from "@/components/Footer";
-import { Toaster } from "react-hot-toast";
 import HeaderWrapper from "@/components/HeadWrapper";
 import ReactQueryProvider from "@/utils/providers";
 import { CurrencyProvider } from "@/components/CurrencyProvider";
@@ -10,6 +9,7 @@ import { SpeedInsights } from "@vercel/speed-insights/next";
 import { Analytics } from "@vercel/analytics/next";
 import CustomCursor from "@/components/CustomCursor";
 import ToastProvider from "@/lib/toastConfig";
+
 
 // GTM ID
 const GTM_ID = "GTM-5F66PPD9";

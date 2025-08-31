@@ -1,6 +1,13 @@
 import Image from "next/image";
 import Link from "next/link";
 import type { Metadata } from "next";
+import { Pinyon_Script } from "next/font/google";
+
+const pinyon = Pinyon_Script({
+  subsets: ["latin"],
+  weight: "400",
+  variable: "--font-cursive",
+});
 
 
 export const metadata: Metadata = {
@@ -33,12 +40,12 @@ export default function HomePage() {
         className="text-center font-[D-DIN] px-6 lowercase py-10 text-sm md:text-base font-light leading-relaxed text-[#262626]"
         style={{ backgroundColor: "#f5f5eb" }}
       >
-        “<span className="capitalize">The</span> hum Of A 16Th-century loom.{" "}
+        "<span className="capitalize">The</span> hum Of A 16Th-century loom.{" "}
         <br />
         <span className="capitalize">The</span> silence of a temple where time
         pools like honey. <br />
         <span className="capitalize">This</span> is the luxury as your
-        great-great-grandmother knew it”
+        great-great-grandmother knew it"
       </div>
       {/* Section 2: Community CTA */}
       <section className="relative h-[70vh] w-full overflow-hidden">
@@ -71,7 +78,7 @@ export default function HomePage() {
         className="font-[D-DIN] text-center lowercase px-6 py-10 text-sm md:text-base font-light leading-relaxed text-[#262626] whitespace-pre-line"
         style={{ backgroundColor: "#f5f5eb" }}
       >
-        “<span className="capitalize">Share</span>{" "}
+        "<span className="capitalize">Share</span>{" "}
         <span className="capitalize">Monsoon</span>-season poetry at 2 AM.{" "}
         <br />
         <span className="capitalize">Trade</span> secrets for reviving{" "}
@@ -82,19 +89,21 @@ export default function HomePage() {
         signal fire .
         <br />
         <span className="capitalize">I</span>'m here.{" "}
-        <span className="capitalize">I</span> remember.”
+        <span className="capitalize">I</span> remember."
       </div>
 
       <div className="relative overflow-hidden bg-[var(--brand-light)] py-4">
-        <div className="animate-scroll-text flex whitespace-nowrap">
-          <p className="text-[#262626] font-[D-Din] font-light text-3xl md:text-base mr-12">
+        <div className="ticker-track">
+          <span className="ticker-content">
             Countdown to Diwali! Exciting products and offers coming soon!! Free
             Delivery !!!
-          </p>
-          
+          </span>
+          <span className="ticker-content">
+            Countdown to Diwali! Exciting products and offers coming soon!! Free
+            Delivery !!!
+          </span>
         </div>
       </div>
-
       {/* Section 3: Scent Blocks */}
       <section className="px-4 md:px-8 py-10 md:py-16 grid grid-cols-1 md:grid-cols-2 gap-6">
         {[
@@ -160,11 +169,11 @@ export default function HomePage() {
         className="font-[D-DIN] text-center px-10 py-10 text-sm md:text-base font-light leading-relaxed text-[#262626]"
         style={{ backgroundColor: "#f5f5eb" }}
       >
-        “Soy wax has emerged as the gold standard for those who crave not only
+        "Soy wax has emerged as the gold standard for those who crave not only
         <br />
         Beauty but meaning. A tender offering of the soybean—renewable, humble,
         <br />
-        Abundant—pressed into a form that cradles fire.”
+        Abundant—pressed into a form that cradles fire."
       </div>
 
       {/* Logo after Soy Section */}
@@ -172,9 +181,9 @@ export default function HomePage() {
         <Image
           src={`https://res.cloudinary.com/db5c7s6lw/image/upload/v1753737255/logo_ye0qyk.png`}
           alt="SAMAA Logo"
-          width={15} // adjust width as needed
-          height={15} // adjust height as needed
-          priority // optional, for faster loading
+          width={15}
+          height={15}
+          priority
         />
       </div>
     </div>
