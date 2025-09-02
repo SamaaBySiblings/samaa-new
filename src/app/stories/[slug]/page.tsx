@@ -62,14 +62,7 @@ export default function StoryPageClient() {
         </h1>
 
         {/* Hero Image */}
-        <div className="w-full h-[300px] md:h-[450px] relative mb-12">
-          <Image
-            src={story.image}
-            alt={story.title}
-            fill
-            className="object-cover rounded"
-          />
-        </div>
+       
 
         {/* Body Content */}
         <div className="prose prose-lg prose-invert max-w-none space-y-8 text-[var(--brand-dark)]">
@@ -106,7 +99,7 @@ export default function StoryPageClient() {
             rel="noopener noreferrer"
             className="text-gray-600 hover:text-gray-800 underline"
           >
-            -{">"} It’s your turn to twist it
+            -{">"} It's your turn to twist it
           </Link>
         </div>
 
