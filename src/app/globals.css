@@ -182,6 +182,10 @@ label {
 }
 
 
+.custom-cursor.opacity-0 {
+  pointer-events: none;
+  visibility: hidden;
+}
 
 
 @media (hover: none), (pointer: coarse) {

@@ -14,65 +14,62 @@ const CustomCursor = () => {
   const currentY = useRef(0);
   const speed = 0.9;
 
- useEffect(() => {
-   const handleMouseMove = (e: MouseEvent) => {
-     mouseX.current = e.clientX;
-     mouseY.current = e.clientY;
+useEffect(() => {
+  const handleMouseMove = (e: MouseEvent) => {
+    mouseX.current = e.clientX;
+    mouseY.current = e.clientY;
 
-     const target = e.target as HTMLElement;
-     const hovering =
-       target.closest("a") ||
-       target.closest("button") ||
-       target.getAttribute("role") === "button";
+    const target = e.target as HTMLElement;
+    const hovering =
+      target.closest("a") ||
+      target.closest("button") ||
+      target.getAttribute("role") === "button";
 
-     setIsHovering(!!hovering);
-     setIsInsideWindow(true);
-   };
+    setIsHovering(!!hovering);
+    setIsInsideWindow(true);
+  };
 
-   const handleMouseOut = (e: MouseEvent) => {
-     // Only hide if cursor truly left the window, not just into a child element
-     if (!e.relatedTarget) {
-       setIsInsideWindow(false);
-     }
-   };
+  const handleMouseLeave = () => {
+    setIsInsideWindow(false);
+  };
 
-   const handleFocus = () => setIsInsideWindow(true);
-   const handleBlur = () => setIsInsideWindow(false);
+  const handleFocus = () => setIsInsideWindow(true);
+  const handleBlur = () => setIsInsideWindow(false);
 
-   document.addEventListener("mousemove", handleMouseMove);
-   window.addEventListener("mouseout", handleMouseOut); // improved!
-   window.addEventListener("blur", handleBlur);
-   window.addEventListener("focus", handleFocus);
+  document.addEventListener("mousemove", handleMouseMove);
+  document.addEventListener("mouseleave", handleMouseLeave);
+  window.addEventListener("blur", handleBlur);
+  window.addEventListener("focus", handleFocus);
 
-   const animate = () => {
-     currentX.current += (mouseX.current - currentX.current) * speed;
-     currentY.current += (mouseY.current - currentY.current) * speed;
+  const animate = () => {
+    currentX.current += (mouseX.current - currentX.current) * speed;
+    currentY.current += (mouseY.current - currentY.current) * speed;
 
-     const x = currentX.current;
-     const y = currentY.current;
+    const x = currentX.current;
+    const y = currentY.current;
 
-     if (cursorRef1.current) {
-       cursorRef1.current.style.left = `${x}px`;
-       cursorRef1.current.style.top = `${y}px`;
-     }
+    if (cursorRef1.current) {
+      cursorRef1.current.style.left = `${x}px`;
+      cursorRef1.current.style.top = `${y}px`;
+    }
 
-     if (cursorRef2.current) {
-       cursorRef2.current.style.left = `${x}px`;
-       cursorRef2.current.style.top = `${y}px`;
-     }
+    if (cursorRef2.current) {
+      cursorRef2.current.style.left = `${x}px`;
+      cursorRef2.current.style.top = `${y}px`;
+    }
 
-     requestAnimationFrame(animate);
-   };
+    requestAnimationFrame(animate);
+  };
 
-   animate();
+  animate();
 
-   return () => {
-     document.removeEventListener("mousemove", handleMouseMove);
-     window.removeEventListener("mouseout", handleMouseOut);
-     window.removeEventListener("blur", handleBlur);
-     window.removeEventListener("focus", handleFocus);
-   };
- }, []);
+  return () => {
+    document.removeEventListener("mousemove", handleMouseMove);
+    document.removeEventListener("mouseleave", handleMouseLeave);
+    window.removeEventListener("blur", handleBlur);
+    window.removeEventListener("focus", handleFocus);
+  };
+}, []);
 
 
 
