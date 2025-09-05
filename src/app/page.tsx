@@ -104,7 +104,7 @@ export default function HomePage() {
           style={{ fontFamily: "var(--font-cursive)" }}
         >
           Countdown to Diwali! Exciting products and offers coming soon!! Free
-          Delivery above 500!!!
+          Delivery above Rs.500!!!
         </div>
       </div>
 
