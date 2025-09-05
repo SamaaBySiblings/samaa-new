@@ -16,7 +16,12 @@ export const metadata: Metadata = {
     "Discover handcrafted soy candles by SAMAA—rooted in Indian tradition, designed for modern, mindful luxury around the world.",
 };
 
+
+
+
 export default function HomePage() {
+
+  
   return (
     <div className="bg-[var(--brand-light)] text-[#262626] font-light">
       {/* Hero Section - Fullscreen Banner */}
@@ -92,18 +97,17 @@ export default function HomePage() {
         <span className="capitalize">I</span> remember."
       </div>
 
-      <div className="relative overflow-hidden bg-[var(--brand-light)] py-4">
-        <div className="ticker-track">
-          <span className="ticker-content">
-            Countdown to Diwali! Exciting products and offers coming soon!! Free
-            Delivery !!!
-          </span>
-          <span className="ticker-content">
-            Countdown to Diwali! Exciting products and offers coming soon!! Free
-            Delivery !!!
-          </span>
+      {/* Countdown Line - Animated Scrolling Text */}
+      <div className="relative overflow-hidden bg-[#f5f5eb]">
+        <div
+          className={`inline-block whitespace-nowrap animated-line text-[#262626] text-lg md:text-xl py-3 font-light ${pinyon.variable}`}
+          style={{ fontFamily: "var(--font-cursive)" }}
+        >
+          Countdown to Diwali! Exciting products and offers coming soon!! Free
+          Delivery above 500!!!
         </div>
       </div>
+
       {/* Section 3: Scent Blocks */}
       <section className="px-4 md:px-8 py-10 md:py-16 grid grid-cols-1 md:grid-cols-2 gap-6">
         {[

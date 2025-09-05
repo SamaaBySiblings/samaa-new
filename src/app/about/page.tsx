@@ -119,10 +119,10 @@ export default function AboutPage() {
       </section>
 
       {/* Meaning of Samaa */}
-      <section className="max-w-screen-lg mx-auto my-16 px-4 sm:px-6 lg:px-8 p-8 bg-[#5B261D] rounded-4xl border  text-white">
+      <section className="max-w-screen-lg mx-auto my-16 px-4 sm:px-6 lg:px-8 p-8 bg-[#5B261D] rounded-4xl border text-white">
         <div className="mb-8 space-y-4">
           {/* Heading - aligned left */}
-          <div className="text-left pl-20">
+          <div className="text-left pl-6 sm:pl-20">
             <h2 className="font-[D-DIN] text-sm md:text-xl">
               <i className="text-light italic">So What Is SAMAA?</i>
             </h2>
@@ -136,7 +136,7 @@ export default function AboutPage() {
             </p>
 
             {/* Logo on the far right, vertically aligned */}
-            <div className="absolute right-0 top-1/2 -translate-y-1/2">
+            <div className="absolute right-0 top-1/2 -translate-y-1/2 hidden sm:block">
               <Image
                 src="https://res.cloudinary.com/db5c7s6lw/image/upload/v1752922286/logo-new_fbv3vv.png"
                 alt="SAMAA Logo"
@@ -161,7 +161,7 @@ export default function AboutPage() {
           <p>They were just living—beautifully, consciously, richly.</p>
         </div>
 
-        <div className="flex flex-col md:flex-row items-center gap-8 max-w-screen-lg mx-auto mb-14">
+        <div className="flex flex-col md:flex-row items-center gap-8 max-w-screen-lg mx-auto mb-14 px-4 sm:px-0">
           <div className="md:w-1/2 w-full">
             <video
               autoPlay
@@ -169,11 +169,11 @@ export default function AboutPage() {
               muted
               playsInline
               src="https://res.cloudinary.com/db5c7s6lw/video/upload/v1753039785/samaa-video_epxfqe.mp4"
-              className="w-full h-auto shadow-lg"
+              className="w-full h-auto shadow-lg rounded-lg"
             />
           </div>
 
-          <div className="md:w-1/2 w-full text-center max-w-md mx-auto text-lg leading-relaxed space-y-1 normal-case">
+          <div className="md:w-1/2 w-full text-center max-w-md mx-auto text-lg leading-relaxed space-y-1 normal-case px-2">
             <p>
               <span className="uppercase">SAMAA</span> is the sheer atmosphere
               of an ancient time.
@@ -184,7 +184,7 @@ export default function AboutPage() {
           </div>
         </div>
 
-        <div className="max-w-3xl mx-auto text-center text-lg leading-relaxed space-y-1 normal-case">
+        <div className="max-w-3xl mx-auto text-center text-lg leading-relaxed space-y-1 normal-case px-4 sm:px-0">
           <p>
             <span className="capitalize">luxury</span>, to us, is not gold
             leaf—it's the soil.
@@ -205,15 +205,15 @@ export default function AboutPage() {
         </div>
       </section>
 
-      <section className="pb-16">
-        <div className="mt-11 max-w-screen-lg mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-3 grid-rows-2 gap-2">
+      <section className="pb-16 px-4 sm:px-6 lg:px-8">
+        <div className="mt-11 max-w-screen-lg mx-auto grid grid-cols-1 sm:grid-cols-3 grid-rows-6 sm:grid-rows-2 gap-2">
           {/* Column 1 - images aligned */}
           <Image
             src="https://res.cloudinary.com/db5c7s6lw/image/upload/v1752922250/collage1_khgtgy.jpg"
             alt="Collage 1"
             width={400}
             height={300}
-            className="w-full h-[350px] object-cover"
+            className="w-full h-[200px] sm:h-[350px] object-cover"
             priority
           />
           {/* Column 2 - top row with vertical offset */}
@@ -222,7 +222,7 @@ export default function AboutPage() {
             alt="Collage 2"
             width={400}
             height={300}
-            className="w-[350px] h-[350px] object-cover  translate-y-2"
+            className="w-full h-[200px] sm:h-[350px] object-cover translate-y-0 sm:translate-y-2 "
             priority
           />
           {/* Column 3 - images aligned */}
@@ -231,7 +231,7 @@ export default function AboutPage() {
             alt="Collage 3"
             width={400}
             height={300}
-            className="w-full h-[350px] object-cover"
+            className="w-full h-[200px] sm:h-[350px] object-cover"
             priority
           />
 
@@ -241,7 +241,7 @@ export default function AboutPage() {
             alt="Collage 4"
             width={400}
             height={300}
-            className="w-full h-[350px] object-cover"
+            className="w-full h-[200px] sm:h-[350px] object-cover"
             priority
           />
           {/* Column 2 - bottom row with vertical offset */}
@@ -250,7 +250,7 @@ export default function AboutPage() {
             alt="Collage 5"
             width={400}
             height={300}
-            className="w-full h-[350px] object-cover  translate-y-2"
+            className="w-full h-[200px] sm:h-[350px] object-cover translate-y-0 sm:translate-y-2 "
             priority
           />
           {/* Column 3 - images aligned */}
@@ -259,13 +259,13 @@ export default function AboutPage() {
             alt="Collage 6"
             width={400}
             height={300}
-            className="w-full h-[350px] object-cover"
+            className="w-full h-[200px] sm:h-[350px] object-cover"
             priority
           />
         </div>
       </section>
 
-      <div className="max-w-screen-md mx-auto mt-8 text-gray-800">
+      <div className="max-w-screen-md mx-auto mt-8 text-gray-800 px-4 sm:px-0">
         <p className="font-[D-DIN] text-lg leading-relaxed text-center">
           For purity over polish. <br />
           For sustainability not as a selling point, but as an ancestral truth.{" "}
@@ -284,11 +284,11 @@ export default function AboutPage() {
       </div>
 
       {/* Final Section */}
-      <section className="w-full py-12">
-        <div className="mx-auto max-w-screen-lg px-4 sm:px-6 lg:px-8 grid grid-cols-3 gap-1">
+      <section className="w-full py-12 px-4 sm:px-6 lg:px-8">
+        <div className="mx-auto max-w-screen-lg grid grid-cols-1 sm:grid-cols-3 gap-4">
           {/* Pic 1 container */}
-          <div className="flex justify-center items-center w-full h-[400px]">
-            <div className="w-full h-full relative">
+          <div className="flex justify-center items-center w-full h-[300px] sm:h-[400px]">
+            <div className="w-full h-full relative  overflow-hidden shadow-md">
               <Image
                 src="https://res.cloudinary.com/db5c7s6lw/image/upload/v1752922261/collage8_jqueey.jpg"
                 alt="Collage 8"
@@ -302,8 +302,8 @@ export default function AboutPage() {
           </div>
 
           {/* Pic 2 container */}
-          <div className="flex justify-center items-center px-4 w-full h-[400px]">
-            <div className="w-full h-full relative">
+          <div className="flex justify-center items-center px-0 sm:px-4 w-full h-[300px] sm:h-[400px]">
+            <div className="w-full h-full relative overflow-hidden shadow-md">
               <Image
                 src="https://res.cloudinary.com/db5c7s6lw/image/upload/v1752922262/collage9_rb9ayj.jpg"
                 alt="Collage 9"
@@ -317,8 +317,8 @@ export default function AboutPage() {
           </div>
 
           {/* Text container */}
-          <div className="bg-[#94562A] py-20 px-10 shadow-sm flex items-center justify-center w-full h-[400px]">
-            <p className="font-[D-DIN] text-lg text-white leading-relaxed text-center">
+          <div className="bg-[#94562A] py-16 px-6 sm:px-10 shadow-sm flex items-center justify-center w-full h-[300px] sm:h-[400px]  text-center">
+            <p className="font-[D-DIN] text-base sm:text-lg text-white leading-relaxed">
               Gather Around the Flame: <br />
               This is not a "brand." It's a circle.
               <br />
@@ -335,7 +335,7 @@ export default function AboutPage() {
 
       {/* Final CTA */}
       <section className="w-full py-16 px-4 bg-[#f5f5eb]">
-        <div className="max-w-3xl mx-auto text-gray-800">
+        <div className="max-w-3xl mx-auto text-gray-800 px-2 sm:px-0">
           {/* Wrap So Tell Us and paragraph in a div with limited width and aligned left */}
           <div className="max-w-xl ml-0">
             <h2 className="font-[D-DIN] text-2xl sm:text-3xl font-light tracking-wide text-left">
@@ -347,7 +347,10 @@ export default function AboutPage() {
               Light one of our candles, and you're not igniting wax—you're
               summoning a village. <br />
               The hum of a 16th-century loom. The laughter of a chai-seller who
-              knows your name. The silence of a temple where time pools like honey. This is luxury as your great-great-<br/>grandmother knew it.
+              knows your name. The silence of a temple where time pools like
+              honey. This is luxury as your great-great-
+              <br />
+              grandmother knew it.
             </p>
           </div>
 
@@ -363,7 +366,11 @@ export default function AboutPage() {
               the earth.
             </p>
             <p className="underline italic">
-              <Link href="https://substack.com/@samaacircle">
+              <Link
+                href="https://substack.com/@samaacircle"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
                 Come as You Are
               </Link>
             </p>
@@ -372,4 +379,4 @@ export default function AboutPage() {
       </section>
     </div>
   );
-};
+}
