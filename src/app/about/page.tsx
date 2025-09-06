@@ -20,7 +20,7 @@ export default function AboutPage() {
           alt="Hero"
           width={400}
           height={400}
-          className="w-full max-w-md object-cover rounded-lg"
+          className="w-full max-w-md object-cover"
           priority
         />
       </div>
@@ -68,7 +68,7 @@ export default function AboutPage() {
               alt="Descriptive image"
               width={245}
               height={245}
-              className="w-full max-w-xs md:max-w-sm h-auto object-cover rounded-lg shadow-md"
+              className="w-full max-w-xs md:max-w-sm h-auto object-cover shadow-md"
               priority
             />
           </div>
@@ -98,7 +98,7 @@ export default function AboutPage() {
             alt="Collage 1"
             width={300}
             height={200}
-            className="rounded-md object-cover"
+            className="object-cover"
             priority
           />
           <Image
@@ -106,7 +106,7 @@ export default function AboutPage() {
             alt="Collage 2"
             width={300}
             height={200}
-            className="rounded-md object-cover"
+            className="object-cover"
             priority
           />
         </div>
@@ -169,7 +169,7 @@ export default function AboutPage() {
               muted
               playsInline
               src="https://res.cloudinary.com/db5c7s6lw/video/upload/v1753039785/samaa-video_epxfqe.mp4"
-              className="w-full h-auto shadow-lg rounded-lg"
+              className="w-full h-auto shadow-lg"
             />
           </div>
 
@@ -206,60 +206,66 @@ export default function AboutPage() {
       </section>
 
       <section className="pb-16 px-4 sm:px-6 lg:px-8">
-        <div className="mt-11 max-w-screen-lg mx-auto grid grid-cols-1 sm:grid-cols-3 grid-rows-6 sm:grid-rows-2 gap-2">
-          {/* Column 1 - images aligned */}
+        <div className="mt-11 max-w-screen-lg mx-auto grid grid-cols-1 sm:grid-cols-3 gap-1">
+          {/* Column 1 - Top */}
           <Image
             src="https://res.cloudinary.com/db5c7s6lw/image/upload/v1752922250/collage1_khgtgy.jpg"
             alt="Collage 1"
             width={400}
             height={300}
-            className="w-full h-[200px] sm:h-[350px] object-cover"
+            className="w-full h-[200px] sm:h-[340px] object-cover"
             priority
           />
-          {/* Column 2 - top row with vertical offset */}
+
+          {/* Column 2 - Top */}
           <Image
             src="https://res.cloudinary.com/db5c7s6lw/image/upload/v1752922251/collage2_jp9wpd.jpg"
             alt="Collage 2"
             width={400}
             height={300}
-            className="w-full h-[200px] sm:h-[350px] object-cover translate-y-0 sm:translate-y-2 "
+            className="w-full h-[200px] sm:h-[300px] object-cover"
             priority
           />
-          {/* Column 3 - images aligned */}
+
+          {/* Column 3 - Top */}
           <Image
             src="https://res.cloudinary.com/db5c7s6lw/image/upload/v1752922252/collage3_ojssra.jpg"
             alt="Collage 3"
             width={400}
             height={300}
-            className="w-full h-[200px] sm:h-[350px] object-cover"
+            className="w-full h-[200px] sm:h-[340px] object-cover"
             priority
           />
 
-          {/* Column 1 - images aligned */}
+          {/* Column 1 - Bottom */}
           <Image
             src="https://res.cloudinary.com/db5c7s6lw/image/upload/v1752922253/collage4_olbvg7.jpg"
             alt="Collage 4"
             width={400}
             height={300}
-            className="w-full h-[200px] sm:h-[350px] object-cover"
+            className="w-full h-[200px] sm:h-[340px] object-cover"
             priority
           />
-          {/* Column 2 - bottom row with vertical offset */}
-          <Image
-            src="https://res.cloudinary.com/db5c7s6lw/image/upload/v1752922254/collage5_dcq2gt.jpg"
-            alt="Collage 5"
-            width={400}
-            height={300}
-            className="w-full h-[200px] sm:h-[350px] object-cover translate-y-0 sm:translate-y-2 "
-            priority
-          />
-          {/* Column 3 - images aligned */}
+
+          {/* Column 2 - Bottom (stretched upwards, bottom fixed) */}
+          <div className="relative w-full sm:h-[340px] flex items-end">
+            <Image
+              src="https://res.cloudinary.com/db5c7s6lw/image/upload/v1752922254/collage5_dcq2gt.jpg"
+              alt="Collage 5"
+              width={400}
+              height={300}
+              className="w-full h-[380px] object-cover object-top"
+              priority
+            />
+          </div>
+
+          {/* Column 3 - Bottom */}
           <Image
             src="https://res.cloudinary.com/db5c7s6lw/image/upload/v1752922255/collage6_vzkuug.jpg"
             alt="Collage 6"
             width={400}
             height={300}
-            className="w-full h-[200px] sm:h-[350px] object-cover"
+            className="w-full h-[200px] sm:h-[340px] object-cover"
             priority
           />
         </div>
@@ -285,24 +291,24 @@ export default function AboutPage() {
 
       {/* Final Section */}
       <section className="w-full py-12 px-4 sm:px-6 lg:px-8">
-        <div className="mx-auto max-w-screen-lg grid grid-cols-1 sm:grid-cols-3 gap-4">
+        <div className="mx-auto max-w-screen-lg grid grid-cols-1 sm:grid-cols-3 gap-2">
           {/* Pic 1 container */}
           <div className="flex justify-center items-center w-full h-[300px] sm:h-[400px]">
-            <div className="w-full h-full relative  overflow-hidden shadow-md">
+            <div className="w-full h-full relative overflow-hidden shadow-md">
               <Image
                 src="https://res.cloudinary.com/db5c7s6lw/image/upload/v1752922261/collage8_jqueey.jpg"
                 alt="Collage 8"
-                width={400} // fixed width
-                height={400} // fixed height (square container)
+                width={400}
+                height={400}
                 className="object-cover"
                 priority
-                style={{ width: "100%", height: "100%" }} // fill container responsively
+                style={{ width: "100%", height: "100%" }}
               />
             </div>
           </div>
 
           {/* Pic 2 container */}
-          <div className="flex justify-center items-center px-0 sm:px-4 w-full h-[300px] sm:h-[400px]">
+          <div className="flex justify-center items-center w-full h-[300px] sm:h-[400px]">
             <div className="w-full h-full relative overflow-hidden shadow-md">
               <Image
                 src="https://res.cloudinary.com/db5c7s6lw/image/upload/v1752922262/collage9_rb9ayj.jpg"
@@ -317,7 +323,7 @@ export default function AboutPage() {
           </div>
 
           {/* Text container */}
-          <div className="bg-[#94562A] py-16 px-6 sm:px-10 shadow-sm flex items-center justify-center w-full h-[300px] sm:h-[400px]  text-center">
+          <div className="bg-[#94562A] py-16 px-6 sm:px-10 shadow-sm flex items-center justify-center w-full h-[300px] sm:h-[400px] text-center">
             <p className="font-[D-DIN] text-base sm:text-lg text-white leading-relaxed">
               Gather Around the Flame: <br />
               This is not a "brand." It's a circle.
