@@ -14,7 +14,7 @@ export default function AboutPage() {
   return (
     <div className="bg-[#f5f5eb] text-[#262626]">
       {/* Top hero image */}
-      <div className="pt-24 pb-10 px-10 md:px-30 w-full">
+      <div className="pt-24 pb-10 px-30 md:px-50 w-full">
         <Image
           src="https://res.cloudinary.com/db5c7s6lw/image/upload/v1752922254/about1_eiyllt.jpg"
           alt="Hero"
@@ -66,9 +66,9 @@ export default function AboutPage() {
             <Image
               src="https://res.cloudinary.com/db5c7s6lw/image/upload/v1752922256/client_pic_lb7rqr.jpg"
               alt="Descriptive image"
-              width={245}
-              height={245}
-              className="w-full max-w-xs md:max-w-sm h-auto object-cover shadow-md"
+              width={250}
+              height={250}
+              className="w-full max-w-xs md:max-w-sm h-auto object-cover rounded-lg shadow-md"
               priority
             />
           </div>
