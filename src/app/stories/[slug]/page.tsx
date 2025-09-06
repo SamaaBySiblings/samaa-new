@@ -73,7 +73,7 @@ export default function StoryPageClient() {
               return (
                 <div
                   key={i}
-                  className="relative w-[80%] h-[250px] md:h-[300px] mx-auto my-8"
+                  className="relative w-[65%] aspect-square mx-auto my-8"
                 >
                   <Image
                     src={block.src!}
