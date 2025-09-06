@@ -57,10 +57,9 @@ export default function StoryPageClient() {
     <div className="px-4 md:px-8 lg:px-16 py-24 bg-[var(--brand-light)] text-[var(--brand-dark)]">
       <article className="max-w-3xl mx-auto font-[D-DIN]">
         {/* Title */}
-        <h1 className="text-4xl md:text-5xl font-bold text-center leading-tight tracking-wide mb-8">
+        <h1 className="text-4xl md:text-5xl font-bold text-left leading-tight tracking-wide mb-8">
           {story.title}
         </h1>
-       
 
         {/* Body Content */}
         <div className="prose prose-lg prose-invert max-w-none space-y-8 text-[var(--brand-dark)]">
