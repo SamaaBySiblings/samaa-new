@@ -60,8 +60,6 @@ export default function StoryPageClient() {
         <h1 className="text-4xl md:text-5xl font-bold text-center leading-tight tracking-wide mb-8">
           {story.title}
         </h1>
-
-        {/* Hero Image */}
        
 
         {/* Body Content */}
@@ -75,13 +73,13 @@ export default function StoryPageClient() {
               return (
                 <div
                   key={i}
-                  className="relative w-full h-[300px] md:h-[400px] my-8"
+                  className="relative w-[80%] h-[250px] md:h-[300px] mx-auto my-8"
                 >
                   <Image
                     src={block.src!}
                     alt={block.alt || ""}
                     fill
-                    className="object-cover rounded"
+                    className="object-cover"
                   />
                 </div>
               );
