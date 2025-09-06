@@ -14,7 +14,7 @@ export default function AboutPage() {
   return (
     <div className="bg-[#f5f5eb] text-[#262626]">
       {/* Top hero image */}
-      <div className="pt-24 pb-10 px-30 md:px-50 w-full">
+      <div className="pt-24 pb-10 px-4 sm:px-6 md:px-10 lg:px-16 w-full">
         <Image
           src="https://res.cloudinary.com/db5c7s6lw/image/upload/v1752922254/about1_eiyllt.jpg"
           alt="Hero"
