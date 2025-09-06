@@ -14,13 +14,13 @@ export default function AboutPage() {
   return (
     <div className="bg-[#f5f5eb] text-[#262626]">
       {/* Top hero image */}
-      <div className="pt-24 pb-10 flex justify-center px-4">
+      <div className="pt-24 pb-10 px-10 md:px-30 w-full">
         <Image
           src="https://res.cloudinary.com/db5c7s6lw/image/upload/v1752922254/about1_eiyllt.jpg"
           alt="Hero"
-          width={400}
-          height={400}
-          className="w-full max-w-md object-cover"
+          width={1920}
+          height={600}
+          className="w-full h-[500px] object-cover object-center"
           priority
         />
       </div>
