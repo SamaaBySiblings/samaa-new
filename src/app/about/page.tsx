@@ -66,9 +66,9 @@ export default function AboutPage() {
             <Image
               src="https://res.cloudinary.com/db5c7s6lw/image/upload/v1752922256/client_pic_lb7rqr.jpg"
               alt="Descriptive image"
-              width={250}
-              height={250}
-              className="w-full max-w-xs md:max-w-sm h-auto object-cover rounded-lg shadow-md"
+              width={300}
+              height={300}
+              className="w-full max-w-sm md:max-w-md h-auto object-cover rounded-lg shadow-md"
               priority
             />
           </div>
