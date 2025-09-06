@@ -1,0 +1,18 @@
+like 
+left side  title
+
+       paragraph in center
+
+right side one image
+
+                                     left side on image
+
+again paragrph
+
+custom link
+
+
+link this
+
+
+this can be achived through custom text editor and rendening in page
