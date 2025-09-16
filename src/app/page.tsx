@@ -9,19 +9,13 @@ const pinyon = Pinyon_Script({
   variable: "--font-cursive",
 });
 
-
 export const metadata: Metadata = {
   title: "SAMAA - Luxury Soy Wax Candles Rooted in India",
   description:
     "Discover handcrafted soy candles by SAMAA—rooted in Indian tradition, designed for modern, mindful luxury around the world.",
 };
 
-
-
-
 export default function HomePage() {
-
-  
   return (
     <div className="bg-[var(--brand-light)] text-[#262626] font-light">
       {/* Hero Section - Fullscreen Banner */}
@@ -100,7 +94,7 @@ export default function HomePage() {
       {/* Countdown Line - Animated Scrolling Text */}
       <div className="relative overflow-hidden bg-[#f5f5eb]">
         <div
-          className={`inline-block whitespace-nowrap animated-line text-[#262626] text-lg md:text-xl py-3 font-light ${pinyon.variable}`}
+          className={`inline-block whitespace-nowrap animated-line text-[#262626] text-xl md:text-2xl py-4 font-light ${pinyon.variable}`}
           style={{ fontFamily: "var(--font-cursive)" }}
         >
           Countdown to Diwali! Exciting products and offers coming soon!! Free
