@@ -9,6 +9,7 @@ import { SpeedInsights } from "@vercel/speed-insights/next";
 import { Analytics } from "@vercel/analytics/next";
 import CustomCursor from "@/components/CustomCursor";
 import ToastProvider from "@/lib/toastConfig";
+import { Suspense } from "react"
 
 
 // GTM ID
@@ -50,7 +51,7 @@ export default function RootLayout({
           <ReactQueryProvider>
             <CurrencyProvider>
               <CustomCursor />
-              <ToastProvider>{children}</ToastProvider>
+              <ToastProvider><Suspense fallback={null}>{children}</Suspense></ToastProvider>
               <ClientCartWrapper />
             </CurrencyProvider>
           </ReactQueryProvider>
