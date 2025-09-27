@@ -20,7 +20,7 @@ export default function StoriesPage() {
   useEffect(() => {
     axios
       .get(`${API_BASE_URL}/api/v1/stories/`)
-      .then((response) => setPosts(response.data))
+      .then((response) => setPosts(response.data.data))
       .catch(console.error);
   }, []);
 
