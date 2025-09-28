@@ -192,9 +192,7 @@ const handleSubscribe = async () => {
               <li>
                 <Link href="/stories">Stories</Link>
               </li>
-              <li>
-                <Link href="/international">International</Link>
-              </li>
+              
             </ul>
             <ul className="space-y-6 md:space-y-7">
               <li>
