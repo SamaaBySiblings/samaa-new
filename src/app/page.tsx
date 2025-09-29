@@ -94,7 +94,7 @@ export default function HomePage() {
       {/* Countdown Line - Animated Scrolling Text */}
       <div className="relative overflow-hidden bg-[#f5f5eb]">
         <div
-          className={`inline-block whitespace-nowrap animated-line text-[#262626] text-xl md:text-2xl py-4 font-light ${pinyon.variable}`}
+          className={`inline-block whitespace-nowrap animated-line text-[#262626] text-2xl md:text-3xl py-4 font-light ${pinyon.variable}`}
           style={{ fontFamily: "var(--font-cursive)" }}
         >
           Countdown to Diwali! Exciting products and offers coming soon!! Free
