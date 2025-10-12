@@ -22,7 +22,7 @@ const handleSubscribe = async () => {
   setLoading(true);
   try {
     const res = await axios.post(
-      `${process.env.NEXT_PUBLIC_SERVER_URL}api/v1/subscribe`,
+      `${process.env.NEXT_PUBLIC_SERVER_URL}/api/v1/subscribe`,
       { email }
     );
     if (res.status !== 200) throw new Error("Failed to subscribe");
