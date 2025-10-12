@@ -20,6 +20,8 @@ interface Story {
   author?: string
   read_time_minutes?: number
   created_at: string
+  cta_text?: string
+  cta_link?: string
 }
 
 // Recursively render Tiptap JSON nodes
@@ -300,17 +302,19 @@ export default function StoryPageClient() {
           {story.content && renderTiptapNode(story.content, 0)}
         </div>
 
-        {/* CTA */}
-        <div className="mt-16 pt-8 border-t border-gray-200 text-right">
-          <Link
-            href="https://substack.com/@samaacircle"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-gray-600 hover:text-gray-800 underline italic text-sm transition"
-          >
-            It's your turn to twist it →
-          </Link>
-        </div>
+        {/* CTA - Dynamic based on story settings */}
+        {(story.cta_text || story.cta_link) && (
+          <div className="mt-16 pt-8 border-t border-gray-200 text-right">
+            <Link
+              href={story.cta_link || "https://substack.com/@samaacircle"}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-gray-600 hover:text-gray-800 underline italic text-sm transition"
+            >
+              {story.cta_text || "It's your turn to twist it →"}
+            </Link>
+          </div>
+        )}
 
         {/* Back Link */}
         <div className="mt-8">
