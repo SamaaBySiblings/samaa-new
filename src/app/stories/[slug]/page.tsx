@@ -12,11 +12,14 @@ const API_BASE_URL =
   "https://api.samaabysiblings.com/backend"
 
 interface Story {
+  id: number
   title: string
   subtitle?: string
   image_url?: string
-  content: any // Tiptap JSON content
+  content: any
   author?: string
+  read_time_minutes?: number
+  created_at: string
 }
 
 // Recursively render Tiptap JSON nodes
@@ -31,14 +34,15 @@ function renderTiptapNode(node: any, index: number): React.ReactNode {
 
     // Apply marks (bold, italic, underline, etc.)
     if (marks && marks.length > 0) {
-      marks.forEach((mark: any) => {
-        if (mark.type === "bold") rendered = <strong key={`${index}-bold`}>{rendered}</strong>
-        if (mark.type === "italic") rendered = <em key={`${index}-italic`}>{rendered}</em>
-        if (mark.type === "underline") rendered = <u key={`${index}-underline`}>{rendered}</u>
+      marks.forEach((mark: any, markIndex: number) => {
+        const key = `${index}-${mark.type}-${markIndex}`
+        if (mark.type === "bold") rendered = <strong key={key}>{rendered}</strong>
+        if (mark.type === "italic") rendered = <em key={key}>{rendered}</em>
+        if (mark.type === "underline") rendered = <u key={key}>{rendered}</u>
         if (mark.type === "link")
           rendered = (
             <a
-              key={`${index}-link`}
+              key={key}
               href={mark.attrs.href}
               target="_blank"
               rel="noopener noreferrer"
@@ -55,7 +59,7 @@ function renderTiptapNode(node: any, index: number): React.ReactNode {
 
   // Handle block nodes
   const children = content?.map((child: any, i: number) =>
-    renderTiptapNode(child, i)
+    renderTiptapNode(child, `${index}-${i}` as any)
   )
 
   switch (type) {
@@ -63,45 +67,61 @@ function renderTiptapNode(node: any, index: number): React.ReactNode {
       return <div key={index}>{children}</div>
 
     case "paragraph":
-      return <p key={index}>{children}</p>
+      return <p key={index} className="mb-4">{children}</p>
 
     case "heading":
       const level = attrs?.level || 1
+      const headingClasses: Record<number, string> = {
+        1: "text-3xl font-bold mt-8 mb-4",
+        2: "text-2xl font-bold mt-6 mb-3",
+        3: "text-xl font-semibold mt-4 mb-2"
+      }
       const HeadingTag = `h${level}` as keyof JSX.IntrinsicElements
-      return React.createElement(HeadingTag, { key: index }, children)
+      return React.createElement(
+        HeadingTag, 
+        { key: index, className: headingClasses[level] }, 
+        children
+      )
 
     case "bulletList":
-      return <ul key={index} className="list-disc ml-6">{children}</ul>
+      return <ul key={index} className="list-disc ml-6 mb-4 space-y-2">{children}</ul>
 
     case "orderedList":
-      return <ol key={index} className="list-decimal ml-6">{children}</ol>
+      return <ol key={index} className="list-decimal ml-6 mb-4 space-y-2">{children}</ol>
 
     case "listItem":
       return <li key={index}>{children}</li>
 
     case "blockquote":
       return (
-        <blockquote key={index} className="border-l-4 border-gray-300 pl-4 italic">
+        <blockquote key={index} className="border-l-4 border-gray-400 pl-4 italic my-4 text-gray-700">
           {children}
         </blockquote>
       )
 
     case "codeBlock":
       return (
-        <pre key={index} className="bg-gray-100 p-4 rounded overflow-x-auto">
+        <pre key={index} className="bg-gray-900 text-gray-100 p-4 rounded-lg overflow-x-auto my-4 text-sm">
           <code>{children}</code>
         </pre>
       )
 
     case "image":
       return (
-        <div key={index} className="relative w-[65%] aspect-square mx-auto my-8">
-          <Image
-            src={attrs?.src || ""}
-            alt={attrs?.alt || ""}
-            fill
-            className="object-cover rounded"
-          />
+        <div key={index} className="relative w-full max-w-2xl mx-auto my-8">
+          <div className="relative w-full aspect-video">
+            <Image
+              src={attrs?.src || ""}
+              alt={attrs?.alt || "Image"}
+              fill
+              className="object-contain rounded-lg"
+            />
+          </div>
+          {attrs?.alt && (
+            <p className="text-sm text-gray-500 text-center mt-2 italic">
+              {attrs.alt}
+            </p>
+          )}
         </div>
       )
 
@@ -110,9 +130,11 @@ function renderTiptapNode(node: any, index: number): React.ReactNode {
 
     case "table":
       return (
-        <table key={index} className="border-collapse border border-gray-300 my-4">
-          <tbody>{children}</tbody>
-        </table>
+        <div key={index} className="overflow-x-auto my-6">
+          <table className="min-w-full border-collapse border border-gray-300">
+            <tbody>{children}</tbody>
+          </table>
+        </div>
       )
 
     case "tableRow":
@@ -120,19 +142,20 @@ function renderTiptapNode(node: any, index: number): React.ReactNode {
 
     case "tableCell":
       return (
-        <td key={index} className="border border-gray-300 p-2">
+        <td key={index} className="border border-gray-300 p-3 text-sm">
           {children}
         </td>
       )
 
     case "tableHeader":
       return (
-        <th key={index} className="border border-gray-300 p-2 font-bold bg-gray-50">
+        <th key={index} className="border border-gray-300 p-3 font-bold bg-gray-50 text-sm">
           {children}
         </th>
       )
 
     default:
+      console.warn(`Unhandled node type: ${type}`)
       return <div key={index}>{children}</div>
   }
 }
@@ -148,42 +171,93 @@ export default function StoryPageClient() {
     if (!slug) return
 
     setLoading(true)
+    console.log(`Fetching story: ${slug}`) // Debug log
+    
     axios
       .get(`${API_BASE_URL}/api/v1/stories/${slug}`)
       .then((response) => {
+        console.log("Story data received:", response.data) // Debug log
         const storyData = response.data.data
+        
         // Parse content if it's a string
         if (typeof storyData.content === "string") {
-          storyData.content = JSON.parse(storyData.content)
+          try {
+            storyData.content = JSON.parse(storyData.content)
+          } catch (e) {
+            console.error("Failed to parse content:", e)
+            throw new Error("Invalid story content format")
+          }
         }
+        
         setStory(storyData)
         setError(null)
       })
       .catch((error) => {
+        console.error("Error fetching story:", error)
         if (error.response && error.response.status === 404) {
           setError("Story not found")
         } else {
-          setError(error.message)
+          setError(error.message || "Failed to load story")
         }
       })
       .finally(() => setLoading(false))
   }, [slug])
 
-  if (loading) return <p className="text-center py-24">Loading story...</p>
-  if (error) return <p className="text-center py-24 text-red-500">Error: {error}</p>
-  if (!story) return <p className="text-center py-24">No story found</p>
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-[var(--brand-light)]">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-gray-900 mx-auto mb-4"></div>
+          <p className="text-gray-600">Loading story...</p>
+        </div>
+      </div>
+    )
+  }
+
+  if (error) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-[var(--brand-light)]">
+        <div className="text-center max-w-md px-4">
+          <p className="text-red-500 text-xl mb-4">😔 {error}</p>
+          <Link
+            href="/stories"
+            className="inline-block px-6 py-2 bg-gray-800 text-white rounded hover:bg-gray-700 transition"
+          >
+            ← Back to Stories
+          </Link>
+        </div>
+      </div>
+    )
+  }
+
+  if (!story) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-[var(--brand-light)]">
+        <div className="text-center">
+          <p className="text-gray-600">No story found</p>
+          <Link
+            href="/stories"
+            className="inline-block mt-4 text-blue-600 hover:underline"
+          >
+            ← Back to Stories
+          </Link>
+        </div>
+      </div>
+    )
+  }
 
   return (
-    <div className="px-4 md:px-8 lg:px-16 py-24 bg-[var(--brand-light)] text-[var(--brand-dark)]">
+    <div className="px-4 md:px-8 lg:px-16 py-24 bg-[var(--brand-light)] text-[var(--brand-dark)] min-h-screen">
       <article className="max-w-3xl mx-auto font-[D-DIN]">
         {/* Cover Image */}
         {story.image_url && (
-          <div className="relative w-full aspect-[16/9] mb-8">
+          <div className="relative w-full aspect-[16/9] mb-8 rounded-lg overflow-hidden shadow-lg">
             <Image
               src={story.image_url}
               alt={story.title}
               fill
-              className="object-cover rounded-lg"
+              className="object-cover"
+              priority
             />
           </div>
         )}
@@ -195,28 +269,46 @@ export default function StoryPageClient() {
 
         {/* Subtitle */}
         {story.subtitle && (
-          <p className="text-xl text-gray-600 mb-8">{story.subtitle}</p>
+          <p className="text-xl text-gray-600 mb-6">{story.subtitle}</p>
         )}
 
-        {/* Author */}
-        {story.author && (
-          <p className="text-sm text-gray-500 mb-8">By {story.author}</p>
-        )}
+        {/* Meta Info */}
+        <div className="flex items-center gap-4 text-sm text-gray-500 mb-8 pb-6 border-b border-gray-200">
+          {story.author && (
+            <span>By <strong>{story.author}</strong></span>
+          )}
+          {story.read_time_minutes && (
+            <>
+              <span>•</span>
+              <span>{story.read_time_minutes} min read</span>
+            </>
+          )}
+          {story.created_at && (
+            <>
+              <span>•</span>
+              <span>{new Date(story.created_at).toLocaleDateString('en-US', { 
+                year: 'numeric', 
+                month: 'long', 
+                day: 'numeric' 
+              })}</span>
+            </>
+          )}
+        </div>
 
         {/* Body Content - Render Tiptap JSON */}
-        <div className="prose prose-lg max-w-none space-y-4 text-[var(--brand-dark)]">
+        <div className="prose prose-lg max-w-none text-[var(--brand-dark)] leading-relaxed">
           {story.content && renderTiptapNode(story.content, 0)}
         </div>
 
         {/* CTA */}
-        <div className="mt-12 text-right italic text-sm">
+        <div className="mt-16 pt-8 border-t border-gray-200 text-right">
           <Link
             href="https://substack.com/@samaacircle"
             target="_blank"
             rel="noopener noreferrer"
-            className="text-gray-600 hover:text-gray-800 underline"
+            className="text-gray-600 hover:text-gray-800 underline italic text-sm transition"
           >
-            -{">"}It's your turn to twist it
+            It's your turn to twist it →
           </Link>
         </div>
 
@@ -224,9 +316,10 @@ export default function StoryPageClient() {
         <div className="mt-8">
           <Link
             href="/stories"
-            className="text-sm text-gray-600 hover:text-gray-800 underline"
+            className="inline-flex items-center gap-2 text-sm text-gray-600 hover:text-gray-800 transition"
           >
-            ← Back to all stories
+            <span>←</span>
+            <span>Back to all stories</span>
           </Link>
         </div>
       </article>
