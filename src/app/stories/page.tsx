@@ -71,6 +71,26 @@ export default function StoriesPage() {
     )
   }
 
+  if (error) {
+    return (
+      <div className="pt-45 bg-light min-h-screen px-0">
+        <h1 className="font-[TANTanglon] text-base md:text-xm font-light tracking-widest mb-5">
+          STORIES
+        </h1>
+        <div className="text-center py-12">
+          <p className="text-red-500 mb-2">Error loading stories</p>
+          <p className="text-sm text-gray-500">{error}</p>
+          <button 
+            onClick={() => window.location.reload()} 
+            className="mt-4 px-4 py-2 bg-gray-800 text-white rounded hover:bg-gray-700"
+          >
+            Retry
+          </button>
+        </div>
+      </div>
+    )
+  }
+
   if (stories.length === 0) {
     return (
       <div className="pt-45 bg-light min-h-screen px-0">
@@ -88,13 +108,21 @@ export default function StoriesPage() {
         STORIES
       </h1>
 
+      {/* Debug info - remove in production */}
+      {process.env.NODE_ENV === 'development' && (
+        <div className="px-4 py-2 bg-yellow-100 text-xs">
+          <p>Total stories: {stories.length}</p>
+          <p>API URL: {API_BASE_URL}/api/v1/stories/</p>
+        </div>
+      )}
+
       {chunk(stories, 4).map((row, rowIndex) => (
         <div key={rowIndex} className="grid grid-cols-2 sm:grid-cols-4">
           {row.map((story, i) => {
             const idx = rowIndex * 4 + i
             return (
               <Link
-                key={story.slug}
+                key={story.id}
                 href={`/stories/${story.slug}`}
                 onMouseEnter={() => onEnter(idx)}
                 onMouseLeave={() => onLeave(idx)}
@@ -120,6 +148,13 @@ export default function StoriesPage() {
                     {story.title}
                   </h2>
                 </div>
+                
+                {/* Optional: Add read time badge */}
+                {story.read_time_minutes && (
+                  <div className="absolute top-2 right-2 bg-black/70 text-white text-xs px-2 py-1 rounded">
+                    {story.read_time_minutes} min
+                  </div>
+                )}
               </Link>
             )
           })}
