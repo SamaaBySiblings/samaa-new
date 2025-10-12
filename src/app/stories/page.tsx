@@ -148,13 +148,6 @@ export default function StoriesPage() {
                     {story.title}
                   </h2>
                 </div>
-                
-                {/* Optional: Add read time badge */}
-                {story.read_time_minutes && (
-                  <div className="absolute top-2 right-2 bg-black/70 text-white text-xs px-2 py-1 rounded">
-                    {story.read_time_minutes} min
-                  </div>
-                )}
               </Link>
             )
           })}
