@@ -25,9 +25,12 @@ const handleSubscribe = async () => {
       `${process.env.NEXT_PUBLIC_SERVER_URL}/api/v1/subscribe`,
       { email }
     );
-    if (res.status !== 200) throw new Error("Failed to subscribe");
-    setSubscribed(true);
-    setEmail("");
+    if (res.status === 201 || res.status === 200) {
+      setSubscribed(true);
+      setEmail("");
+    } else {
+      throw new Error("Failed to subscribe");
+    }
   } catch (err: unknown) {
     if (axios.isAxiosError(err)) {
       setError(err.response?.data?.message || "Error subscribing");
