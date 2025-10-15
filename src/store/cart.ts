@@ -3,6 +3,8 @@ import { persist } from "zustand/middleware";
 import { useUIStore } from "./ui"; // Import UI store here
 
 export interface CartItem {
+  id: any;
+  sku: string;
   slug: string;
   name: string;
   quantity: number;

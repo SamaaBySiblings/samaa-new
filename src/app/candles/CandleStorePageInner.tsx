@@ -127,6 +127,8 @@ export default function CandleStorePageInner({
       price: product.price,
       quantity: 1,
       image: product.image,
+      id: undefined,
+      sku: ""
     });
     toast.success(`"${product.name}" to cart`);
   };
@@ -275,7 +277,7 @@ export default function CandleStorePageInner({
           <div>
             <h4 className="font-semibold font-[D-DIN] mb-2">by Scent</h4>
             <div className="flex flex-col gap-2">
-              {["morga", "sandalwood", "lemon grass", "jasmine"].map(
+              {["mogra", "sandalwood", "lemon grass", "jasmine"].map(
                 (scent) => {
                   const isSelected = selectedScents.includes(scent);
                   return (
