@@ -88,6 +88,8 @@ export default function CandlePage({ params }: CandlePageProps) {
         price,
         quantity: 1,
         image: product.images[0],
+        id: undefined,
+        sku: ""
       });
       toast.success("Bundle added to cart!");
       setBundleSelection([]);
@@ -98,6 +100,8 @@ export default function CandlePage({ params }: CandlePageProps) {
         price: product.price * qty,
         quantity: qty,
         image: product.images[0],
+        id: undefined,
+        sku: ""
       });
       toast.success("Added to cart!");
     }
