@@ -31,6 +31,8 @@ export default function CandleCard({
       price,
       quantity: 1,
       image,
+      id: undefined,
+      sku: ""
     });
     toast.success("Added to cart!");
   };
