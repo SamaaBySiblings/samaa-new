@@ -1,4 +1,11 @@
+import { Metadata } from "next";
 import Image from "next/image";
+
+export const metadata: Metadata = {
+  title: "Privacy Policy | SAMAA Candles",
+  description:
+    "Read how SAMAA protects your data and privacy during your journey with us.",
+};
 
 export default function PrivacyPolicyPage() {
   return (

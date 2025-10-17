@@ -1,4 +1,11 @@
+import { Metadata } from "next";
 import Image from "next/image";
+
+export const metadata: Metadata = {
+  title: "Shipping & Payments - SAMAA Candle Orders",
+  description:
+    "Learn about shipping, payments, and delivery timelines for your handcrafted SAMAA candles worldwide.",
+};
 
 export default function HomePage() {
   return (

@@ -1,4 +1,12 @@
+import { Metadata } from "next";
 import Image from "next/image";
+
+export const metadata: Metadata = {
+  title: "Terms & Conditions | SAMAA Candles",
+  description:
+    "Understand the terms of using SAMAA's website and services before placing your order.",
+};
+
 
 export default function TermsAndConditionsPage() {
   return (

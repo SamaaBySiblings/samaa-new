@@ -1,5 +1,11 @@
-/* File: samaa/app/care/page.tsx */
+import { Metadata } from "next";
 import Image from "next/image";
+
+export const metadata: Metadata = {
+  title: "Candle Care - Burn Beautifully | SAMAA",
+  description:
+    "Get the most from your SAMAA candle—tips for a safe, long-lasting, clean burn with optimal fragrance throw.",
+};
 
 export default function CarePage() {
   return (

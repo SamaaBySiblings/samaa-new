@@ -1,4 +1,12 @@
+import { Metadata } from "next";
 import Image from "next/image";
+
+export const metadata: Metadata = {
+  title: "Refunds & Returns - SAMAA Candles",
+  description:
+    "Easy return and refund process for all SAMAA candle orders. We're here to make it right.",
+};
+
 
 export default function RefundPolicyPage() {
   return (

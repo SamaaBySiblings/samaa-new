@@ -1,5 +1,12 @@
 
+import { Metadata } from "next";
 import Image from "next/image";
+
+export const metadata: Metadata = {
+  title: "Luxury Candles - Premium Soy Collection | SAMAA",
+  description:
+    "Refined soy wax candles with rare scents and artisanal design. Discover SAMAA's luxury edit for collectors and connoisseurs.",
+};
 
 export default function LuxuryPage() {
   return (

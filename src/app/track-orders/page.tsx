@@ -1,6 +1,7 @@
 // app/track-order/page.tsx - IMPROVED VERSION
 "use client";
 
+import { Metadata } from "next";
 import { useState } from "react";
 import toast, { Toaster } from "react-hot-toast";
 
@@ -38,6 +39,12 @@ type TrackingData = {
     location: string;
     activities: string;
   }>;
+};
+
+export const metadata: Metadata = {
+  title: "Track Your Order - SAMAA Candle Delivery",
+  description:
+    "Track your order from SAMAA—real-time updates on your handcrafted candles, beautifully packed and shipped with care.",
 };
 
 const API_BASE = process.env.NEXT_PUBLIC_API_URL || "https://api.samaabysiblings.com/backend/api/v1";

@@ -1,26 +1,11 @@
-"use client";
-import { Suspense } from "react";
-import { useSearchParams } from "next/navigation";
-import CandleStorePageInner from "./CandleStorePageInner";
+import { Metadata } from "next";
+import CandleStorePage from "@/app/candles/CandleStorePage";
+export const metadata: Metadata = {
+  title: "Candles - SAMAA Fragrance Store",
+  description: "Explore and filter luxury candles by scent and category.",
+};
 
 
-// Create a separate component for the search params logic
-function CandleStoreContent() {
-  const searchParams = useSearchParams();
-  const category = searchParams.get("category") || "";
-  const scent = searchParams.get("scent") || "";
-
-  return (
-    <CandleStorePageInner initialCategory={category} initialScent={scent} />
-  );
-}
-
-
-// Main component with Suspense boundary
-export default function CandleStorePage() {
-  return (
-    <Suspense fallback={<div>Loading...</div>}>
-      <CandleStoreContent />
-    </Suspense>
-  );
+export default function Page() {
+  return <CandleStorePage />;
 }
