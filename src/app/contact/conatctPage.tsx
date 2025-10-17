@@ -5,13 +5,6 @@ import { useEffect } from "react";
 declare global {
   interface Window {
     Calendly: {
-      initBadgeWidget: (options: {
-        url: string;
-        text: string;
-        color: string;
-        textColor: string;
-        branding: boolean;
-      }) => void;
       initPopupWidget: (options: { url: string }) => void;
     };
   }
@@ -31,8 +24,6 @@ export default function ContactPage() {
     link.rel = "stylesheet";
     document.head.appendChild(link);
 
-    // Badge widget removed - only using popup widget
-
     return () => {
       // Cleanup script and link when component unmounts
       if (document.head.contains(script)) {
@@ -44,7 +35,8 @@ export default function ContactPage() {
     };
   }, []);
 
-  const openCalendlyPopup = () => {
+  const openCalendlyPopup = (e: React.MouseEvent) => {
+    e.preventDefault();
     if (window.Calendly) {
       window.Calendly.initPopupWidget({
         url: "https://calendly.com/samaabysiblings",
@@ -116,12 +108,13 @@ export default function ContactPage() {
               Schedule a personalized fragrance consultation with our experts.
               Discover your signature scent in a one-on-one session.
             </p>
-            <button
+            <a
+              href=""
               onClick={openCalendlyPopup}
-              className="bg-[#4d272e] text-white font-[D-DIN] text-xs px-6 py-6 cursor-pointer w-full mb-4 hover:bg-white/80 hover:text-[#4d272e] transition-all duration-300"
+              className="block bg-[#4d272e] text-white font-[D-DIN] text-xs px-6 py-6 cursor-pointer w-full mb-4 hover:bg-white/80 hover:text-[#4d272e] transition-all duration-300 text-center"
             >
               BOOK AN APPOINTMENT
-            </button>
+            </a>
           </div>
         </div>
       </div>
