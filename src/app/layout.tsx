@@ -10,6 +10,15 @@ import { Analytics } from "@vercel/analytics/next";
 import CustomCursor from "@/components/CustomCursor";
 import ToastProvider from "@/lib/toastConfig";
 import { Suspense } from "react";
+import { Pinyon_Script } from 'next/font/google'
+
+const pinyonScript = Pinyon_Script({
+  weight: '400',
+  subsets: ['latin'],
+  display: 'swap',
+  fallback: ['cursive'],
+  variable: '--font-pinyon-script', // CSS variable name
+})
 
 // GTM ID
 const GTM_ID = "GTM-5F66PPD9";
@@ -20,7 +29,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en">
+    <html lang="en" className={pinyonScript.variable}>
       <head>
         {/* Google Site Verification */}
         <meta

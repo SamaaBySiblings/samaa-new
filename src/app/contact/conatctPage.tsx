@@ -1,100 +1,56 @@
 "use client";
-import { useState } from "react";
+import { useEffect } from "react";
+
+// TypeScript declaration for Calendly
+declare global {
+  interface Window {
+    Calendly: {
+      initBadgeWidget: (options: {
+        url: string;
+        text: string;
+        color: string;
+        textColor: string;
+        branding: boolean;
+      }) => void;
+      initPopupWidget: (options: { url: string }) => void;
+    };
+  }
+}
 
 export default function ContactPage() {
-  const [showModal, setShowModal] = useState(false);
-  const [formData, setFormData] = useState({
-    name: "",
-    email: "",
-    phone: "",
-    date: "",
-    time: "",
-    message: "",
-  });
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [submitStatus, setSubmitStatus] = useState<{
-    type: "success" | "error" | null;
-    message: string;
-  }>({ type: null, message: "" });
+  useEffect(() => {
+    // Load Calendly widget script
+    const script = document.createElement("script");
+    script.src = "https://assets.calendly.com/assets/external/widget.js";
+    script.async = true;
+    document.head.appendChild(script);
 
-  const timeSlots = [
-    "10:00 AM",
-    "11:00 AM",
-    "12:00 PM",
-    "1:00 PM",
-    "2:00 PM",
-    "3:00 PM",
-    "4:00 PM",
-    "5:00 PM",
-    "6:00 PM",
-  ];
+    // Load Calendly CSS
+    const link = document.createElement("link");
+    link.href = "https://assets.calendly.com/assets/external/widget.css";
+    link.rel = "stylesheet";
+    document.head.appendChild(link);
 
-  const handleInputChange = (
-    e: React.ChangeEvent<
-      HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
-    >
-  ) => {
-    const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
-  };
+    // Badge widget removed - only using popup widget
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setIsSubmitting(true);
-    setSubmitStatus({ type: null, message: "" });
-
-    try {
-      // Call your API endpoint
-      const response = await fetch("/api/book-appointment", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(formData),
-      });
-
-      const data = await response.json();
-
-      if (response.ok) {
-        setSubmitStatus({
-          type: "success",
-          message:
-            "Appointment booked successfully! You'll receive a Google Meet link via email.",
-        });
-        // Reset form
-        setFormData({
-          name: "",
-          email: "",
-          phone: "",
-          date: "",
-          time: "",
-          message: "",
-        });
-        // Close modal after 3 seconds
-        setTimeout(() => {
-          setShowModal(false);
-          setSubmitStatus({ type: null, message: "" });
-        }, 3000);
-      } else {
-        throw new Error(data.error || "Failed to book appointment");
+    return () => {
+      // Cleanup script and link when component unmounts
+      if (document.head.contains(script)) {
+        document.head.removeChild(script);
       }
-    } catch (error) {
-      setSubmitStatus({
-        type: "error",
-        message:
-          error instanceof Error
-            ? error.message
-            : "Failed to book appointment. Please try again.",
-      });
-    } finally {
-      setIsSubmitting(false);
-    }
-  };
+      if (document.head.contains(link)) {
+        document.head.removeChild(link);
+      }
+    };
+  }, []);
 
-  // Get minimum date (today)
-  const getMinDate = () => {
-    const today = new Date();
-    return today.toISOString().split("T")[0];
+  const openCalendlyPopup = () => {
+    if (window.Calendly) {
+      window.Calendly.initPopupWidget({
+        url: "https://calendly.com/samaabysiblings",
+      });
+    }
+    return false;
   };
 
   return (
@@ -161,7 +117,7 @@ export default function ContactPage() {
               Discover your signature scent in a one-on-one session.
             </p>
             <button
-              onClick={() => setShowModal(true)}
+              onClick={openCalendlyPopup}
               className="bg-[#4d272e] text-white font-[D-DIN] text-xs px-6 py-6 cursor-pointer w-full mb-4 hover:bg-white/80 hover:text-[#4d272e] transition-all duration-300"
             >
               BOOK AN APPOINTMENT
@@ -169,138 +125,6 @@ export default function ContactPage() {
           </div>
         </div>
       </div>
-
-      {/* Appointment Modal */}
-      {showModal && (
-        <div className="fixed inset-0 bg-white bg-opacity-50 flex items-center justify-center z-50 p-4">
-          <div className="bg-white max-w-md w-full p-8 relative max-h-[90vh] overflow-y-auto">
-            <button
-              onClick={() => setShowModal(false)}
-              className="absolute top-4 right-4 text-2xl text-gray-600 hover:text-gray-900"
-            >
-              ×
-            </button>
-
-            <h2 className="text-xl font-[D-DIN] text-[#4d272e] mb-6">
-              Book Your Appointment
-            </h2>
-
-            {submitStatus.type && (
-              <div
-                className={`mb-4 p-3 text-sm ${
-                  submitStatus.type === "success"
-                    ? "bg-green-100 text-green-800"
-                    : "bg-red-100 text-red-800"
-                }`}
-              >
-                {submitStatus.message}
-              </div>
-            )}
-
-            <form onSubmit={handleSubmit}>
-              <div className="mb-4">
-                <label className="block text-sm font-[D-DIN] text-[#4d272e] mb-2">
-                  Name *
-                </label>
-                <input
-                  type="text"
-                  name="name"
-                  value={formData.name}
-                  onChange={handleInputChange}
-                  required
-                  className="w-full border border-gray-300 px-3 py-2 text-sm font-[D-DIN] focus:outline-none focus:border-[#4d272e]"
-                />
-              </div>
-
-              <div className="mb-4">
-                <label className="block text-sm font-[D-DIN] text-[#4d272e] mb-2">
-                  Email *
-                </label>
-                <input
-                  type="email"
-                  name="email"
-                  value={formData.email}
-                  onChange={handleInputChange}
-                  required
-                  className="w-full border border-gray-300 px-3 py-2 text-sm font-[D-DIN] focus:outline-none focus:border-[#4d272e]"
-                />
-              </div>
-
-              <div className="mb-4">
-                <label className="block text-sm font-[D-DIN] text-[#4d272e] mb-2">
-                  Phone *
-                </label>
-                <input
-                  type="tel"
-                  name="phone"
-                  value={formData.phone}
-                  onChange={handleInputChange}
-                  required
-                  placeholder="+91 XXXXX XXXXX"
-                  className="w-full border border-gray-300 px-3 py-2 text-sm font-[D-DIN] focus:outline-none focus:border-[#4d272e]"
-                />
-              </div>
-
-              <div className="mb-4">
-                <label className="block text-sm font-[D-DIN] text-[#4d272e] mb-2">
-                  Preferred Date *
-                </label>
-                <input
-                  type="date"
-                  name="date"
-                  value={formData.date}
-                  onChange={handleInputChange}
-                  min={getMinDate()}
-                  required
-                  className="w-full border border-gray-300 px-3 py-2 text-sm font-[D-DIN] focus:outline-none focus:border-[#4d272e]"
-                />
-              </div>
-
-              <div className="mb-4">
-                <label className="block text-sm font-[D-DIN] text-[#4d272e] mb-2">
-                  Preferred Time *
-                </label>
-                <select
-                  name="time"
-                  value={formData.time}
-                  onChange={handleInputChange}
-                  required
-                  className="w-full border border-gray-300 px-3 py-2 text-sm font-[D-DIN] focus:outline-none focus:border-[#4d272e]"
-                >
-                  <option value="">Select a time</option>
-                  {timeSlots.map((slot) => (
-                    <option key={slot} value={slot}>
-                      {slot}
-                    </option>
-                  ))}
-                </select>
-              </div>
-
-              <div className="mb-6">
-                <label className="block text-sm font-[D-DIN] text-[#4d272e] mb-2">
-                  Message (Optional)
-                </label>
-                <textarea
-                  name="message"
-                  value={formData.message}
-                  onChange={handleInputChange}
-                  rows={3}
-                  className="w-full border border-gray-300 px-3 py-2 text-sm font-[D-DIN] focus:outline-none focus:border-[#4d272e]"
-                  placeholder="Tell us about your preferences..."
-                />
-              </div>
-
-              <button
-                type="submit"
-                disabled={isSubmitting}
-                className="w-full bg-[#4d272e] text-white font-[D-DIN] text-sm px-6 py-3 hover:bg-opacity-90 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
-              >
-                {isSubmitting ? "BOOKING..." : "CONFIRM APPOINTMENT"}
-              </button>
-            </form>
-          </div>
-        </div>
-      )}
     </div>
   );
 }
