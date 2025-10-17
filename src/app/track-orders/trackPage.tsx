@@ -40,8 +40,9 @@ type TrackingData = {
   }>;
 };
 
-
-const API_BASE = process.env.NEXT_PUBLIC_API_URL || "https://api.samaabysiblings.com/backend/api/v1";
+const API_BASE =
+  process.env.NEXT_PUBLIC_API_URL ||
+  "https://api.samaabysiblings.com/backend/api/v1";
 
 export default function TrackOrderPage() {
   const [awb, setAwb] = useState("");
@@ -66,7 +67,7 @@ export default function TrackOrderPage() {
       const res = await fetch(
         `${API_BASE}/tracking/track/${awb}?email=${encodeURIComponent(email)}`
       );
-      
+
       const data = await res.json();
 
       if (!res.ok || !data.success) {
@@ -77,7 +78,8 @@ export default function TrackOrderPage() {
       setTracking(data.data.tracking);
       toast.success("Order found!");
     } catch (err) {
-      const message = err instanceof Error ? err.message : "Something went wrong";
+      const message =
+        err instanceof Error ? err.message : "Something went wrong";
       setError(message);
       toast.error(message);
     } finally {
@@ -108,7 +110,7 @@ export default function TrackOrderPage() {
   return (
     <div className="min-h-screen bg-[#f5f5eb]">
       <Toaster position="top-right" />
-      
+
       {/* Header */}
       <div className="pt-28 pb-8 px-6 md:px-20">
         <h1 className="text-3xl font-[TANTanglon] uppercase tracking-wide">
@@ -154,11 +156,10 @@ export default function TrackOrderPage() {
             <button
               onClick={handleTrack}
               disabled={loading || !awb || !email}
-              className={`w-full px-6 py-4 text-white font-[D-DIN] text-sm transition-colors
-                ${loading || !awb || !email
-                  ? "bg-gray-400 cursor-not-allowed"
-                  : "bg-[#4d272e] hover:bg-[#3d1f24]"
-                }`}
+              className={`block bg-[#4d272e] text-white font-[D-DIN] text-xs px-6 py-6 cursor-pointer w-full mb-4 text-center transition-all duration-300
+    ${!loading && awb && email ? "hover:bg-white/80 hover:text-[#4d272e]" : ""}
+    ${loading ? "opacity-75 cursor-wait" : ""}
+  `}
             >
               {loading ? (
                 <span className="flex items-center justify-center">
@@ -219,7 +220,9 @@ export default function TrackOrderPage() {
                   </div>
                   <div className="bg-gray-50 p-4 rounded">
                     <p className="text-xs text-gray-500 mb-1">
-                      {order.delivered_at ? "Delivered On" : "Expected Delivery"}
+                      {order.delivered_at
+                        ? "Delivered On"
+                        : "Expected Delivery"}
                     </p>
                     <p className="font-medium font-[D-DIN]">
                       {order.delivered_at
@@ -231,47 +234,48 @@ export default function TrackOrderPage() {
               </div>
 
               {/* Tracking Timeline */}
-              {tracking.shipment_track && tracking.shipment_track.length > 0 && (
-                <div className="bg-white rounded-lg shadow-md p-6">
-                  <h3 className="text-lg font-semibold mb-4 font-[D-DIN]">
-                    Shipment Timeline
-                  </h3>
-                  <div className="space-y-4">
-                    {tracking.shipment_track.map((track, index) => (
-                      <div key={index} className="flex gap-4">
-                        <div className="flex flex-col items-center">
-                          <div
-                            className={`w-3 h-3 rounded-full ${
-                              index === 0 ? "bg-green-500" : "bg-gray-300"
-                            }`}
-                          />
-                          {index < tracking.shipment_track!.length - 1 && (
-                            <div className="w-0.5 h-full bg-gray-200 mt-1" />
-                          )}
-                        </div>
-                        <div className="flex-1 pb-4">
-                          <p className="font-medium text-sm font-[D-DIN]">
-                            {track.current_status}
-                          </p>
-                          <p className="text-xs text-gray-500 mt-1">
-                            {formatDate(track.date)}
-                          </p>
-                          {track.location && (
-                            <p className="text-xs text-gray-600 mt-1">
-                              📍 {track.location}
+              {tracking.shipment_track &&
+                tracking.shipment_track.length > 0 && (
+                  <div className="bg-white rounded-lg shadow-md p-6">
+                    <h3 className="text-lg font-semibold mb-4 font-[D-DIN]">
+                      Shipment Timeline
+                    </h3>
+                    <div className="space-y-4">
+                      {tracking.shipment_track.map((track, index) => (
+                        <div key={index} className="flex gap-4">
+                          <div className="flex flex-col items-center">
+                            <div
+                              className={`w-3 h-3 rounded-full ${
+                                index === 0 ? "bg-green-500" : "bg-gray-300"
+                              }`}
+                            />
+                            {index < tracking.shipment_track!.length - 1 && (
+                              <div className="w-0.5 h-full bg-gray-200 mt-1" />
+                            )}
+                          </div>
+                          <div className="flex-1 pb-4">
+                            <p className="font-medium text-sm font-[D-DIN]">
+                              {track.current_status}
                             </p>
-                          )}
-                          {track.activities && (
-                            <p className="text-xs text-gray-600 mt-1">
-                              {track.activities}
+                            <p className="text-xs text-gray-500 mt-1">
+                              {formatDate(track.date)}
                             </p>
-                          )}
+                            {track.location && (
+                              <p className="text-xs text-gray-600 mt-1">
+                                📍 {track.location}
+                              </p>
+                            )}
+                            {track.activities && (
+                              <p className="text-xs text-gray-600 mt-1">
+                                {track.activities}
+                              </p>
+                            )}
+                          </div>
                         </div>
-                      </div>
-                    ))}
+                      ))}
+                    </div>
                   </div>
-                </div>
-              )}
+                )}
 
               {/* Order Items */}
               <div className="bg-white rounded-lg shadow-md p-6">
@@ -286,7 +290,9 @@ export default function TrackOrderPage() {
                     >
                       <div>
                         <p className="font-medium font-[D-DIN]">{item.name}</p>
-                        <p className="text-sm text-gray-500">Qty: {item.quantity}</p>
+                        <p className="text-sm text-gray-500">
+                          Qty: {item.quantity}
+                        </p>
                       </div>
                       <p className="font-medium font-[D-DIN]">
                         ₹{(item.price * item.quantity).toFixed(2)}
