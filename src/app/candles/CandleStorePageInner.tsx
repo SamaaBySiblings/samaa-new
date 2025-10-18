@@ -13,6 +13,7 @@ import { useRouter } from "next/navigation";
 
 export interface Product {
   _id: string;
+  id?: number;
   name: string;
   slug: string;
   price: number;
@@ -20,7 +21,10 @@ export interface Product {
   scent?: string;
   category?: string;
   isBundle?: boolean;
-  stock?: number;
+  stock: number;
+  in_stock: boolean;
+  low_stock_threshold?: number;
+  stock_status?: 'in_stock' | 'low_stock' | 'out_of_stock';
   description?: string;
   createdAt?: string;
 }
@@ -29,6 +33,35 @@ function formatPrice(priceInINR: number, currency: string) {
   const converted = convertPrice(priceInINR, currency);
   const symbol = getCurrencySymbol(currency);
   return `${symbol}${converted.toFixed(2)}`;
+}
+
+// Stock Badge Component
+function StockBadge({ stock, stockStatus, inStock }: { 
+  stock: number; 
+  stockStatus?: string;
+  inStock: boolean;
+}) {
+  if (!inStock || stock <= 0) {
+    return (
+      <span className="inline-block px-2 py-1 text-xs font-medium bg-red-100 text-red-800 rounded">
+        Out of Stock
+      </span>
+    );
+  }
+
+  if (stockStatus === 'low_stock' || stock <= 10) {
+    return (
+      <span className="inline-block px-2 py-1 text-xs font-medium bg-yellow-100 text-yellow-800 rounded">
+        Only {stock} left
+      </span>
+    );
+  }
+
+  return (
+    <span className="inline-block px-2 py-1 text-xs font-medium bg-green-100 text-green-800 rounded">
+      In Stock
+    </span>
+  );
 }
 
 interface Props {
@@ -53,22 +86,19 @@ export default function CandleStorePageInner({
   const [selectedCategories, setSelectedCategories] = useState<string[]>(
     initialCategory ? [initialCategory] : []
   );
+  const [showOutOfStock, setShowOutOfStock] = useState(true);
 
   const filterRef = useRef<HTMLDivElement>(null);
 
-  // Whenever filters change, update the URL query params
+  // Update URL when filters change
   useEffect(() => {
     const params = new URLSearchParams();
-
     if (selectedScents.length) params.set("scent", selectedScents.join(","));
     else params.delete("scent");
-
-    if (selectedCategories.length)
-      params.set("category", selectedCategories.join(","));
+    if (selectedCategories.length) params.set("category", selectedCategories.join(","));
     else params.delete("category");
 
     const queryString = params.toString();
-
     router.replace(`/candles?${queryString}`, { scroll: false });
   }, [selectedScents, selectedCategories, router]);
 
@@ -78,8 +108,8 @@ export default function CandleStorePageInner({
       try {
         const params: Record<string, string> = {};
         if (selectedScents.length) params.scent = selectedScents.join(",");
-        if (selectedCategories.length)
-          params.category = selectedCategories.join(",");
+        if (selectedCategories.length) params.category = selectedCategories.join(",");
+        if (!showOutOfStock) params.in_stock = 'true';
 
         const endpoint =
           Object.keys(params).length > 0
@@ -104,7 +134,7 @@ export default function CandleStorePageInner({
     };
 
     fetchProducts();
-  }, [selectedScents, selectedCategories]);
+  }, [selectedScents, selectedCategories, showOutOfStock]);
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -121,16 +151,22 @@ export default function CandleStorePageInner({
   }, [filterOpen]);
 
   const handleAddToCart = (product: Product) => {
+    // Check stock before adding
+    if (!product.in_stock || product.stock <= 0) {
+      toast.error("This item is out of stock");
+      return;
+    }
+
     addToCart({
       slug: product.slug,
       name: product.name,
       price: product.price,
       quantity: 1,
       image: product.image,
-      id: undefined,
-      sku: ""
+      id: product.id,
+      sku: product.slug,
     });
-    toast.success(`"${product.name}" to cart`);
+    toast.success(`"${product.name}" added to cart`);
   };
 
   const toggleFilterScent = (scent: string) => {
@@ -148,6 +184,7 @@ export default function CandleStorePageInner({
   const clearFilters = () => {
     setSelectedScents([]);
     setSelectedCategories([]);
+    setShowOutOfStock(true);
   };
 
   return (
@@ -170,55 +207,86 @@ export default function CandleStorePageInner({
                 <ProductPageSkeleton key={i} />
               ))
             ) : products.length > 0 ? (
-              products.map((product) => (
-                <div key={product.slug} className="group relative" tabIndex={0}>
-                  <div className="aspect-[4/5] w-full relative overflow-hidden bg-gray-200 lg:h-[450px]">
-                    <Image
-                      src={product.image}
-                      alt={product.name}
-                      fill
-                      className="object-cover transition duration-300 group-hover:opacity-80"
-                    />
+              products.map((product) => {
+                const isOutOfStock = !product.in_stock || product.stock <= 0;
+                
+                return (
+                  <div 
+                    key={product.slug} 
+                    className={`group relative ${isOutOfStock ? 'opacity-75' : ''}`} 
+                    tabIndex={0}
+                  >
+                    <div className="aspect-[4/5] w-full relative overflow-hidden bg-gray-200 lg:h-[450px]">
+                      <Image
+                        src={product.image}
+                        alt={product.name}
+                        fill
+                        className={`object-cover transition duration-300 ${
+                          isOutOfStock ? 'grayscale' : 'group-hover:opacity-80'
+                        }`}
+                      />
 
-                    <div className="absolute inset-0 flex flex-col items-center justify-center backdrop-blur-sm bg-white/30 opacity-0 group-hover:opacity-100 group-focus-within:opacity-100 transition-opacity">
-                      <Link
-                        href={`/candles/${product.slug}`}
-                        className="text-gray-800 font-[D-DIN] font-medium text-xs mb-5 hover:text-gray-600 transition"
-                      >
-                        View Product
-                      </Link>
+                      {/* Out of Stock Overlay */}
+                      {isOutOfStock && (
+                        <div className="absolute inset-0 flex items-center justify-center bg-black/40">
+                          <span className="bg-white px-4 py-2 font-[D-DIN] text-sm font-semibold">
+                            OUT OF STOCK
+                          </span>
+                        </div>
+                      )}
 
-                      {!product.isBundle ? (
-                        <button
-                          onClick={() => handleAddToCart(product)}
-                          className="text-white text-xs font-[D-DIN] uppercase bg-black hover:bg-[#323232] px-4 py-3 transition"
-                        >
-                          Add to Cart
-                        </button>
-                      ) : (
-                        <Link href={`/candles/${product.slug}`}>
-                          <button className="text-white font-[D-DIN] text-sm uppercase bg-black hover:bg-[#323232] px-3 py-2 transition">
-                            Make your pack
-                          </button>
-                        </Link>
+                      {/* Hover Actions */}
+                      {!isOutOfStock && (
+                        <div className="absolute inset-0 flex flex-col items-center justify-center backdrop-blur-sm bg-white/30 opacity-0 group-hover:opacity-100 group-focus-within:opacity-100 transition-opacity">
+                          <Link
+                            href={`/candles/${product.slug}`}
+                            className="text-gray-800 font-[D-DIN] font-medium text-xs mb-5 hover:text-gray-600 transition"
+                          >
+                            View Product
+                          </Link>
+
+                          {!product.isBundle ? (
+                            <button
+                              onClick={() => handleAddToCart(product)}
+                              className="text-white text-xs font-[D-DIN] uppercase bg-black hover:bg-[#323232] px-4 py-3 transition"
+                            >
+                              Add to Cart
+                            </button>
+                          ) : (
+                            <Link href={`/candles/${product.slug}`}>
+                              <button className="text-white font-[D-DIN] text-sm uppercase bg-black hover:bg-[#323232] px-3 py-2 transition">
+                                Make your pack
+                              </button>
+                            </Link>
+                          )}
+                        </div>
                       )}
                     </div>
-                  </div>
 
-                  <div className="mt-4 flex justify-between">
-                    <div>
-                      <h3 className="text-sm text-gray-700 font-[D-DIN] font-medium">
-                        <Link href={`/candles/${product.slug}`}>
-                          {product.name}
-                        </Link>
-                      </h3>
+                    <div className="mt-4">
+                      <div className="flex justify-between items-start mb-2">
+                        <div className="flex-1">
+                          <h3 className="text-sm text-gray-700 font-[D-DIN] font-medium">
+                            <Link href={`/candles/${product.slug}`}>
+                              {product.name}
+                            </Link>
+                          </h3>
+                        </div>
+                        <p className="text-sm font-[D-DIN] font-light text-gray-800 ml-2">
+                          {formatPrice(product.price, currency)}
+                        </p>
+                      </div>
+                      
+                      {/* Stock Badge */}
+                      <StockBadge 
+                        stock={product.stock} 
+                        stockStatus={product.stock_status}
+                        inStock={product.in_stock}
+                      />
                     </div>
-                    <p className="text-sm font-[D-DIN] font-light text-gray-800">
-                      {formatPrice(product.price, currency)}
-                    </p>
                   </div>
-                </div>
-              ))
+                );
+              })
             ) : (
               <p className="col-span-full font-[D-DIN] text-center text-gray-500 mt-20">
                 No candles found matching your filters.
@@ -274,48 +342,64 @@ export default function CandleStorePageInner({
         </div>
 
         <div className="p-4 overflow-y-auto h-[calc(100%-64px)] space-y-6">
+          {/* Stock Filter */}
+          <div>
+            <h4 className="font-semibold font-[D-DIN] mb-2">Availability</h4>
+            <label className="flex items-center gap-2 cursor-pointer">
+              <input
+                type="checkbox"
+                checked={showOutOfStock}
+                onChange={(e) => setShowOutOfStock(e.target.checked)}
+                className="h-4 w-4"
+              />
+              <span className="text-sm font-[D-DIN]">Show out of stock items</span>
+            </label>
+          </div>
+
+          {/* Scent Filter */}
           <div>
             <h4 className="font-semibold font-[D-DIN] mb-2">by Scent</h4>
             <div className="flex flex-col gap-2">
-              {["mogra", "sandalwood", "lemon grass", "jasmine"].map(
-                (scent) => {
-                  const isSelected = selectedScents.includes(scent);
-                  return (
-                    <div
-                      key={scent}
-                      onClick={() => toggleFilterScent(scent)}
-                      className={`cursor-pointer font-[D-DIN] text-sm transition-colors ${
-                        isSelected
-                          ? "text-[#262626] font-semibold decoration-black decoration-2"
-                          : "text-gray-700 decoration-gray-400 decoration-1 hover:decoration-black"
-                      }`}
-                    >
-                      {scent}
-                    </div>
-                  );
-                }
-              )}
+              {["mogra", "sandalwood", "lemon grass", "jasmine"].map((scent) => {
+                const isSelected = selectedScents.includes(scent);
+                return (
+                  <div
+                    key={scent}
+                    onClick={() => toggleFilterScent(scent)}
+                    className={`cursor-pointer font-[D-DIN] text-sm transition-colors ${
+                      isSelected
+                        ? "text-[#262626] font-semibold decoration-black decoration-2"
+                        : "text-gray-700 decoration-gray-400 decoration-1 hover:decoration-black"
+                    }`}
+                  >
+                    {scent}
+                  </div>
+                );
+              })}
             </div>
           </div>
 
-          <h4 className="font-semibold font-[D-DIN] mb-2">by Category</h4>
-          <div className="flex flex-col gap-2">
-            {["soft", "sharp"].map((cat) => {
-              const isSelected = selectedCategories.includes(cat);
-              return (
-                <div
-                  key={cat}
-                  onClick={() => toggleFilterCategory(cat)}
-                  className={`cursor-pointer text-sm decoration-1 ${
-                    isSelected
-                      ? "font-semibold text-[#262626]"
-                      : "text-gray-700"
-                  }`}
-                >
-                  {cat}
-                </div>
-              );
-            })}
+          {/* Category Filter */}
+          <div>
+            <h4 className="font-semibold font-[D-DIN] mb-2">by Category</h4>
+            <div className="flex flex-col gap-2">
+              {["soft", "sharp"].map((cat) => {
+                const isSelected = selectedCategories.includes(cat);
+                return (
+                  <div
+                    key={cat}
+                    onClick={() => toggleFilterCategory(cat)}
+                    className={`cursor-pointer text-sm decoration-1 ${
+                      isSelected
+                        ? "font-semibold text-[#262626]"
+                        : "text-gray-700"
+                    }`}
+                  >
+                    {cat}
+                  </div>
+                );
+              })}
+            </div>
           </div>
 
           <button
