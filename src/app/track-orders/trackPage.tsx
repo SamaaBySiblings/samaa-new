@@ -108,71 +108,77 @@ export default function TrackOrderPage() {
   };
 
   return (
-    <div className="min-h-screen bg-[#f5f5eb]">
-      <Toaster position="top-right" />
+    <div
+  className="min-h-screen"
+  style={{ backgroundColor: "#f5f5eb", position: "relative" }}
+>
+  <Toaster position="top-right" />
 
-      {/* Header */}
-      <div className="pt-28 pb-8 px-6 md:px-20">
-        <h1 className="text-3xl font-[TANTanglon] uppercase tracking-wide">
-          Track Your Order
-        </h1>
-        <p className="text-sm text-gray-600 mt-2 font-[D-DIN]">
-          Enter your AWB code and email to track your shipment
-        </p>
-      </div>
+  {/* Header */}
+  <div className="pt-28 pb-8 px-6 md:px-20">
+    <h1
+      className="text-xs md:text-sm font-normal font-[TANTanglon] uppercase tracking-wide p-6"
+      style={{ position: "absolute", top: "100px", left: "0" }}
+    >
+      Track Order
+    </h1>
+  </div>
 
-      {/* Search Form */}
-      <div className="px-6 md:px-20 pb-10">
-        <div className="max-w-2xl mx-auto bg-white p-8 rounded-lg shadow-md">
-          <div className="space-y-6">
-            <div>
-              <label className="block text-sm font-medium mb-2 font-[D-DIN]">
-                AWB / Tracking Number *
-              </label>
-              <input
-                type="text"
-                placeholder="Enter tracking number"
-                value={awb}
-                onChange={(e) => setAwb(e.target.value.trim())}
-                className="w-full px-4 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#4d272e] font-[D-DIN]"
-                onKeyPress={(e) => e.key === "Enter" && handleTrack()}
-              />
-            </div>
-
-            <div>
-              <label className="block text-sm font-medium mb-2 font-[D-DIN]">
-                Email Address *
-              </label>
-              <input
-                type="email"
-                placeholder="Email used during checkout"
-                value={email}
-                onChange={(e) => setEmail(e.target.value.trim())}
-                className="w-full px-4 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#4d272e] font-[D-DIN]"
-                onKeyPress={(e) => e.key === "Enter" && handleTrack()}
-              />
-            </div>
-
-            <button
-              onClick={handleTrack}
-              disabled={loading || !awb || !email}
-              className={`block bg-[#4d272e] text-white font-[D-DIN] text-xs px-6 py-6 cursor-pointer w-full mb-4 text-center transition-all duration-300
-    ${!loading && awb && email ? "hover:bg-white/80 hover:text-[#4d272e]" : ""}
-    ${loading ? "opacity-75 cursor-wait" : ""}
-  `}
-            >
-              {loading ? (
-                <span className="flex items-center justify-center">
-                  <span className="animate-spin border-2 border-white border-t-transparent rounded-full h-4 w-4 inline-block mr-2" />
-                  Tracking...
-                </span>
-              ) : (
-                "TRACK ORDER"
-              )}
-            </button>
-          </div>
+  {/* Search Form */}
+  <div className="pt-28 pb-20 px-6 md:px-20 min-h-screen flex items-center justify-center">
+    <div className="max-w-md w-full">
+      <div className="p-6 mx-auto space-y-6">
+        {/* AWB Field */}
+        <div>
+          <label className="block text-sm font-medium mb-2 font-[D-DIN]">
+            AWB / Tracking Number *
+          </label>
+          <input
+            type="text"
+            placeholder="Enter tracking number"
+            value={awb}
+            onChange={(e) => setAwb(e.target.value.trim())}
+            className="w-full px-4 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#4d272e] font-[D-DIN]"
+            onKeyPress={(e) => e.key === "Enter" && handleTrack()}
+          />
         </div>
+
+        {/* Email Field */}
+        <div>
+          <label className="block text-sm font-medium mb-2 font-[D-DIN]">
+            Email Address *
+          </label>
+          <input
+            type="email"
+            placeholder="Email used during checkout"
+            value={email}
+            onChange={(e) => setEmail(e.target.value.trim())}
+            className="w-full px-4 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#4d272e] font-[D-DIN]"
+            onKeyPress={(e) => e.key === "Enter" && handleTrack()}
+          />
+        </div>
+
+        {/* Track Button */}
+        <button
+          onClick={handleTrack}
+          disabled={loading || !awb || !email}
+          className={`block bg-[#4d272e] text-white font-[D-DIN] text-xs px-6 py-6 cursor-pointer w-full text-center transition-all duration-300
+            ${!loading && awb && email ? "hover:bg-white/80 hover:text-[#4d272e]" : ""}
+            ${loading ? "opacity-75 cursor-wait" : ""}
+          `}
+        >
+          {loading ? (
+            <span className="flex items-center justify-center">
+              <span className="animate-spin border-2 border-white border-t-transparent rounded-full h-4 w-4 inline-block mr-2" />
+              Tracking...
+            </span>
+          ) : (
+            "TRACK ORDER"
+          )}
+        </button>
       </div>
+    </div>
+  </div>
 
       {/* Results */}
       {(order || error) && (
