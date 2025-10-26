@@ -1,8 +1,6 @@
-// app/track-order/page.tsx - IMPROVED VERSION
 "use client";
 
 import { useState } from "react";
-import toast, { Toaster } from "react-hot-toast";
 
 type OrderData = {
   id: number;
@@ -32,6 +30,7 @@ type TrackingData = {
   current_city?: string;
   destination?: string;
   delivered_on?: string;
+  delivered_to?: string;
   shipment_track?: Array<{
     current_status: string;
     date: string;
@@ -44,6 +43,59 @@ const API_BASE =
   process.env.NEXT_PUBLIC_API_URL ||
   "https://api.samaabysiblings.com/backend/api/v1";
 
+// Shipment Timeline Component
+function ShipmentTimeline({ status, courier, awb, etd }: {
+  status: string;
+  courier: string;
+  awb: string;
+  etd?: string;
+}) {
+  const stages = ["Order Placed", "In Transit", "Out for Delivery", "Delivered"];
+  const currentStageIndex = 
+    status.toLowerCase().includes("delivered") ? 3 :
+    status.toLowerCase().includes("out for delivery") ? 2 :
+    status.toLowerCase().includes("transit") || status.toLowerCase().includes("shipped") ? 1 : 0;
+
+  return (
+    <div className="space-y-4">
+      <div className="flex items-center justify-between text-sm">
+        <span className="font-[D-DIN]">Status: <strong>{status}</strong></span>
+        {etd && <span className="font-[D-DIN]">ETD: {etd}</span>}
+      </div>
+      
+      <div className="relative flex justify-between items-center">
+        {stages.map((stage, index) => (
+          <div key={stage} className="flex flex-col items-center relative z-10">
+            <div
+              className={`w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold transition-colors ${
+                index <= currentStageIndex
+                  ? "bg-[#4d272e] text-white"
+                  : "bg-gray-300 text-gray-600"
+              }`}
+            >
+              {index + 1}
+            </div>
+            <span className="mt-2 text-xs font-[D-DIN] text-center max-w-[80px]">
+              {stage}
+            </span>
+          </div>
+        ))}
+        <div className="absolute top-4 left-0 right-0 h-1 bg-gray-300 -z-0" style={{ width: "100%", margin: "0 auto" }}>
+          <div
+            className="h-full bg-[#4d272e] transition-all duration-500"
+            style={{ width: `${(currentStageIndex / (stages.length - 1)) * 100}%` }}
+          />
+        </div>
+      </div>
+
+      <div className="mt-4 text-sm text-gray-600">
+        <p><strong className="font-[D-DIN]">Courier:</strong> {courier}</p>
+        <p><strong className="font-[D-DIN]">AWB Code:</strong> {awb}</p>
+      </div>
+    </div>
+  );
+}
+
 export default function TrackOrderPage() {
   const [awb, setAwb] = useState("");
   const [email, setEmail] = useState("");
@@ -54,7 +106,7 @@ export default function TrackOrderPage() {
 
   const handleTrack = async () => {
     if (!awb.trim() || !email.trim()) {
-      toast.error("Please enter both AWB code and email");
+      setError("Please enter both AWB code and email");
       return;
     }
 
@@ -76,215 +128,110 @@ export default function TrackOrderPage() {
 
       setOrder(data.data.order);
       setTracking(data.data.tracking);
-      toast.success("Order found!");
     } catch (err) {
       const message =
         err instanceof Error ? err.message : "Something went wrong";
       setError(message);
-      toast.error(message);
     } finally {
       setLoading(false);
     }
   };
 
-  const formatDate = (dateStr: string) => {
-    return new Date(dateStr).toLocaleDateString("en-IN", {
-      day: "numeric",
-      month: "short",
-      year: "numeric",
-      hour: "2-digit",
-      minute: "2-digit",
-    });
-  };
-
-  const getStatusColor = (status: string) => {
-    const statusColors: Record<string, string> = {
-      delivered: "text-green-600",
-      shipped: "text-blue-600",
-      processing: "text-yellow-600",
-      cancelled: "text-red-600",
-    };
-    return statusColors[status.toLowerCase()] || "text-gray-600";
-  };
-
   return (
     <div
-  className="min-h-screen"
-  style={{ backgroundColor: "#f5f5eb", position: "relative" }}
->
-  <Toaster position="top-right" />
-
-  {/* Header */}
-  <div className="pt-28 pb-8 px-6 md:px-20">
-    <h1
-      className="text-xs md:text-sm font-normal font-[TANTanglon] uppercase tracking-wide p-6"
-      style={{ position: "absolute", top: "100px", left: "0" }}
+      className="min-h-screen"
+      style={{ backgroundColor: "#f5f5eb", position: "relative" }}
     >
-      Track Order
-    </h1>
-  </div>
+      {/* Heading at top-most left side */}
+      <h1
+        className="text-xs md:text-sm font-normal font-[TANTanglon] uppercase tracking-wide p-6"
+        style={{ position: "absolute", top: "100px", left: "0" }}
+      >
+        Track Order
+      </h1>
 
-  {/* Search Form */}
-  <div className="pt-28 pb-20 px-6 md:px-20 min-h-screen flex items-center justify-center">
-    <div className="max-w-md w-full">
-      <div className="p-6 mx-auto space-y-6">
-        {/* AWB Field */}
-        <div>
-          <label className="block text-sm font-medium mb-2 font-[D-DIN]">
-            AWB / Tracking Number *
-          </label>
-          <input
-            type="text"
-            placeholder="Enter tracking number"
-            value={awb}
-            onChange={(e) => setAwb(e.target.value.trim())}
-            className="w-full px-4 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#4d272e] font-[D-DIN]"
-            onKeyPress={(e) => e.key === "Enter" && handleTrack()}
-          />
+      <div className="pt-28 pb-20 px-6 md:px-20 min-h-screen flex items-center justify-center">
+        <div className="max-w-md w-full">
+          {/* Form box centered */}
+          <div className="p-6 mx-auto">
+            <input
+              type="text"
+              placeholder="Order Number Without #"
+              value={awb}
+              onChange={(e) => setAwb(e.target.value)}
+              className="w-full pl-0 pr-4 py-[0.2rem] font-[D-DIN] text-sm leading-none focus:outline-none focus:ring-0 bg-transparent"
+              style={{ borderBottom: "1px solid #4d272e" }}
+            />
+            <input
+              type="email"
+              placeholder="Email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              className="w-full pl-0 pr-5 py-1 text-sm leading-none font-[D-DIN] focus:outline-none focus:ring-0 mt-10 bg-transparent"
+              style={{ borderBottom: "1px solid #4d272e" }}
+              onKeyPress={(e) => e.key === "Enter" && handleTrack()}
+            />
+
+            <button
+              onClick={handleTrack}
+              disabled={loading || !awb || !email}
+              className={`px-6 py-4 text-white cursor-pointer font-[D-DIN] text-sm w-full transition-colors mt-10
+                bg-[#4d272e]
+                hover:bg-white/80 hover:border-[#4d272e] hover:text-[#4d272e]
+                ${loading ? "opacity-75" : "opacity-100"}`}
+            >
+              {loading ? "Tracking..." : "TRACK"}
+            </button>
+          </div>
         </div>
-
-        {/* Email Field */}
-        <div>
-          <label className="block text-sm font-medium mb-2 font-[D-DIN]">
-            Email Address *
-          </label>
-          <input
-            type="email"
-            placeholder="Email used during checkout"
-            value={email}
-            onChange={(e) => setEmail(e.target.value.trim())}
-            className="w-full px-4 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#4d272e] font-[D-DIN]"
-            onKeyPress={(e) => e.key === "Enter" && handleTrack()}
-          />
-        </div>
-
-        {/* Track Button */}
-        <button
-          onClick={handleTrack}
-          disabled={loading || !awb || !email}
-          className={`block bg-[#4d272e] text-white font-[D-DIN] text-xs px-6 py-6 cursor-pointer w-full text-center transition-all duration-300
-            ${!loading && awb && email ? "hover:bg-white/80 hover:text-[#4d272e]" : ""}
-            ${loading ? "opacity-75 cursor-wait" : ""}
-          `}
-        >
-          {loading ? (
-            <span className="flex items-center justify-center">
-              <span className="animate-spin border-2 border-white border-t-transparent rounded-full h-4 w-4 inline-block mr-2" />
-              Tracking...
-            </span>
-          ) : (
-            "TRACK ORDER"
-          )}
-        </button>
       </div>
-    </div>
-  </div>
 
-      {/* Results */}
-      {(order || error) && (
-        <div className="px-6 md:px-20 pb-20">
-          {error ? (
-            <div className="max-w-4xl mx-auto bg-red-50 border border-red-200 rounded-lg p-6 text-center">
-              <p className="text-red-600 font-[D-DIN]">{error}</p>
+      {error && (
+        <p className="text-red-600 mt-6 text-sm max-w-4xl mx-auto text-center px-6">
+          {error}
+        </p>
+      )}
+
+      {tracking && order && (
+        <div className="mt-10 px-6 md:px-20 pb-20">
+          <div className="max-w-4xl mx-auto">
+            <h2 className="text-lg font-semibold mb-4 font-[D-DIN]">
+              Shipment Progress
+            </h2>
+
+            <ShipmentTimeline
+              status={tracking.shipment_status}
+              courier={tracking.courier_name}
+              awb={tracking.awb_code}
+              etd={tracking.etd}
+            />
+
+            <div className="mt-8 text-sm text-gray-600 bg-gray-50 p-4 rounded space-y-1">
+              <p>
+                <strong className="font-[D-DIN]">Current City:</strong>{" "}
+                {tracking.current_city || "In Transit"}
+              </p>
+              <p>
+                <strong className="font-[D-DIN]">Delivered To:</strong>{" "}
+                {tracking.delivered_to || "N/A"}
+              </p>
+              {tracking.destination && (
+                <p>
+                  <strong className="font-[D-DIN]">Destination:</strong>{" "}
+                  {tracking.destination}
+                </p>
+              )}
+              {tracking.delivered_on && (
+                <p>
+                  <strong className="font-[D-DIN]">Delivered On:</strong>{" "}
+                  {new Date(tracking.delivered_on).toLocaleString()}
+                </p>
+              )}
             </div>
-          ) : order && tracking ? (
-            <div className="max-w-4xl mx-auto space-y-6">
-              {/* Order Status Card */}
-              <div className="bg-white rounded-lg shadow-md p-6">
-                <div className="flex items-start justify-between mb-4">
-                  <div>
-                    <h2 className="text-2xl font-semibold font-[D-DIN]">
-                      Order #{order.id}
-                    </h2>
-                    <p className="text-sm text-gray-500 mt-1">
-                      Placed on {formatDate(order.created_at)}
-                    </p>
-                  </div>
-                  <div className="text-right">
-                    <span
-                      className={`inline-block px-3 py-1 rounded-full text-sm font-medium ${getStatusColor(
-                        order.shipping_status
-                      )} bg-opacity-10`}
-                    >
-                      {tracking.shipment_status}
-                    </span>
-                  </div>
-                </div>
 
-                <div className="grid md:grid-cols-3 gap-4 mt-6">
-                  <div className="bg-gray-50 p-4 rounded">
-                    <p className="text-xs text-gray-500 mb-1">Courier</p>
-                    <p className="font-medium font-[D-DIN]">
-                      {tracking.courier_name}
-                    </p>
-                  </div>
-                  <div className="bg-gray-50 p-4 rounded">
-                    <p className="text-xs text-gray-500 mb-1">AWB Code</p>
-                    <p className="font-medium font-mono text-sm">
-                      {tracking.awb_code}
-                    </p>
-                  </div>
-                  <div className="bg-gray-50 p-4 rounded">
-                    <p className="text-xs text-gray-500 mb-1">
-                      {order.delivered_at
-                        ? "Delivered On"
-                        : "Expected Delivery"}
-                    </p>
-                    <p className="font-medium font-[D-DIN]">
-                      {order.delivered_at
-                        ? formatDate(order.delivered_at)
-                        : tracking.etd || "3-5 business days"}
-                    </p>
-                  </div>
-                </div>
-              </div>
-
-              {/* Tracking Timeline */}
-              {tracking.shipment_track &&
-                tracking.shipment_track.length > 0 && (
-                  <div className="bg-white rounded-lg shadow-md p-6">
-                    <h3 className="text-lg font-semibold mb-4 font-[D-DIN]">
-                      Shipment Timeline
-                    </h3>
-                    <div className="space-y-4">
-                      {tracking.shipment_track.map((track, index) => (
-                        <div key={index} className="flex gap-4">
-                          <div className="flex flex-col items-center">
-                            <div
-                              className={`w-3 h-3 rounded-full ${
-                                index === 0 ? "bg-green-500" : "bg-gray-300"
-                              }`}
-                            />
-                            {index < tracking.shipment_track!.length - 1 && (
-                              <div className="w-0.5 h-full bg-gray-200 mt-1" />
-                            )}
-                          </div>
-                          <div className="flex-1 pb-4">
-                            <p className="font-medium text-sm font-[D-DIN]">
-                              {track.current_status}
-                            </p>
-                            <p className="text-xs text-gray-500 mt-1">
-                              {formatDate(track.date)}
-                            </p>
-                            {track.location && (
-                              <p className="text-xs text-gray-600 mt-1">
-                                📍 {track.location}
-                              </p>
-                            )}
-                            {track.activities && (
-                              <p className="text-xs text-gray-600 mt-1">
-                                {track.activities}
-                              </p>
-                            )}
-                          </div>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                )}
-
-              {/* Order Items */}
-              <div className="bg-white rounded-lg shadow-md p-6">
+            {/* Order Items */}
+            {order.items && order.items.length > 0 && (
+              <div className="mt-8 bg-white rounded p-6">
                 <h3 className="text-lg font-semibold mb-4 font-[D-DIN]">
                   Order Items
                 </h3>
@@ -313,21 +260,8 @@ export default function TrackOrderPage() {
                   </div>
                 </div>
               </div>
-
-              {/* Support */}
-              <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 text-center">
-                <p className="text-sm text-gray-700 font-[D-DIN]">
-                  Need help? Contact us at{" "}
-                  <a
-                    href="mailto:support@samaabysiblings.com"
-                    className="text-blue-600 hover:underline"
-                  >
-                    support@samaabysiblings.com
-                  </a>
-                </p>
-              </div>
-            </div>
-          ) : null}
+            )}
+          </div>
         </div>
       )}
     </div>
