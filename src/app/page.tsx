@@ -97,8 +97,7 @@ export default function HomePage() {
           className={`inline-block whitespace-nowrap animated-line text-[#262626] text-2xl md:text-3xl py-4 font-light ${pinyon.variable}`}
           style={{ fontFamily: "var(--font-cursive)" }}
         >
-          Countdown to Diwali! Exciting products and offers coming soon!! Free
-          Delivery above Rs.500!!!
+          Wrap your world in candlelight, the season of glow begins. Free Delivery above Rs. 500
         </div>
       </div>
 
