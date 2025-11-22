@@ -1,9 +1,9 @@
+// app/stories/[slug]/StoryPageClient.tsx
 "use client"
 
 import { JSX, useEffect, useState } from "react"
 import Image from "next/image"
 import Link from "next/link"
-import { useParams } from "next/navigation"
 import axios from "axios"
 import React from "react"
 
@@ -24,17 +24,16 @@ interface Story {
   cta_link?: string
 }
 
-// Recursively render Tiptap JSON nodes
+// Render function (keep as is)
 function renderTiptapNode(node: any, index: number): React.ReactNode {
+  // ... your existing renderTiptapNode code ...
   if (!node) return null
 
   const { type, content, attrs, marks, text } = node
 
-  // Handle text nodes
   if (type === "text") {
     let rendered: React.ReactNode = text
 
-    // Apply marks (bold, italic, underline, etc.)
     if (marks && marks.length > 0) {
       marks.forEach((mark: any, markIndex: number) => {
         const key = `${index}-${mark.type}-${markIndex}`
@@ -59,7 +58,6 @@ function renderTiptapNode(node: any, index: number): React.ReactNode {
     return <span key={index}>{rendered}</span>
   }
 
-  // Handle block nodes
   const children = content?.map((child: any, i: number) =>
     renderTiptapNode(child, `${index}-${i}` as any)
   )
@@ -67,10 +65,8 @@ function renderTiptapNode(node: any, index: number): React.ReactNode {
   switch (type) {
     case "doc":
       return <div key={index}>{children}</div>
-
     case "paragraph":
       return <p key={index} className="mb-4">{children}</p>
-
     case "heading":
       const level = attrs?.level || 1
       const headingClasses: Record<number, string> = {
@@ -79,35 +75,25 @@ function renderTiptapNode(node: any, index: number): React.ReactNode {
         3: "text-xl font-semibold mt-4 mb-2"
       }
       const HeadingTag = `h${level}` as keyof JSX.IntrinsicElements
-      return React.createElement(
-        HeadingTag, 
-        { key: index, className: headingClasses[level] }, 
-        children
-      )
-
+      return React.createElement(HeadingTag, { key: index, className: headingClasses[level] }, children)
     case "bulletList":
       return <ul key={index} className="list-disc ml-6 mb-4 space-y-2">{children}</ul>
-
     case "orderedList":
       return <ol key={index} className="list-decimal ml-6 mb-4 space-y-2">{children}</ol>
-
     case "listItem":
       return <li key={index}>{children}</li>
-
     case "blockquote":
       return (
         <blockquote key={index} className="border-l-4 border-gray-400 pl-4 italic my-4 text-gray-700">
           {children}
         </blockquote>
       )
-
     case "codeBlock":
       return (
         <pre key={index} className="bg-gray-900 text-gray-100 p-4 rounded-lg overflow-x-auto my-4 text-sm">
           <code>{children}</code>
         </pre>
       )
-
     case "image":
       return (
         <div key={index} className="relative w-full max-w-2xl mx-auto my-8">
@@ -126,10 +112,8 @@ function renderTiptapNode(node: any, index: number): React.ReactNode {
           )}
         </div>
       )
-
     case "hardBreak":
       return <br key={index} />
-
     case "table":
       return (
         <div key={index} className="overflow-x-auto my-6">
@@ -138,33 +122,28 @@ function renderTiptapNode(node: any, index: number): React.ReactNode {
           </table>
         </div>
       )
-
     case "tableRow":
       return <tr key={index}>{children}</tr>
-
     case "tableCell":
       return (
         <td key={index} className="border border-gray-300 p-3 text-sm">
           {children}
         </td>
       )
-
     case "tableHeader":
       return (
         <th key={index} className="border border-gray-300 p-3 font-bold bg-gray-50 text-sm">
           {children}
         </th>
       )
-
     default:
       console.warn(`Unhandled node type: ${type}`)
       return <div key={index}>{children}</div>
   }
 }
 
-export default function StoryPageClient() {
-  const params = useParams()
-  const slug = params?.slug as string
+// Client Component
+export default function StoryPageClient({ slug }: { slug: string }) {
   const [story, setStory] = useState<Story | null>(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
@@ -173,15 +152,12 @@ export default function StoryPageClient() {
     if (!slug) return
 
     setLoading(true)
-    console.log(`Fetching story: ${slug}`) // Debug log
     
     axios
       .get(`${API_BASE_URL}/api/v1/stories/${slug}`)
       .then((response) => {
-        console.log("Story data received:", response.data) // Debug log
         const storyData = response.data.data
         
-        // Parse content if it's a string
         if (typeof storyData.content === "string") {
           try {
             storyData.content = JSON.parse(storyData.content)
@@ -251,7 +227,6 @@ export default function StoryPageClient() {
   return (
     <div className="px-4 md:px-8 lg:px-16 py-24 bg-[var(--brand-light)] text-[var(--brand-dark)] min-h-screen">
       <article className="max-w-3xl mx-auto font-[D-DIN]">
-        {/* Cover Image */}
         {story.image_url && (
           <div className="relative w-full aspect-[16/9] mb-8 rounded-lg overflow-hidden shadow-lg">
             <Image
@@ -264,17 +239,14 @@ export default function StoryPageClient() {
           </div>
         )}
 
-        {/* Title */}
         <h1 className="text-4xl md:text-5xl font-bold text-left leading-tight tracking-wide mb-4">
           {story.title}
         </h1>
 
-        {/* Subtitle */}
         {story.subtitle && (
           <p className="text-xl text-gray-600 mb-6">{story.subtitle}</p>
         )}
 
-        {/* Meta Info */}
         <div className="flex items-center gap-4 text-sm text-gray-500 mb-8 pb-6 border-b border-gray-200">
           {story.author && (
             <span>By <strong>{story.author}</strong></span>
@@ -297,12 +269,10 @@ export default function StoryPageClient() {
           )}
         </div>
 
-        {/* Body Content - Render Tiptap JSON */}
         <div className="prose prose-lg max-w-none text-[var(--brand-dark)] leading-relaxed">
           {story.content && renderTiptapNode(story.content, 0)}
         </div>
 
-        {/* CTA - Dynamic based on story settings */}
         {(story.cta_text || story.cta_link) && (
           <div className="mt-16 pt-8 border-t border-gray-200 text-right">
             <Link
@@ -316,7 +286,6 @@ export default function StoryPageClient() {
           </div>
         )}
 
-        {/* Back Link */}
         <div className="mt-8">
           <Link
             href="/stories"
