@@ -1,6 +1,6 @@
 // app/stories/[slug]/page.tsx
 import { Metadata } from 'next'
-import StoryPageClient from '@/app/stories/[slug]/StoryPageClient'
+import StoryPageClient from './StoryPageClient'
 
 const API_BASE_URL =
   process.env.NEXT_PUBLIC_SERVER_URL ||
@@ -42,13 +42,15 @@ async function getStory(slug: string): Promise<Story | null> {
   }
 }
 
-// Generate metadata (runs on server)
+// Generate metadata (runs on server) - Next.js 15+ compatible
 export async function generateMetadata({
   params,
 }: {
-  params: { slug: string }
+  params: Promise<{ slug: string }>
 }): Promise<Metadata> {
-  const story = await getStory(params.slug)
+  // Await params in Next.js 15+
+  const { slug } = await params
+  const story = await getStory(slug)
 
   if (!story) {
     return {
@@ -72,7 +74,7 @@ export async function generateMetadata({
       title: story.title,
       description: truncatedDescription,
       type: 'article',
-      url: `https://www.samaabysiblings.com/stories/${params.slug}`,
+      url: `https://www.samaabysiblings.com/stories/${slug}`,
       siteName: 'Samaa by Siblings',
       ...(story.image_url && {
         images: [
@@ -105,7 +107,7 @@ export async function generateMetadata({
 
     // Additional metadata
     alternates: {
-      canonical: `https://www.samaabysiblings.com/stories/${params.slug}`,
+      canonical: `https://www.samaabysiblings.com/stories/${slug}`,
     },
     
     authors: story.author ? [{ name: story.author }] : undefined,
@@ -117,7 +119,14 @@ export async function generateMetadata({
   }
 }
 
-// Main page component (Server Component)
-export default function StoryPage({ params }: { params: { slug: string } }) {
-  return <StoryPageClient slug={params.slug} />
+// Main page component (Server Component) - Next.js 15+ compatible
+export default async function StoryPage({ 
+  params 
+}: { 
+  params: Promise<{ slug: string }> 
+}) {
+  // Await params in Next.js 15+
+  const { slug } = await params
+  
+  return <StoryPageClient slug={slug} />
 }
