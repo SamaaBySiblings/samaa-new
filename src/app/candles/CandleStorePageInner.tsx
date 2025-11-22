@@ -35,35 +35,6 @@ function formatPrice(priceInINR: number, currency: string) {
   return `${symbol}${converted.toFixed(2)}`;
 }
 
-// Stock Badge Component
-function StockBadge({ stock, stockStatus, inStock }: { 
-  stock: number; 
-  stockStatus?: string;
-  inStock: boolean;
-}) {
-  if (!inStock || stock <= 0) {
-    return (
-      <span className="inline-block px-2 py-1 text-xs font-medium bg-red-100 text-red-800 rounded">
-        Out of Stock
-      </span>
-    );
-  }
-
-  if (stockStatus === 'low_stock' || stock <= 10) {
-    return (
-      <span className="inline-block px-2 py-1 text-xs font-medium bg-yellow-100 text-yellow-800 rounded">
-        Only {stock} left
-      </span>
-    );
-  }
-
-  return (
-    <span className="inline-block px-2 py-1 text-xs font-medium bg-green-100 text-green-800 rounded">
-      In Stock
-    </span>
-  );
-}
-
 interface Props {
   initialCategory?: string;
   initialScent?: string;
@@ -86,7 +57,6 @@ export default function CandleStorePageInner({
   const [selectedCategories, setSelectedCategories] = useState<string[]>(
     initialCategory ? [initialCategory] : []
   );
-  const [showOutOfStock, setShowOutOfStock] = useState(true);
 
   const filterRef = useRef<HTMLDivElement>(null);
 
@@ -109,7 +79,6 @@ export default function CandleStorePageInner({
         const params: Record<string, string> = {};
         if (selectedScents.length) params.scent = selectedScents.join(",");
         if (selectedCategories.length) params.category = selectedCategories.join(",");
-        if (!showOutOfStock) params.in_stock = 'true';
 
         const endpoint =
           Object.keys(params).length > 0
@@ -134,7 +103,7 @@ export default function CandleStorePageInner({
     };
 
     fetchProducts();
-  }, [selectedScents, selectedCategories, showOutOfStock]);
+  }, [selectedScents, selectedCategories]);
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -184,7 +153,6 @@ export default function CandleStorePageInner({
   const clearFilters = () => {
     setSelectedScents([]);
     setSelectedCategories([]);
-    setShowOutOfStock(true);
   };
 
   return (
@@ -264,7 +232,7 @@ export default function CandleStorePageInner({
                     </div>
 
                     <div className="mt-4">
-                      <div className="flex justify-between items-start mb-2">
+                      <div className="flex justify-between items-start">
                         <div className="flex-1">
                           <h3 className="text-sm text-gray-700 font-[D-DIN] font-medium">
                             <Link href={`/candles/${product.slug}`}>
@@ -276,13 +244,6 @@ export default function CandleStorePageInner({
                           {formatPrice(product.price, currency)}
                         </p>
                       </div>
-                      
-                      {/* Stock Badge */}
-                      <StockBadge 
-                        stock={product.stock} 
-                        stockStatus={product.stock_status}
-                        inStock={product.in_stock}
-                      />
                     </div>
                   </div>
                 );
@@ -342,20 +303,6 @@ export default function CandleStorePageInner({
         </div>
 
         <div className="p-4 overflow-y-auto h-[calc(100%-64px)] space-y-6">
-          {/* Stock Filter */}
-          <div>
-            <h4 className="font-semibold font-[D-DIN] mb-2">Availability</h4>
-            <label className="flex items-center gap-2 cursor-pointer">
-              <input
-                type="checkbox"
-                checked={showOutOfStock}
-                onChange={(e) => setShowOutOfStock(e.target.checked)}
-                className="h-4 w-4"
-              />
-              <span className="text-sm font-[D-DIN]">Show out of stock items</span>
-            </label>
-          </div>
-
           {/* Scent Filter */}
           <div>
             <h4 className="font-semibold font-[D-DIN] mb-2">by Scent</h4>
