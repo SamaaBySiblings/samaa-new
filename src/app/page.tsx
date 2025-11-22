@@ -152,7 +152,7 @@ export default function HomePage() {
         <div className="absolute inset-0 flex items-end justify-center text-center pb-8 px-4">
           <div className="text-white mb-4 animate-fade-up">
             <Link
-              href="/stories/why-choose-soy"
+              href="/stories"
               className="font-[D-DIN] mt-4 inline-block border border-white text-white px-6 py-2 hover:bg-white hover:text-black transition"
             >
               Explore
