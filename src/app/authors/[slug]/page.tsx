@@ -115,7 +115,7 @@ export default async function AuthorPage({
     <div className="min-h-screen bg-[var(--brand-light)] px-4 md:px-8 lg:px-16 py-24 font-[D-DIN]">
       <div className="max-w-6xl mx-auto">
         {/* Author Header Card */}
-        <div className="bg-white rounded-none shadow-md p-8 md:p-12 mb-12">
+        <div className="bg-[var(--brand-light)] rounded-none shadow-md p-8 md:p-12 mb-12">
           <div className="flex flex-col md:flex-row gap-8 items-start">
             {/* Profile Image */}
             {author.profile_image_url ? (
