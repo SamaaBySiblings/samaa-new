@@ -240,7 +240,7 @@ export default async function AuthorPage({
             <h2 className="text-2xl md:text-3xl font-bold text-[#262626] tracking-tight">
               Stories by {author.name}
             </h2>
-            <span className="text-sm text-gray-500 bg-white px-3 py-1">
+            <span className="text-sm text-gray-500 bg-[var(--brand-light)] px-3 py-1">
               {author.story_count} {author.story_count === 1 ? 'story' : 'stories'}
             </span>
           </div>
@@ -259,7 +259,7 @@ export default async function AuthorPage({
                 <Link
                   key={story.id}
                   href={`/stories/${story.slug}`}
-                  className="bg-white shadow-sm hover:shadow-md transition group block"
+                  className="bg-[var(--brand-light)] shadow-sm hover:shadow-md transition group block"
                 >
                   {/* Story Image */}
                   {story.image_url && (
