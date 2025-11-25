@@ -37,8 +37,8 @@ interface Story {
 async function getAuthor(slug: string): Promise<Author | null> {
   try {
     const res = await fetch(`${API_BASE_URL}/api/v1/authors/${slug}`, {
-      next: { revalidate: 300 },
-      cache: 'force-cache'
+      next: { revalidate: 10 }, // Revalidate every 10 seconds for real-time updates
+      cache: 'no-store' // Don't cache for immediate updates
     })
     
     if (!res.ok) return null
@@ -77,13 +77,24 @@ export async function generateMetadata({
       type: 'profile',
       url: `https://www.samaabysiblings.com/authors/${slug}`,
       ...(author.profile_image_url && {
-        images: [author.profile_image_url],
+        images: [{
+          url: author.profile_image_url,
+          width: 800,
+          height: 800,
+          alt: author.name,
+        }],
       }),
     },
     twitter: {
       card: 'summary',
       title: author.name,
       description,
+      ...(author.profile_image_url && {
+        images: [author.profile_image_url],
+      }),
+    },
+    alternates: {
+      canonical: `https://www.samaabysiblings.com/authors/${slug}`,
     },
   }
 }
@@ -101,81 +112,105 @@ export default async function AuthorPage({
   }
 
   return (
-    <div className="min-h-screen bg-[var(--brand-light)] px-4 md:px-8 lg:px-16 py-24">
+    <div className="min-h-screen bg-[#f5f5eb] px-4 md:px-8 lg:px-16 py-24 font-[D-DIN]">
       <div className="max-w-6xl mx-auto">
-        {/* Author Header */}
-        <div className="bg-white rounded-lg shadow-lg p-8 mb-8">
+        {/* Author Header Card */}
+        <div className="bg-white rounded-none shadow-md p-8 md:p-12 mb-12">
           <div className="flex flex-col md:flex-row gap-8 items-start">
             {/* Profile Image */}
-            {author.profile_image_url && (
-              <div className="relative w-32 h-32 rounded-full overflow-hidden flex-shrink-0">
+            {author.profile_image_url ? (
+              <div className="relative w-40 h-40 rounded-full overflow-hidden flex-shrink-0 ring-4 ring-gray-100">
                 <Image
                   src={author.profile_image_url}
                   alt={author.name}
                   fill
                   className="object-cover"
+                  priority
                 />
+              </div>
+            ) : (
+              <div className="w-40 h-40 rounded-full bg-gray-200 flex items-center justify-center flex-shrink-0 ring-4 ring-gray-100">
+                <span className="text-6xl font-bold text-gray-400">
+                  {author.name.charAt(0).toUpperCase()}
+                </span>
               </div>
             )}
 
             {/* Author Info */}
-            <div className="flex-1">
-              <h1 className="text-4xl font-bold mb-2">{author.name}</h1>
-              
-              {author.title && (
-                <p className="text-xl text-gray-600 mb-1">{author.title}</p>
-              )}
-              
-              {author.company && (
-                <p className="text-lg text-gray-500 mb-4">{author.company}</p>
-              )}
-
-              {/* Social Links */}
-              <div className="flex flex-wrap gap-4 mb-6">
-                {author.linkedin_url && (
-                  <a
-                    href={author.linkedin_url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="flex items-center gap-2 text-blue-600 hover:underline"
-                  >
-                    <LucideIcons.Linkedin className="h-5 w-5" />
-                    LinkedIn
-                  </a>
+            <div className="flex-1 space-y-4">
+              <div>
+                <h1 className="text-4xl md:text-5xl font-bold text-[#262626] mb-2 tracking-tight">
+                  {author.name}
+                </h1>
+                
+                {author.title && (
+                  <p className="text-xl text-gray-600 font-light">{author.title}</p>
                 )}
-                {author.twitter_url && (
-                  <a
-                    href={author.twitter_url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="flex items-center gap-2 text-blue-400 hover:underline"
-                  >
-                    <LucideIcons.Twitter className="h-5 w-5" />
-                    Twitter
-                  </a>
-                )}
-                {author.website_url && (
-                  <a
-                    href={author.website_url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="flex items-center gap-2 text-gray-600 hover:underline"
-                  >
-                    <LucideIcons.Globe className="h-5 w-5" />
-                    Website
-                  </a>
+                
+                {author.company && (
+                  <p className="text-lg text-gray-500 mt-1">{author.company}</p>
                 )}
               </div>
 
+              {/* Social Links */}
+              {(author.linkedin_url || author.twitter_url || author.website_url || author.email) && (
+                <div className="flex flex-wrap gap-3 pt-2">
+                  {author.email && (
+                    <a
+                      href={`mailto:${author.email}`}
+                      className="flex items-center gap-2 px-3 py-1.5 bg-gray-100 hover:bg-gray-200 text-gray-700 text-sm transition rounded-sm"
+                    >
+                      <LucideIcons.Mail className="h-4 w-4" />
+                      Email
+                    </a>
+                  )}
+                  {author.linkedin_url && (
+                    <a
+                      href={author.linkedin_url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex items-center gap-2 px-3 py-1.5 bg-blue-50 hover:bg-blue-100 text-blue-700 text-sm transition rounded-sm"
+                    >
+                      <LucideIcons.Linkedin className="h-4 w-4" />
+                      LinkedIn
+                    </a>
+                  )}
+                  {author.twitter_url && (
+                    <a
+                      href={author.twitter_url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex items-center gap-2 px-3 py-1.5 bg-sky-50 hover:bg-sky-100 text-sky-700 text-sm transition rounded-sm"
+                    >
+                      <LucideIcons.Twitter className="h-4 w-4" />
+                      Twitter
+                    </a>
+                  )}
+                  {author.website_url && (
+                    <a
+                      href={author.website_url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex items-center gap-2 px-3 py-1.5 bg-gray-100 hover:bg-gray-200 text-gray-700 text-sm transition rounded-sm"
+                    >
+                      <LucideIcons.Globe className="h-4 w-4" />
+                      Website
+                    </a>
+                  )}
+                </div>
+              )}
+
               {/* Expertise Tags */}
               {author.expertise && author.expertise.length > 0 && (
-                <div className="mb-4">
-                  <h3 className="text-sm font-semibold text-gray-700 mb-2">Expertise</h3>
+                <div className="pt-2">
+                  <h3 className="text-xs uppercase tracking-wider text-gray-500 font-semibold mb-2">
+                    Expertise
+                  </h3>
                   <div className="flex flex-wrap gap-2">
                     {author.expertise.map((skill, index) => (
                       <span
                         key={index}
-                        className="px-3 py-1 bg-blue-50 text-blue-700 rounded-full text-sm"
+                        className="px-3 py-1 bg-[#262626] text-white text-xs uppercase tracking-wider"
                       >
                         {skill}
                       </span>
@@ -183,63 +218,87 @@ export default async function AuthorPage({
                   </div>
                 </div>
               )}
-
-              {/* Bio */}
-              {author.bio && (
-                <div className="mt-6">
-                  <h3 className="text-lg font-semibold mb-2">About</h3>
-                  <p className="text-gray-700 leading-relaxed whitespace-pre-line">
-                    {author.bio}
-                  </p>
-                </div>
-              )}
             </div>
           </div>
+
+          {/* Bio Section */}
+          {author.bio && (
+            <div className="mt-8 pt-8 border-t border-gray-200">
+              <h3 className="text-xs uppercase tracking-wider text-gray-500 font-semibold mb-3">
+                About
+              </h3>
+              <p className="text-gray-700 leading-relaxed whitespace-pre-line text-base">
+                {author.bio}
+              </p>
+            </div>
+          )}
         </div>
 
-        {/* Author's Stories */}
+        {/* Stories Section */}
         <div>
-          <h2 className="text-3xl font-bold mb-6">
-            Stories by {author.name} ({author.story_count})
-          </h2>
+          <div className="flex items-center justify-between mb-6">
+            <h2 className="text-2xl md:text-3xl font-bold text-[#262626] tracking-tight">
+              Stories by {author.name}
+            </h2>
+            <span className="text-sm text-gray-500 bg-white px-3 py-1">
+              {author.story_count} {author.story_count === 1 ? 'story' : 'stories'}
+            </span>
+          </div>
 
           {author.stories.length === 0 ? (
-            <p className="text-gray-500">No published stories yet.</p>
+            <div className="bg-white p-12 text-center">
+              <LucideIcons.FileText className="h-12 w-12 text-gray-300 mx-auto mb-4" />
+              <p className="text-gray-500 text-lg">No published stories yet</p>
+              <p className="text-gray-400 text-sm mt-2">
+                Check back soon for new content from {author.name}
+              </p>
+            </div>
           ) : (
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
               {author.stories.map((story) => (
                 <Link
                   key={story.id}
                   href={`/stories/${story.slug}`}
-                  className="bg-white rounded-lg shadow hover:shadow-lg transition group"
+                  className="bg-white shadow-sm hover:shadow-md transition group block"
                 >
+                  {/* Story Image */}
                   {story.image_url && (
-                    <div className="relative w-full aspect-video rounded-t-lg overflow-hidden">
+                    <div className="relative w-full aspect-[4/3] overflow-hidden bg-gray-100">
                       <Image
                         src={story.image_url}
                         alt={story.title}
                         fill
-                        className="object-cover group-hover:scale-105 transition"
+                        className="object-cover group-hover:scale-105 transition duration-300"
                       />
                     </div>
                   )}
-                  <div className="p-4">
-                    <h3 className="text-xl font-semibold mb-2 group-hover:text-blue-600 transition">
+                  
+                  {/* Story Content */}
+                  <div className="p-5">
+                    <h3 className="text-lg font-bold mb-2 group-hover:text-[#262626] transition line-clamp-2">
                       {story.title}
                     </h3>
+                    
                     {story.subtitle && (
-                      <p className="text-gray-600 text-sm mb-3">{story.subtitle}</p>
+                      <p className="text-gray-600 text-sm mb-3 line-clamp-2">
+                        {story.subtitle}
+                      </p>
                     )}
+                    
                     {story.excerpt && (
                       <p className="text-gray-500 text-sm line-clamp-2 mb-3">
                         {story.excerpt}
                       </p>
                     )}
-                    <div className="flex items-center gap-3 text-xs text-gray-500">
+                    
+                    {/* Story Meta */}
+                    <div className="flex items-center gap-3 text-xs text-gray-400 uppercase tracking-wider">
                       {story.read_time_minutes && (
-                        <span>{story.read_time_minutes} min read</span>
+                        <>
+                          <span>{story.read_time_minutes} min read</span>
+                          <span>•</span>
+                        </>
                       )}
-                      <span>•</span>
                       <span>
                         {new Date(story.created_at).toLocaleDateString('en-US', {
                           month: 'short',
@@ -256,12 +315,12 @@ export default async function AuthorPage({
         </div>
 
         {/* Back Link */}
-        <div className="mt-8">
+        <div className="mt-12 pt-8 border-t border-gray-300">
           <Link
             href="/stories"
-            className="inline-flex items-center gap-2 text-sm text-gray-600 hover:text-gray-800 transition"
+            className="inline-flex items-center gap-2 text-sm text-gray-600 hover:text-[#262626] transition uppercase tracking-wider"
           >
-            <span>←</span>
+            <LucideIcons.ArrowLeft className="h-4 w-4" />
             <span>Back to all stories</span>
           </Link>
         </div>
