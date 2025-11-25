@@ -1,45 +1,56 @@
 // app/stories/[slug]/StoryPageClient.tsx
-"use client"
+"use client";
 
-import { JSX, useEffect, useState } from "react"
-import Image from "next/image"
-import Link from "next/link"
-import axios from "axios"
-import React from "react"
+import { JSX, useEffect, useState } from "react";
+import Image from "next/image";
+import Link from "next/link";
+import axios from "axios";
+import React from "react";
 
 const API_BASE_URL =
   process.env.NEXT_PUBLIC_SERVER_URL ||
-  "https://api.samaabysiblings.com/backend"
+  "https://api.samaabysiblings.com/backend";
 
 interface Story {
-  id: number
-  title: string
-  subtitle?: string
-  image_url?: string
-  content: any
-  author?: string
-  read_time_minutes?: number
-  created_at: string
-  cta_text?: string
-  cta_link?: string
+  author_slug: any;
+  author_name: string | undefined;
+  id: number;
+  title: string;
+  subtitle?: string;
+  image_url?: string;
+  content: any;
+  author?: string;
+  read_time_minutes?: number;
+  created_at: string;
+  cta_text?: string;
+  cta_link?: string;
+}
+
+// Helper to generate slug from author name
+function generateSlug(name: string): string {
+  return name
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-|-$/g, "");
 }
 
 // Render function (keep as is)
 function renderTiptapNode(node: any, index: number): React.ReactNode {
   // ... your existing renderTiptapNode code ...
-  if (!node) return null
+  if (!node) return null;
 
-  const { type, content, attrs, marks, text } = node
+  const { type, content, attrs, marks, text } = node;
 
   if (type === "text") {
-    let rendered: React.ReactNode = text
+    let rendered: React.ReactNode = text;
 
     if (marks && marks.length > 0) {
       marks.forEach((mark: any, markIndex: number) => {
-        const key = `${index}-${mark.type}-${markIndex}`
-        if (mark.type === "bold") rendered = <strong key={key}>{rendered}</strong>
-        if (mark.type === "italic") rendered = <em key={key}>{rendered}</em>
-        if (mark.type === "underline") rendered = <u key={key}>{rendered}</u>
+        const key = `${index}-${mark.type}-${markIndex}`;
+        if (mark.type === "bold")
+          rendered = <strong key={key}>{rendered}</strong>;
+        if (mark.type === "italic") rendered = <em key={key}>{rendered}</em>;
+        if (mark.type === "underline") rendered = <u key={key}>{rendered}</u>;
         if (mark.type === "link")
           rendered = (
             <a
@@ -51,49 +62,71 @@ function renderTiptapNode(node: any, index: number): React.ReactNode {
             >
               {rendered}
             </a>
-          )
-      })
+          );
+      });
     }
 
-    return <span key={index}>{rendered}</span>
+    return <span key={index}>{rendered}</span>;
   }
 
   const children = content?.map((child: any, i: number) =>
     renderTiptapNode(child, `${index}-${i}` as any)
-  )
+  );
 
   switch (type) {
     case "doc":
-      return <div key={index}>{children}</div>
+      return <div key={index}>{children}</div>;
     case "paragraph":
-      return <p key={index} className="mb-4">{children}</p>
+      return (
+        <p key={index} className="mb-4">
+          {children}
+        </p>
+      );
     case "heading":
-      const level = attrs?.level || 1
+      const level = attrs?.level || 1;
       const headingClasses: Record<number, string> = {
         1: "text-3xl font-bold mt-8 mb-4",
         2: "text-2xl font-bold mt-6 mb-3",
-        3: "text-xl font-semibold mt-4 mb-2"
-      }
-      const HeadingTag = `h${level}` as keyof JSX.IntrinsicElements
-      return React.createElement(HeadingTag, { key: index, className: headingClasses[level] }, children)
+        3: "text-xl font-semibold mt-4 mb-2",
+      };
+      const HeadingTag = `h${level}` as keyof JSX.IntrinsicElements;
+      return React.createElement(
+        HeadingTag,
+        { key: index, className: headingClasses[level] },
+        children
+      );
     case "bulletList":
-      return <ul key={index} className="list-disc ml-6 mb-4 space-y-2">{children}</ul>
+      return (
+        <ul key={index} className="list-disc ml-6 mb-4 space-y-2">
+          {children}
+        </ul>
+      );
     case "orderedList":
-      return <ol key={index} className="list-decimal ml-6 mb-4 space-y-2">{children}</ol>
+      return (
+        <ol key={index} className="list-decimal ml-6 mb-4 space-y-2">
+          {children}
+        </ol>
+      );
     case "listItem":
-      return <li key={index}>{children}</li>
+      return <li key={index}>{children}</li>;
     case "blockquote":
       return (
-        <blockquote key={index} className="border-l-4 border-gray-400 pl-4 italic my-4 text-gray-700">
+        <blockquote
+          key={index}
+          className="border-l-4 border-gray-400 pl-4 italic my-4 text-gray-700"
+        >
           {children}
         </blockquote>
-      )
+      );
     case "codeBlock":
       return (
-        <pre key={index} className="bg-gray-900 text-gray-100 p-4 rounded-lg overflow-x-auto my-4 text-sm">
+        <pre
+          key={index}
+          className="bg-gray-900 text-gray-100 p-4 rounded-lg overflow-x-auto my-4 text-sm"
+        >
           <code>{children}</code>
         </pre>
-      )
+      );
     case "image":
       return (
         <div key={index} className="relative w-full max-w-2xl mx-auto my-8">
@@ -111,9 +144,9 @@ function renderTiptapNode(node: any, index: number): React.ReactNode {
             </p>
           )}
         </div>
-      )
+      );
     case "hardBreak":
-      return <br key={index} />
+      return <br key={index} />;
     case "table":
       return (
         <div key={index} className="overflow-x-auto my-6">
@@ -121,65 +154,68 @@ function renderTiptapNode(node: any, index: number): React.ReactNode {
             <tbody>{children}</tbody>
           </table>
         </div>
-      )
+      );
     case "tableRow":
-      return <tr key={index}>{children}</tr>
+      return <tr key={index}>{children}</tr>;
     case "tableCell":
       return (
         <td key={index} className="border border-gray-300 p-3 text-sm">
           {children}
         </td>
-      )
+      );
     case "tableHeader":
       return (
-        <th key={index} className="border border-gray-300 p-3 font-bold bg-gray-50 text-sm">
+        <th
+          key={index}
+          className="border border-gray-300 p-3 font-bold bg-gray-50 text-sm"
+        >
           {children}
         </th>
-      )
+      );
     default:
-      console.warn(`Unhandled node type: ${type}`)
-      return <div key={index}>{children}</div>
+      console.warn(`Unhandled node type: ${type}`);
+      return <div key={index}>{children}</div>;
   }
 }
 
 // Client Component
 export default function StoryPageClient({ slug }: { slug: string }) {
-  const [story, setStory] = useState<Story | null>(null)
-  const [loading, setLoading] = useState(true)
-  const [error, setError] = useState<string | null>(null)
+  const [story, setStory] = useState<Story | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    if (!slug) return
+    if (!slug) return;
 
-    setLoading(true)
-    
+    setLoading(true);
+
     axios
       .get(`${API_BASE_URL}/api/v1/stories/${slug}`)
       .then((response) => {
-        const storyData = response.data.data
-        
+        const storyData = response.data.data;
+
         if (typeof storyData.content === "string") {
           try {
-            storyData.content = JSON.parse(storyData.content)
+            storyData.content = JSON.parse(storyData.content);
           } catch (e) {
-            console.error("Failed to parse content:", e)
-            throw new Error("Invalid story content format")
+            console.error("Failed to parse content:", e);
+            throw new Error("Invalid story content format");
           }
         }
-        
-        setStory(storyData)
-        setError(null)
+
+        setStory(storyData);
+        setError(null);
       })
       .catch((error) => {
-        console.error("Error fetching story:", error)
+        console.error("Error fetching story:", error);
         if (error.response && error.response.status === 404) {
-          setError("Story not found")
+          setError("Story not found");
         } else {
-          setError(error.message || "Failed to load story")
+          setError(error.message || "Failed to load story");
         }
       })
-      .finally(() => setLoading(false))
-  }, [slug])
+      .finally(() => setLoading(false));
+  }, [slug]);
 
   if (loading) {
     return (
@@ -189,7 +225,7 @@ export default function StoryPageClient({ slug }: { slug: string }) {
           <p className="text-gray-600">Loading story...</p>
         </div>
       </div>
-    )
+    );
   }
 
   if (error) {
@@ -205,7 +241,7 @@ export default function StoryPageClient({ slug }: { slug: string }) {
           </Link>
         </div>
       </div>
-    )
+    );
   }
 
   if (!story) {
@@ -221,7 +257,7 @@ export default function StoryPageClient({ slug }: { slug: string }) {
           </Link>
         </div>
       </div>
-    )
+    );
   }
 
   return (
@@ -248,8 +284,22 @@ export default function StoryPageClient({ slug }: { slug: string }) {
         )}
 
         <div className="flex items-center gap-4 text-sm text-gray-500 mb-8 pb-6 border-b border-gray-200">
-          {story.author && (
-            <span>By <strong>{story.author}</strong></span>
+          {story.author_slug ? (
+            <span>
+              By{" "}
+              <Link
+                href={`/authors/${story.author_slug}`}
+                className="font-bold hover:text-gray-800 hover:underline transition"
+              >
+                {story.author_name || story.author}
+              </Link>
+            </span>
+          ) : (
+            story.author && (
+              <span>
+                By <strong>{story.author}</strong>
+              </span>
+            )
           )}
           {story.read_time_minutes && (
             <>
@@ -260,11 +310,13 @@ export default function StoryPageClient({ slug }: { slug: string }) {
           {story.created_at && (
             <>
               <span>•</span>
-              <span>{new Date(story.created_at).toLocaleDateString('en-US', { 
-                year: 'numeric', 
-                month: 'long', 
-                day: 'numeric' 
-              })}</span>
+              <span>
+                {new Date(story.created_at).toLocaleDateString("en-US", {
+                  year: "numeric",
+                  month: "long",
+                  day: "numeric",
+                })}
+              </span>
             </>
           )}
         </div>
@@ -297,5 +349,5 @@ export default function StoryPageClient({ slug }: { slug: string }) {
         </div>
       </article>
     </div>
-  )
+  );
 }
