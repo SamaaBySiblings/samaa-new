@@ -112,7 +112,7 @@ export default async function AuthorPage({
   }
 
   return (
-    <div className="min-h-screen bg-[#f5f5eb] px-4 md:px-8 lg:px-16 py-24 font-[D-DIN]">
+    <div className="min-h-screen bg-[var(--brand-light)] px-4 md:px-8 lg:px-16 py-24 font-[D-DIN]">
       <div className="max-w-6xl mx-auto">
         {/* Author Header Card */}
         <div className="bg-white rounded-none shadow-md p-8 md:p-12 mb-12">
