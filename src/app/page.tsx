@@ -15,7 +15,33 @@ export const metadata: Metadata = {
     "Discover handcrafted soy candles by SAMAA—rooted in Indian tradition, designed for modern, mindful luxury around the world.",
 };
 
-export default function HomePage() {
+// Add this function at the top
+async function getRotatingMessages() {
+  try {
+    const res = await fetch(
+      `${
+        process.env.NEXT_PUBLIC_SERVER_URL ||
+        "https://api.samaabysiblings.com/backend"
+      }/api/v1/rotation/active`,
+      { next: { revalidate: 300 } } // Revalidate every 5 minutes
+    );
+
+    if (!res.ok) return null;
+
+    const data = await res.json();
+    return data.data?.messages || [];
+  } catch (error) {
+    console.error("Error fetching rotating messages:", error);
+    return [];
+  }
+}
+
+export default async function HomePage() {
+  const messages = await getRotatingMessages();
+  const messageText =
+    messages.length > 0
+      ? messages.map((m: any) => m.text).join(" • ")
+      : "Wrap your world in candlelight, the season of glow begins. Free Delivery above Rs. 500";
   return (
     <div className="bg-[var(--brand-light)] text-[#262626] font-light">
       {/* Hero Section - Fullscreen Banner */}
@@ -91,13 +117,13 @@ export default function HomePage() {
         <span className="capitalize">I</span> remember."
       </div>
 
-      {/* Countdown Line - Animated Scrolling Text */}
+      {/* Countdown Line or Rotating msg - Animated Scrolling Text */}
       <div className="relative overflow-hidden bg-[#f5f5eb]">
         <div
           className={`inline-block whitespace-nowrap animated-line text-[#262626] text-2xl md:text-3xl py-4 font-light ${pinyon.variable}`}
           style={{ fontFamily: "var(--font-cursive)" }}
         >
-          Wrap your world in candlelight, the season of glow begins. Free Delivery above Rs. 500
+          {messageText}
         </div>
       </div>
 
