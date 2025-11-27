@@ -15,33 +15,66 @@ export const metadata: Metadata = {
     "Discover handcrafted soy candles by SAMAA—rooted in Indian tradition, designed for modern, mindful luxury around the world.",
 };
 
-// Add this function at the top
+// Fetch rotating messages from API
 async function getRotatingMessages() {
+  const defaultMessage = "Wrap your world in candlelight, the season of glow begins. Free Delivery above Rs. 500";
+  
   try {
-    const res = await fetch(
-      `${
-        process.env.NEXT_PUBLIC_SERVER_URL ||
-        "https://api.samaabysiblings.com/backend"
-      }/api/v1/rotation/active`,
-      { next: { revalidate: 300 } } // Revalidate every 5 minutes
-    );
+    const baseUrl = process.env.NEXT_PUBLIC_SERVER_URL || "https://api.samaabysiblings.com/backend";
+    const url = `${baseUrl}/api/v1/rotation/active`;
+    
+    console.log("Fetching rotating messages from:", url);
+    
+    const res = await fetch(url, {
+      next: { revalidate: 300 }, // Revalidate every 5 minutes
+      headers: {
+        'Content-Type': 'application/json',
+      }
+    });
 
-    if (!res.ok) return null;
+    if (!res.ok) {
+      console.error("Failed to fetch rotating messages:", res.status, res.statusText);
+      // Only use default if API fails completely
+      return [{ id: 1, text: defaultMessage }];
+    }
 
-    const data = await res.json();
-    return data.data?.messages || [];
+    const response = await res.json();
+    console.log("API Response:", response);
+    
+    // Handle different response structures
+    let data = null;
+    
+    if (response?.data?.messages) {
+      data = response.data;
+    } else if (response?.messages) {
+      data = response;
+    }
+    
+    // Validate messages from admin
+    if (data && Array.isArray(data.messages) && data.messages.length > 0) {
+      // Check if all messages have valid text
+      const validMessages = data.messages.filter((m: any) => m.text && m.text.trim());
+      if (validMessages.length > 0) {
+        console.log("Using admin messages:", validMessages);
+        return validMessages;
+      }
+    }
+    
+    // Only use default if no valid messages from admin
+    console.log("No valid admin messages, using default");
+    return [{ id: 1, text: defaultMessage }];
+    
   } catch (error) {
     console.error("Error fetching rotating messages:", error);
-    return [];
+    // Only use default on error
+    return [{ id: 1, text: defaultMessage }];
   }
 }
 
 export default async function HomePage() {
   const messages = await getRotatingMessages();
-  const messageText =
-    messages.length > 0
-      ? messages.map((m: any) => m.text).join(" • ")
-      : "Wrap your world in candlelight, the season of glow begins. Free Delivery above Rs. 500";
+  const messageText = messages.map((m: any) => m.text).join(" • ");
+  
   return (
     <div className="bg-[var(--brand-light)] text-[#262626] font-light">
       {/* Hero Section - Fullscreen Banner */}
@@ -72,6 +105,7 @@ export default async function HomePage() {
         <span className="capitalize">This</span> is the luxury as your
         great-great-grandmother knew it"
       </div>
+
       {/* Section 2: Community CTA */}
       <section className="relative h-[70vh] w-full overflow-hidden">
         <Image
