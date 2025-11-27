@@ -26,7 +26,7 @@ async function getRotatingMessages() {
     console.log("Fetching rotating messages from:", url);
     
     const res = await fetch(url, {
-      next: { revalidate: 300 }, // Revalidate every 5 minutes
+      next: { revalidate: 100 }, // Revalidate every 5 minutes
       headers: {
         'Content-Type': 'application/json',
       }
